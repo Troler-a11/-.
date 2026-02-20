@@ -184,7 +184,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
     <section id="s5" class="section">
         <div class="q-header">
             <span id="q-num" class="badge">Питання 1/18</span>
-            <div class="timer-box" id="q-attempts">Спроба: 1</div>
+            <div class="timer-box" id="q-attempts-display">Спроба: 1</div>
         </div>
         <div id="q-box">
             <h3 id="q-txt" style="margin-bottom:20px"></h3>
@@ -197,7 +197,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
                 <div id="final-msg" style="margin:20px 0; font-weight:bold; color:var(--err)">Бал з'явиться в Залі Слави ПІСЛЯ завершення!</div>
                 <div style="display:grid; gap:10px">
                     <button class="btn" onclick="finishAndSave()">Завершити тест та зберегти у рейтинг</button>
-                    <button id="retry-btn" class="btn btn-alt" onclick="location.reload()" style="display:none">Спробувати ще раз</button>
+                    <button id="retry-btn" class="btn btn-alt" onclick="retryQuiz()" style="display:none">Спробувати ще раз (-1 бал)</button>
                 </div>
             </div>
         </div>
@@ -211,6 +211,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 <script>
 let userName = "", score = 0, currentQ = 0, canClick = true, finalGradeInternal = 0;
+let testStarted = false;
+
 const quizData = [
     {q:"Маркетингова пастка 'Ефект дефіциту' це:", a:["Знижка 50%","Тільки сьогодні!","Подарунок до покупки","Якісний товар"], c:1},
     {q:"Що є нематеріальним ресурсом родини?", a:["Автомобіль","Знання кулінарії","Запас гречки","Дача"], c:1},
@@ -232,7 +234,15 @@ const quizData = [
     {q:"Найдорожчий ресурс людини:", a:["Гроші","Час","Золото"], c:1}
 ];
 
-// DATA FOR SUPERMARKET GAME - 15 Levels, each has 3 targets
+// Anti-cheat: detection of visibility change
+document.addEventListener("visibilitychange", function() {
+    if (document.hidden && testStarted) {
+        testStarted = false;
+        alert("УВАГА! Ми помітили, що ви виходили із вкладки тесту. Тест закрито автоматично через підозру у списуванні.");
+        location.reload();
+    }
+});
+
 const trapLevels = [
     {
         title: "Полиці (Очі)", img: "https://img.freepik.com/free-photo/view-supermarket-aisle_23-2150129064.jpg",
@@ -363,19 +373,34 @@ function playSnd(id) {
 function startApp() {
     userName = document.getElementById('user-name').value.trim();
     if(userName.length < 3) { alert("Введіть повне ім'я!"); return; }
-    let attempts = parseInt(localStorage.getItem('att_'+userName) || 0);
-    if(attempts >= 2) { alert("Ви вичерпали ліміт спроб!"); return; }
     document.getElementById('auth-overlay').style.display = 'none';
     playSnd('snd-click');
     updateLeaderboard();
 }
 
 function nt(el,id) {
+    if(id === 's5') {
+        let att = parseInt(localStorage.getItem('att_'+userName) || 0);
+        if(att >= 2) { 
+            alert("Ви вже використали всі 2 спроби тесту!"); 
+            return; 
+        }
+        if(!testStarted && currentQ === 0) {
+            testStarted = true;
+            loadQuestion();
+        }
+    } else {
+        // If they leave the test section while it's active
+        if(testStarted) {
+            let conf = confirm("Вихід з вкладки під час тесту анулює результат. Ви впевнені?");
+            if(!conf) return;
+            testStarted = false;
+        }
+    }
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     el.classList.add('active');
-    if(id==='s5'&&currentQ===0) loadQuestion();
     playSnd('snd-click');
 }
 
@@ -393,7 +418,6 @@ function showM(l) {
     playSnd('snd-click');
 }
 
-/* IMPROVED GAMES SYSTEM */
 let currentTrapLvl = 0;
 let lives = 3;
 let targetsFound = 0;
@@ -454,7 +478,6 @@ function loadTrapLevel() {
                 <div id="target-${i}" class="trap-marker" style="left:${t.x}%; top:${t.y}%; width:${t.r*2}%; height:${t.r*2.5}%; border-radius:50%;"></div>
             `).join('')}
         </div>
-        <p style="font-size:12px; margin-top:8px">Знайди 3 маркетингові пастки на цьому фото!</p>
     `;
     
     document.getElementById('trap-zone').onclick = function(e) {
@@ -465,9 +488,7 @@ function loadTrapLevel() {
         let hit = false;
         lvl.targets.forEach((t, i) => {
             const marker = document.getElementById(`target-${i}`);
-            if(marker.style.display === 'block') return; // Already found
-
-            // Simple distance check for click
+            if(marker.style.display === 'block') return;
             const dist = Math.sqrt(Math.pow(px - t.x, 2) + Math.pow(py - t.y, 2));
             if(dist < t.r) {
                 hit = true;
@@ -478,26 +499,18 @@ function loadTrapLevel() {
                 if(targetsFound === 3) {
                     setTimeout(() => {
                         currentTrapLvl++;
-                        if(currentTrapLvl >= trapLevels.length) {
-                            alert("ВІТАЄМО! Ви пройшли всі 15 рівнів!");
-                            closeGame();
-                        } else {
-                            loadTrapLevel();
-                        }
+                        if(currentTrapLvl >= trapLevels.length) { closeGame(); } 
+                        else { loadTrapLevel(); }
                     }, 500);
                 }
             }
         });
-
         if(!hit) {
             lives--;
             document.getElementById('lives-val').innerText = lives;
             showErrorAt(px, py);
             playSnd('snd-err');
-            if(lives <= 0) {
-                alert("Гра закінчена! Спробуйте спочатку.");
-                closeGame();
-            }
+            if(lives <= 0) { closeGame(); }
         }
     };
 }
@@ -518,11 +531,16 @@ function closeGame() {
     document.getElementById('game-modal').style.display = 'none';
 }
 
-/* QUIZ LOGIC */
 function loadQuestion() {
-    if(currentQ >= quizData.length) { showIntermediateResults(); return; }
+    if(currentQ >= quizData.length) { 
+        testStarted = false; 
+        showIntermediateResults(); 
+        return; 
+    }
     canClick = true;
     const d = quizData[currentQ];
+    let att = parseInt(localStorage.getItem('att_'+userName) || 0);
+    document.getElementById('q-attempts-display').innerText = `Спроба: ${att + 1}`;
     document.getElementById('q-num').innerText = `Питання ${currentQ+1}/18`;
     document.getElementById('q-txt').innerText = d.q;
     const box = document.getElementById('q-opts');
@@ -535,10 +553,9 @@ function loadQuestion() {
         dv.onclick = () => {
             if(!canClick) return;
             canClick = false;
-            document.querySelectorAll('.opt').forEach(el=>el.classList.add('disabled'));
             if(i === d.c) { dv.classList.add('correct'); score++; playSnd('snd-win'); }
             else { dv.classList.add('wrong'); playSnd('snd-err'); }
-            setTimeout(() => { currentQ++; loadQuestion(); }, 1000);
+            setTimeout(() => { currentQ++; loadQuestion(); }, 800);
         };
         box.appendChild(dv);
     });
@@ -547,18 +564,31 @@ function loadQuestion() {
 function showIntermediateResults() {
     document.getElementById('q-box').style.display = 'none';
     document.getElementById('q-res').style.display = 'block';
-    let attempts = parseInt(localStorage.getItem('att_'+userName) || 0);
+    
+    let attemptsCount = parseInt(localStorage.getItem('att_'+userName) || 0);
     finalGradeInternal = Math.round((score/18)*12);
-    if(attempts >= 1) finalGradeInternal = Math.max(0, finalGradeInternal - 1);
+    
+    // Penalty for retry
+    if(attemptsCount >= 1) {
+        finalGradeInternal = Math.max(0, finalGradeInternal - 1);
+    }
+    
     document.getElementById('score-val').innerText = finalGradeInternal;
-    if(attempts < 1) document.getElementById('retry-btn').style.display = 'block';
+    if(attemptsCount < 1) {
+        document.getElementById('retry-btn').style.display = 'block';
+    }
+}
+
+function retryQuiz() {
+    let att = parseInt(localStorage.getItem('att_'+userName) || 0);
+    localStorage.setItem('att_'+userName, att + 1);
+    location.reload();
 }
 
 function finishAndSave() {
     saveScore(userName, finalGradeInternal);
-    let attempts = parseInt(localStorage.getItem('att_'+userName) || 0);
-    localStorage.setItem('att_'+userName, attempts + 1);
-    alert("Ваш результат збережено в Залі Слави!");
+    let att = parseInt(localStorage.getItem('att_'+userName) || 0);
+    localStorage.setItem('att_'+userName, att + 1);
     nt(document.querySelector('.nav-tab:last-child'), 's-lead');
 }
 
@@ -577,8 +607,8 @@ function updateLeaderboard() {
 }
 
 function checkCase() {
-    if(document.getElementById('ans').value == 111000) { alert("Геніально!"); playSnd('snd-win'); }
-    else { alert("Спробуйте ще (18500 * 6)"); playSnd('snd-err'); }
+    if(document.getElementById('ans').value == 111000) { alert("Правильно!"); playSnd('snd-win'); }
+    else { alert("Помилка (18500 * 6)"); playSnd('snd-err'); }
 }
 </script>
 </body>
