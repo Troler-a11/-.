@@ -3,264 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>FIN-MASTER PRO 2026: FAMILY ECONOMY</title>
+<title>FIN-MASTER ULTRA 2026: FAMILY STRATEGY</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
-:root{--p:#2563eb;--p-dark:#1d4ed8;--s:#0f172a;--bg:#f1f5f9;--card:#ffffff;--txt:#1e293b;--suc:#10b981;--err:#ef4444;--gold:#f59e0b}
+:root{--p:#2563eb;--p-dark:#1d4ed8;--s:#0f172a;--bg:#f1f5f9;--card:#ffffff;--txt:#1e293b;--suc:#10b981;--err:#ef4444;--gold:#f59e0b;--glass:rgba(255,255,255,0.9)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden}
 
 /* AUTH MODAL */
 #auth-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--s);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
-.auth-card{background:#fff;padding:30px;border-radius:20px;width:100%;max-width:400px;text-align:center;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3)}
-.auth-input{width:100%;padding:15px;margin:15px 0;border:2px solid #e2e8f0;border-radius:12px;font-size:16px;outline:none;transition:0.3s}
-.auth-input:focus{border-color:var(--p)}
+.auth-card{background:#fff;padding:30px;border-radius:24px;width:100%;max-width:420px;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2)}
+.auth-input{width:100%;padding:18px;margin:15px 0;border:2px solid #e2e8f0;border-radius:15px;font-size:16px;outline:none;transition:0.3s;box-shadow:inset 0 2px 4px rgba(0,0,0,0.05)}
+.auth-input:focus{border-color:var(--p);box-shadow:0 0 0 4px rgba(37,99,235,0.1)}
 
 /* MOBILE NAV */
-.top-nav{position:sticky;top:0;background:var(--s);color:#fff;padding:15px;z-index:1000;display:flex;overflow-x:auto;gap:10px;scrollbar-width:none;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1)}
+.top-nav{position:sticky;top:0;background:var(--s);color:#fff;padding:15px;z-index:1000;display:flex;overflow-x:auto;gap:12px;scrollbar-width:none;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);backdrop-filter:blur(10px)}
 .top-nav::-webkit-scrollbar{display:none}
-.nav-tab{padding:10px 18px;background:rgba(255,255,255,0.1);border-radius:20px;white-space:nowrap;font-size:13px;font-weight:600;transition:0.3s;border:1px solid transparent}
-.nav-tab.active{background:var(--p);color:#fff;border-color:rgba(255,255,255,0.2)}
+.nav-tab{padding:12px 20px;background:rgba(255,255,255,0.08);border-radius:15px;white-space:nowrap;font-size:13px;font-weight:700;transition:0.3s;border:1px solid transparent;display:flex;align-items:center;gap:8px}
+.nav-tab.active{background:var(--p);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,0.4)}
 
-/* CONTENT CONTAINER */
-.container{padding:20px;max-width:100%;margin-bottom:80px}
-.section{display:none;animation:slideUp 0.4s ease-out}
+/* CONTENT */
+.container{padding:20px;max-width:800px;margin:0 auto 100px auto}
+.section{display:none;animation:fadeIn 0.5s ease-out}
 .section.active{display:block}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* UI ELEMENTS */
-.card{background:var(--card);padding:20px;border-radius:18px;margin-bottom:20px;border:1px solid #e2e8f0;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05)}
-h1{font-size:26px;margin-bottom:15px;color:var(--s);line-height:1.2;font-weight:800}
-h2{font-size:20px;margin-bottom:12px;color:var(--p);display:flex;align-items:center;gap:10px}
-p{font-size:16px;margin-bottom:10px;color:#475569}
-.badge{display:inline-block;padding:5px 12px;background:var(--s);color:#fff;border-radius:8px;font-size:12px;font-weight:700;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.card{background:var(--card);padding:24px;border-radius:20px;margin-bottom:20px;border:1px solid #e2e8f0;box-shadow:0 4px 20px -2px rgba(0,0,0,0.05)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:var(--s);color:#fff;border-radius:10px;font-size:11px;font-weight:800;margin-bottom:15px;text-transform:uppercase}
 
-/* GAME HUB & STORE STYLE */
-.game-hub{display:flex;flex-direction:column;gap:15px}
-.game-item{display:flex;align-items:center;background:#fff;padding:15px;border-radius:20px;border:1px solid #e2e8f0;gap:15px;cursor:pointer;transition:0.2s}
-.game-item:active{transform:scale(0.97);background:#f8fafc}
-.game-icon{width:60px;height:60px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff}
-.game-info{flex:1}
-.game-info h4{font-size:16px;color:var(--s)}
-.game-info p{font-size:12px;margin:0;color:#64748b}
+/* GAMES V2 */
+.game-hub{display:grid;grid-template-columns:1fr;gap:15px}
+.game-item{display:flex;align-items:center;background:#fff;padding:18px;border-radius:22px;border:1px solid #e2e8f0;gap:18px;cursor:pointer;transition:0.3s;position:relative;overflow:hidden}
+.game-item:hover{transform:translateY(-3px);box-shadow:0 10px 25px -5px rgba(0,0,0,0.1)}
+.game-icon{width:65px;height:65px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;flex-shrink:0}
 
-/* GAME INTERFACE */
-.game-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:2000;display:none;flex-direction:column}
-.game-header{padding:20px;background:var(--s);color:#fff;display:flex;justify-content:space-between;align-items:center}
-.game-content{flex:1;padding:20px;overflow-y:auto}
+/* GAME CANVAS V2 */
+.game-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:2000;display:none;flex-direction:column}
+.game-header{padding:20px;background:var(--s);color:#fff;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+.game-body{flex:1;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.game-screen{width:100%;max-width:500px;background:#fff;border-radius:25px;padding:25px;box-shadow:0 20px 40px rgba(0,0,0,0.1);text-align:center;position:relative}
 
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.stat-card{background:var(--s);color:#fff;padding:10px;border-radius:10px;text-align:center}
-.stat-val{display:block;font-size:20px;font-weight:800;color:var(--gold)}
+/* QUIZ V2 */
+.opt{padding:18px;background:#fff;border:2px solid #e2e8f0;border-radius:18px;margin-bottom:14px;font-weight:700;display:flex;align-items:center;gap:15px;transition:0.3s;cursor:pointer}
+.opt.disabled{pointer-events:none;opacity:0.7}
+.opt.correct{background:#dcfce7;border-color:var(--suc);color:#15803d;transform:scale(1.02)}
+.opt.wrong{background:#fee2e2;border-color:var(--err);color:#b91c1c}
 
-/* PYRAMID */
-.p-stack{display:flex;flex-direction:column;gap:8px;margin:25px 0}
-.p-item{padding:18px;color:#fff;font-weight:800;text-align:center;border-radius:12px;font-size:14px;transition:0.3s;cursor:pointer;position:relative}
-.p-item:active{transform:scale(0.95)}
+.btn{width:100%;padding:20px;background:var(--p);color:#fff;border:none;border-radius:18px;font-weight:800;font-size:16px;cursor:pointer;transition:0.3s;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn:hover{filter:brightness(1.1)}
+.btn:active{transform:scale(0.96)}
 
-/* QUIZ */
-.q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.opt{padding:16px;background:#fff;border:2px solid #e2e8f0;border-radius:15px;margin-bottom:12px;font-weight:600;display:flex;align-items:center;gap:12px;transition:0.2s;cursor:pointer}
-.opt:active{background:#f8fafc}
-.opt.correct{background:#dcfce7;border-color:var(--suc);color:#166534}
-.opt.wrong{background:#fee2e2;border-color:var(--err);color:#991b1b}
-.btn{width:100%;padding:18px;background:var(--p);color:#fff;border:none;border-radius:15px;font-weight:700;font-size:16px;box-shadow:0 4px 14px rgba(37,99,235,0.3);transition:0.3s}
-.btn:active{transform:scale(0.98);background:var(--p-dark)}
+/* PYRAMID V2 */
+.p-stack{perspective:1000px;margin:30px 0}
+.p-item{padding:15px;margin:5px auto;color:#fff;font-weight:900;text-align:center;border-radius:8px;cursor:pointer;transition:0.4s;transform:rotateX(20deg);box-shadow:0 10px 0 rgba(0,0,0,0.2)}
+.p-item:hover{transform:rotateX(0deg) scale(1.05);box-shadow:0 15px 25px rgba(0,0,0,0.2)}
 
-/* LEADERBOARD */
-.leader-table{width:100%;border-collapse:collapse;margin-top:15px}
-.leader-table tr{border-bottom:1px solid #e2e8f0}
-.leader-table td{padding:12px 8px}
-.rank{width:30px;font-weight:bold;color:var(--p)}
-
-.timer-box{font-family:'Courier New',Courier,monospace;background:#ffedd5;color:#9a3412;padding:6px 12px;border-radius:8px;font-weight:bold;display:flex;align-items:center;gap:5px}
+.timer-box{background:#fff;padding:8px 15px;border-radius:12px;border:2px solid var(--s);font-weight:bold;color:var(--s)}
 </style>
 </head>
 <body>
 
+<audio id="snd-win" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
+<audio id="snd-err" src="https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3"></audio>
+<audio id="snd-click" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+
 <div id="auth-overlay">
     <div class="auth-card">
-        <i class="fas fa-user-graduate fa-3x" style="color:var(--p); margin-bottom:15px"></i>
-        <h2>Вхід у систему</h2>
-        <p>Введи своє ім'я для початку уроку та участі в рейтингу</p>
-        <input type="text" id="user-name" class="auth-input" placeholder="Твоє ім'я...">
-        <button class="btn" onclick="startApp()">Розпочати навчання</button>
+        <div style="background:var(--bg); width:80px; height:80px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px">
+            <i class="fas fa-fingerprint fa-2x" style="color:var(--p)"></i>
+        </div>
+        <h2>Система FIN-PRO</h2>
+        <p id="auth-warn" style="font-size:13px; color:var(--err); font-weight:bold; margin-top:5px"></p>
+        <input type="text" id="user-name" class="auth-input" placeholder="Введіть ваше Прізвище та Ім'я">
+        <button class="btn" onclick="startApp()">Авторизуватися <i class="fas fa-sign-in-alt"></i></button>
     </div>
 </div>
 
 <div id="game-modal" class="game-overlay">
     <div class="game-header">
-        <h3 id="g-title">Назва гри</h3>
-        <i class="fas fa-times fa-lg" onclick="closeGame()"></i>
+        <h3 id="g-title">Game Title</h3>
+        <i class="fas fa-times-circle fa-2x" onclick="closeGame()" style="cursor:pointer"></i>
     </div>
-    <div class="game-content" id="g-canvas">
-        </div>
+    <div class="game-body">
+        <div class="game-screen" id="g-canvas"></div>
+    </div>
 </div>
 
 <div class="top-nav">
-    <div class="nav-tab active" onclick="nt(this,'s1')"><i class="fas fa-home"></i> Вступ</div>
-    <div class="nav-tab" onclick="nt(this,'s2')"><i class="fas fa-book"></i> Теорія</div>
-    <div class="nav-tab" onclick="nt(this,'s3')"><i class="fas fa-layer-group"></i> Маслоу</div>
-    <div class="nav-tab" onclick="nt(this,'s-games')"><i class="fas fa-gamepad"></i> Game Hub</div>
-    <div class="nav-tab" onclick="nt(this,'s4')"><i class="fas fa-calculator"></i> Кейс</div>
-    <div class="nav-tab" onclick="nt(this,'s5')"><i class="fas fa-check-double"></i> Тест (12б)</div>
-    <div class="nav-tab" onclick="nt(this,'s-lead')"><i class="fas fa-trophy"></i> Рейтинг</div>
+    <div class="nav-tab active" onclick="nt(this,'s1')"><i class="fas fa-compass"></i> Початок</div>
+    <div class="nav-tab" onclick="nt(this,'s2')"><i class="fas fa-brain"></i> Теорія+</div>
+    <div class="nav-tab" onclick="nt(this,'s3')"><i class="fas fa-stream"></i> Маслоу</div>
+    <div class="nav-tab" onclick="nt(this,'s-games')"><i class="fas fa-play"></i> Ігровий Центр</div>
+    <div class="nav-tab" onclick="nt(this,'s4')"><i class="fas fa-coins"></i> Подушка</div>
+    <div class="nav-tab" onclick="nt(this,'s5')"><i class="fas fa-tasks"></i> Тест 12б</div>
+    <div class="nav-tab" onclick="nt(this,'s-lead')"><i class="fas fa-award"></i> Зал Слави</div>
 </div>
 
 <div class="container">
     <section id="s1" class="section active">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start">
-            <span class="badge">Блок 1: Потреби</span>
-            <div class="timer-box"><i class="fas fa-clock"></i> <span id="t1">10:00</span></div>
-        </div>
-        <h1>Потреби та інтереси родини</h1>
-        <div class="card" style="border-left:6px solid var(--gold); background: #fffbeb">
-            <p style="font-style:italic; font-size:17px; color:#92400e">"Якщо ви цінуєте те, що у вас уже є, ви завжди отримуватимете ще більше..."</p>
-            <p style="text-align:right; margin:0"><b>— Опра Вінфрі</b></p>
+        <span class="badge" style="background:var(--gold)"><i class="fas fa-fire"></i> Тренд 2026</span>
+        <h1>Фінансова грамотність родини</h1>
+        <div class="card" style="border-left:8px solid var(--p)">
+            <p>Сьогодні ми вивчаємо, як потреби формують наш бюджет. <b>Увага:</b> тест можна пройти лише 2 рази.</p>
         </div>
         <div class="card">
-            <h2><i class="fas fa-bullseye"></i> План уроку:</h2>
-            <ul style="padding-left:20px; color:#475569">
-                <li style="margin-bottom:8px">Розрізняти матеріальні та духовні потреби.</li>
-                <li style="margin-bottom:8px">Проаналізувати піраміду А. Маслоу.</li>
-                <li style="margin-bottom:8px">Виграти 5 фінансових викликів.</li>
-                <li>Скласти підсумковий тест.</li>
-            </ul>
+            <h3><i class="fas fa-info-circle"></i> Чому це важливо?</h3>
+            <p>Тому що маркетологи витрачають мільярди, щоб ваші "бажання" випередили ваші "потреби".</p>
         </div>
     </section>
 
     <section id="s2" class="section">
-        <h2>Що таке потреба?</h2>
+        <h2>Розширений курс потреб</h2>
+        <div class="card" style="background: linear-gradient(135deg, #fff, #f8fafc)">
+            <h3>1. Маркетингові пастки</h3>
+            <p>Бренди використовують <b>Ефект дефіциту</b> (тільки 2 штуки залишилось!) та <b>Ефект соціального доказу</b> (всі твої друзі вже купили), щоб створювати штучні потреби.</p>
+        </div>
         <div class="card">
-            <p><b>Потреба</b> — це внутрішній стан психологічного або фізіологічного відчуття браку чого-небудь.</p>
-        </div>
-        <div class="card" style="background:#eff6ff; border-color:#bfdbfe">
-            <h3 style="color:var(--p); margin-bottom:10px">Матеріальні</h3>
-            <p>Те, що купуємо: їжа, смартфон, житло.</p>
-        </div>
-        <div class="card" style="background:#f0fdf4; border-color:#bbf7d0">
-            <h3 style="color:var(--suc); margin-bottom:10px">Нематеріальні</h3>
-            <p>Емоції, освіта, дружба, повага.</p>
+            <h3>2. Види ресурсів родини</h3>
+            <ul style="padding-left:20px">
+                <li><b>Матеріальні:</b> Нерухомість, гроші, техніка.</li>
+                <li><b>Трудові:</b> Час та сили членів родини.</li>
+                <li><b>Інформаційні:</b> Знання про те, де купити дешевше або як інвестувати.</li>
+            </ul>
         </div>
     </section>
 
     <section id="s3" class="section">
-        <h2>Піраміда Абрагама Маслоу</h2>
+        <h2>Інтерактивна Піраміда</h2>
         <div class="p-stack">
-            <div class="p-item" style="background:#7c3aed; width:45%; margin:0 auto" onclick="showM(5)">5. САМОВИРАЖЕННЯ</div>
-            <div class="p-item" style="background:#2563eb; width:60%; margin:0 auto" onclick="showM(4)">4. ПОВАГА</div>
-            <div class="p-item" style="background:#059669; width:75%; margin:0 auto" onclick="showM(3)">3. СОЦІАЛЬНІ</div>
-            <div class="p-item" style="background:#d97706; width:85%; margin:0 auto" onclick="showM(2)">2. БЕЗПЕКА</div>
-            <div class="p-item" style="background:#dc2626; width:100%" onclick="showM(1)">1. ФІЗІОЛОГІЯ</div>
+            <div class="p-item" style="background:#4c1d95; width:40%" onclick="showM(5)">САМОВИРАЖЕННЯ</div>
+            <div class="p-item" style="background:#1e40af; width:55%" onclick="showM(4)">ВИЗНАННЯ</div>
+            <div class="p-item" style="background:#065f46; width:70%" onclick="showM(3)">СОЦІУМ</div>
+            <div class="p-item" style="background:#92400e; width:85%" onclick="showM(2)">БЕЗПЕКА</div>
+            <div class="p-item" style="background:#991b1b; width:100%" onclick="showM(1)">ФІЗІОЛОГІЯ</div>
         </div>
-        <div id="m-info" class="card" style="display:none"></div>
+        <div id="m-info" class="card" style="display:none; border:2px dashed var(--p)"></div>
     </section>
 
     <section id="s-games" class="section">
-        <h2><i class="fas fa-th-large"></i> PlayFin Hub</h2>
-        <p>Пройди всі ігри, щоб отримати статус Майстра</p>
+        <h2><i class="fas fa-gamepad"></i> Центр Симуляцій</h2>
         <div class="game-hub">
             <div class="game-item" onclick="openGame(1)">
-                <div class="game-icon" style="background:var(--gold)"><i class="fas fa-seedling"></i></div>
+                <div class="game-icon" style="background:var(--suc)"><i class="fas fa-chart-bar"></i></div>
                 <div class="game-info">
-                    <h4>Фермер-Інвестор</h4>
-                    <p>Посади капітал та збери врожай прибутку.</p>
+                    <h4>Інвест-Тренажер "Crypto & Gold"</h4>
+                    <p>Навчись балансувати ризики в реальному часі.</p>
                 </div>
-                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
             </div>
             <div class="game-item" onclick="openGame(2)">
-                <div class="game-icon" style="background:var(--p)"><i class="fas fa-shopping-cart"></i></div>
+                <div class="game-icon" style="background:var(--p)"><i class="fas fa-shopping-basket"></i></div>
                 <div class="game-info">
-                    <h4>Розумний Шопінг</h4>
-                    <p>Купи необхідне, не впавши в борги.</p>
+                    <h4>Супермаркетний Баттл</h4>
+                    <p>Знайди 3 пастки маркетологів на полицях.</p>
                 </div>
-                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
             </div>
-            <div class="game-item" onclick="openGame(3)">
-                <div class="game-icon" style="background:var(--err)"><i class="fas fa-shield-alt"></i></div>
-                <div class="game-info">
-                    <h4>Захист Подушки</h4>
-                    <p>Вбережи заощадження від інфляції та спокус.</p>
-                </div>
-                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
             </div>
-            <div class="game-item" onclick="openGame(4)">
-                <div class="game-icon" style="background:var(--suc)"><i class="fas fa-chart-line"></i></div>
-                <div class="game-info">
-                    <h4>Біржа Мрій</h4>
-                    <p>Ризикуй на ринку акцій заради великої мети.</p>
-                </div>
-                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
-            </div>
-            <div class="game-item" onclick="openGame(5)">
-                <div class="game-icon" style="background:var(--s)"><i class="fas fa-users"></i></div>
-                <div class="game-info">
-                    <h4>Сімейний Радник</h4>
-                    <p>Вирішуй конфлікти потреб членів родини.</p>
-                </div>
-                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
-            </div>
-        </div>
     </section>
 
     <section id="s4" class="section">
-        <h2>Практичний розрахунок</h2>
         <div class="card">
-            <h3>Фінансова подушка</h3>
-            <p>Розрахуйте суму на 6 місяців, якщо витрати 18,500 грн/міс.</p>
-            <input type="number" id="ans" class="auth-input" placeholder="Сума...">
-            <button class="btn" onclick="checkCase()">Перевірити</button>
+            <h3>Калькулятор виживання</h3>
+            <p>Введи суму подушки на пів року при витратах 18,500 грн/міс:</p>
+            <input type="number" id="ans" class="auth-input">
+            <button class="btn" onclick="checkCase()">Підтвердити цифру</button>
         </div>
     </section>
 
     <section id="s5" class="section">
         <div class="q-header">
             <span id="q-num" class="badge">Питання 1/18</span>
-            <div class="timer-box"><i class="fas fa-star"></i> <span id="q-score">0</span></div>
+            <div class="timer-box" id="q-attempts">Спроба: 1</div>
         </div>
         <div id="q-box">
-            <h3 id="q-txt"></h3>
+            <h3 id="q-txt" style="margin-bottom:20px"></h3>
             <div id="q-opts"></div>
         </div>
-        <div id="q-res" style="display:none; text-align:center">
-            <h1 id="score-val" style="font-size:60px; color:var(--p)">0</h1>
-            <div id="final-msg" class="card"></div>
-            <button class="btn" onclick="location.reload()">Повторити</button>
+        <div id="q-res" style="display:none">
+            <div class="card" style="text-align:center">
+                <h1 id="score-val" style="font-size:80px; color:var(--p)">0</h1>
+                <p>Ваш підсумковий бал</p>
+                <div id="final-msg" style="margin:20px 0; font-weight:bold"></div>
+                <button class="btn" onclick="location.reload()">На головну</button>
+            </div>
         </div>
     </section>
 
     <section id="s-lead" class="section">
-        <h2>Таблиця лідерів</h2>
+        <h2>Рейтинг Гравців</h2>
         <div class="card"><table class="leader-table" id="leader-body"></table></div>
     </section>
 </div>
 
 <script>
-let userName = "Гість", score = 0, currentQ = 0;
+let userName = "", score = 0, currentQ = 0, canClick = true;
 const quizData = [
-    {q:"Потреба — це відчуття...", a:["Надлишку","Нестачі","Радості","Байдужості"], c:1},
-    {q:"Автор піраміди потреб?", a:["Фрейд","Маслоу","Юнг"], c:1},
-    {q:"Матеріальна потреба:", a:["Книги","Смартфон","Повага","Любов"], c:1},
-    {q:"Ресурси завжди:", a:["Безмежні","Обмежені","Безкоштовні"], c:1},
-    {q:"База Маслоу це:", a:["Безпека","Фізіологія","Статус"], c:1},
-    {q:"Подушка безпеки це:", a:["Інвестиції","Резерв на кризу","Кредит"], c:1},
-    {q:"Термін подушки:", a:["1 тиждень","3-6 місяців","10 років"], c:1},
-    {q:"Нематеріальна потреба:", a:["Їжа","Навчання","Одяг"], c:1},
-    {q:"Що впливає на потреби?", a:["Вік","Реклама","Стан здоров'я","Все разом"], c:3},
-    {q:"Опра Вінфрі радить:", a:["Купувати все","Цінувати те що є","Брати кредити"], c:1},
-    {q:"Потреби з часом:", a:["Зникають","Зростають","Стабільні"], c:1},
-    {q:"Рівень 'Повага' це:", a:["Сон","Статус","Житло"], c:1},
-    {q:"Обмежений ресурс це:", a:["Час","Сонце","Вітер"], c:0},
-    {q:"Первинна потреба:", a:["Кар'єра","Харчування","Інтернет"], c:1},
-    {q:"Реклама формує:", a:["Знижки","Нові потреби","Заощадження"], c:1},
-    {q:"Ліки для дідуся це:", a:["Статус","Фізіологія/Безпека","Творчість"], c:1},
-    {q:"Раціональність це:", a:["Витрачати все","Планування","Скупість"], c:1},
-    {q:"Вершина Маслоу:", a:["Гроші","Саморозвиток","Влада"], c:1}
+    {q:"Маркетингова пастка 'Ефект дефіциту' це:", a:["Знижка 50%","Тільки сьогодні!","Подарунок до покупки","Якісний товар"], c:1},
+    {q:"Що є нематеріальним ресурсом родини?", a:["Автомобіль","Знання кулінарії","Запас гречки","Дача"], c:1},
+    {q:"Потреба у визнанні - це який рівень Маслоу?", a:["2","3","4","5"], c:2},
+    {q:"Яка потреба є первинною?", a:["Кіно","Сон","Новий iPhone","Похвала"], c:1},
+    {q:"Бюджет родини - це:", a:["Тільки витрати","План доходів і витрат","Сума в банку"], c:1},
+    {q:"Економічна потреба - це завжди:", a:["Безкоштовно","Вимагає ресурсів","Духовно"], c:1},
+    {q:"Хто така Опра Вінфрі в контексті уроку?", a:["Економіст","Приклад успіху і порадниця","Маркетолог"], c:1},
+    {q:"Ресурси завжди...", a:["Безмежні","Обмежені","Нікому не потрібні"], c:1},
+    {q:"Потреба у безпеці це:", a:["Друзі","Замок на дверях","Малювання"], c:1},
+    {q:"Що стоїть на вершині піраміди?", a:["Їжа","Слава","Самореалізація"], c:2},
+    {q:"Чи може людина жити без духовних потреб?", a:["Так","Ні","Тільки 1 день"], c:1},
+    {q:"Подушка безпеки потрібна для:", a:["Сну","Непередбачуваних витрат","Відпустки"], c:1},
+    {q:"Раціональне споживання - це:", a:["Нічого не купувати","Купувати лише потрібне","Брати все по акції"], c:1},
+    {q:"Час - це ресурс:", a:["Матеріальний","Трудовий/Особистий","Невичерпний"], c:1},
+    {q:"Скільки рівнів у класичній піраміді Маслоу?", a:["3","5","7","10"], c:1},
+    {q:"Реклама - це інструмент...", a:["Допомоги людям","Створення потреб","Економії"], c:1},
+    {q:"Потреба у спілкуванні - це:", a:["Фізіологічна","Соціальна","Економічна"], c:1},
+    {q:"Найдорожчий ресурс людини:", a:["Гроші","Час","Золото"], c:1}
 ];
 
+function playSnd(id) { 
+    try { document.getElementById(id).currentTime = 0; document.getElementById(id).play(); } catch(e){}
+}
+
 function startApp() {
-    userName = document.getElementById('user-name').value || "Гість";
+    userName = document.getElementById('user-name').value.trim();
+    if(userName.length < 3) { alert("Введіть повне ім'я!"); return; }
+    
+    let attempts = parseInt(localStorage.getItem('att_'+userName) || 0);
+    if(attempts >= 2) {
+        alert("Ви вичерпали ліміт (2 спроби)!");
+        return;
+    }
+    
+    if(attempts === 1) {
+        document.getElementById('auth-warn').innerText = "УВАГА: Друга спроба! -1 бал від результату.";
+    }
+    
     document.getElementById('auth-overlay').style.display = 'none';
+    playSnd('snd-click');
     updateLeaderboard();
 }
 
@@ -270,163 +246,147 @@ function nt(el,id) {
     document.getElementById(id).classList.add('active');
     el.classList.add('active');
     if(id==='s5'&&currentQ===0) loadQuestion();
+    playSnd('snd-click');
 }
 
 function showM(l) {
     const info = document.getElementById('m-info');
     info.style.display = 'block';
-    const t = ["","1. Фізіологія: Їжа, вода.","2. Безпека: Житло, стабільність.","3. Соціальні: Друзі, любов.","4. Повага: Статус, визнання.","5. Саморозвиток: Творчість."];
-    info.innerHTML = `<b>${t[l]}</b>`;
+    const texts = ["","<b>1. Фізіологія:</b> Основа виживання.","<b>2. Безпека:</b> Стабільність та захист.","<b>3. Соціальні:</b> Любов та сім'я.","<b>4. Визнання:</b> Повага оточуючих.","<b>5. Творчість:</b> Максимальний розвиток."];
+    info.innerHTML = texts[l];
+    playSnd('snd-click');
 }
 
-/* GAME LOGIC HUB */
-let state = {money: 1000, day: 1, inventory: []};
-
+/* GAMES V2 - REAL GAMEPLAY */
 function openGame(id) {
-    const modal = document.getElementById('game-modal');
     const canvas = document.getElementById('g-canvas');
-    modal.style.display = 'flex';
-    state = {money: 1000, day: 1, inventory: []};
+    document.getElementById('game-modal').style.display = 'flex';
+    canvas.innerHTML = '';
     
     if(id===1) {
-        document.getElementById('g-title').innerText = "Фермер-Інвестор";
-        renderFarmer();
-    } else if(id===2) {
-        document.getElementById('g-title').innerText = "Розумний Шопінг";
-        renderShop();
-    } else if(id===3) {
-        document.getElementById('g-title').innerText = "Захист Подушки";
-        renderShield();
-    } else if(id===4) {
-        document.getElementById('g-title').innerText = "Біржа Мрій";
-        renderStock();
-    } else if(id===5) {
-        document.getElementById('g-title').innerText = "Сімейний Радник";
-        renderFamily();
+        document.getElementById('g-title').innerText = "CRYPTO STRATEGY 2026";
+        let bal = 1000;
+        canvas.innerHTML = `
+            <div style="font-size:24px; font-weight:bold; color:var(--p)">Баланс: <span id="g-bal">${bal}</span>$</div>
+            <div id="chart" style="height:100px; background:#f1f5f9; margin:15px 0; border-radius:10px; display:flex; align-items:flex-end; gap:2px; padding:5px"></div>
+            <p>Купуй низько, продавай високо! Ціль: 2000$</p>
+            <button class="btn" onclick="cryptoGame(1)">КУПИТИ (All-in)</button>
+            <button class="btn" style="margin-top:10px; background:var(--suc)" onclick="cryptoGame(2)">ПРОДАТИ</button>
+        `;
+        window.cryptoInt = setInterval(() => {
+            let chart = document.getElementById('chart');
+            if(!chart) return;
+            let bar = document.createElement('div');
+            bar.style.width = "10px";
+            bar.style.height = (Math.random()*80 + 10) + "%";
+            bar.style.background = var(--p);
+            if(chart.children.length > 20) chart.removeChild(chart.children[0]);
+            chart.appendChild(bar);
+        }, 300);
     }
 }
 
-function closeGame() { document.getElementById('game-modal').style.display = 'none'; }
-
-function renderFarmer() {
-    document.getElementById('g-canvas').innerHTML = `
-        <div class="stat-grid"><div class="stat-card">Гроші: <span id="gm">${state.money}</span></div><div class="stat-card">День: ${state.day}/5</div></div>
-        <p>Ціль: Зібрати 2000 грн до 5 дня.</p>
-        <button class="btn" onclick="farmAction(500)">Інвестувати в зерно (-500, шанс 70% на х2)</button>
-        <button class="btn" onclick="farmAction(0)" style="margin-top:10px; background:#64748b">Пропустити день</button>
-    `;
-}
-function farmAction(cost) {
-    if(state.money >= cost) {
-        state.money -= cost;
-        if(cost>0) state.money += Math.random() < 0.7 ? cost*2 : 0;
-        state.day++;
-        if(state.day > 5) {
-            alert(state.money >= 2000 ? "ПЕРЕМОГА! Ви успішний фермер!" : "ПРОГРАШ! Грошей замало.");
-            closeGame();
-        } else renderFarmer();
+function cryptoGame(act) {
+    let bal = parseInt(document.getElementById('g-bal').innerText);
+    let risk = Math.random();
+    if(act===1) {
+        if(risk > 0.5) bal += 400; else bal -= 500;
+    } else {
+        if(bal >= 2000) { alert("ВИН! Ви фінансовий геній!"); closeGame(); }
+        else { alert("Мало! Треба 2000$."); }
     }
+    document.getElementById('g-bal').innerText = bal;
+    if(bal <= 0) { alert("БАНКРУТ!"); closeGame(); }
 }
 
-function renderShop() {
-    document.getElementById('g-canvas').innerHTML = `
-        <div class="stat-grid"><div class="stat-card">Гроші: <span id="gm">${state.money}</span></div></div>
-        <p>Ціль: Купити 3 товари (Їжа, Одяг, Книга) і лишити 200+ грн.</p>
-        <button class="btn" onclick="buy(300, 'Їжа')">Їжа (300)</button>
-        <button class="btn" onclick="buy(400, 'Одяг')">Одяг (400)</button>
-        <button class="btn" onclick="buy(200, 'Книга')">Книга (200)</button>
-        <p>Куплено: ${state.inventory.join(', ')}</p>
-    `;
-}
-function buy(p, n) {
-    if(state.money >= p && !state.inventory.includes(n)) {
-        state.money -= p; state.inventory.push(n);
-        if(state.inventory.length === 3) {
-            alert(state.money >= 200 ? "ПЕРЕМОГА! Раціонально!" : "ПРОГРАШ! Ви банкрут.");
-            closeGame();
-        } else renderShop();
-    }
+function closeGame() {
+    clearInterval(window.cryptoInt);
+    document.getElementById('game-modal').style.display = 'none';
 }
 
-function renderShield() {
-    document.getElementById('g-canvas').innerHTML = `
-        <div class="stat-grid"><div class="stat-card">Подушка: <span id="gm">${state.money}</span></div></div>
-        <p>Ціль: Утримати 800 грн під час кризи.</p>
-        <button class="btn" onclick="shield(1)">Покласти в банк (+100)</button>
-        <button class="btn" onclick="shield(2)">Витратити на розваги (-300)</button>
-    `;
-}
-function shield(a) {
-    state.money += (a===1) ? 100 : -300;
-    state.money -= 150; // Інфляція щохвилинно
-    if(state.money < 400) { alert("ПРОГРАШ! Подушка зникла."); closeGame(); }
-    else if(state.money >= 1200) { alert("ПЕРЕМОГА! Ви в безпеці!"); closeGame(); }
-    else renderShield();
-}
-
-function renderStock() {
-    document.getElementById('g-canvas').innerHTML = `
-        <p>Капітал: ${state.money}</p>
-        <button class="btn" onclick="trade(1)">Купити Акції IT (Ризик високий)</button>
-        <button class="btn" onclick="trade(2)">Купити Облігації (Ризик низький)</button>
-    `;
-}
-function trade(t) {
-    let r = Math.random();
-    if(t===1) state.money += (r>0.6) ? 500 : -600;
-    else state.money += (r>0.2) ? 100 : -50;
-    if(state.money >= 2000) { alert("ВИН! Ви мільйонер!"); closeGame(); }
-    else if(state.money <= 0) { alert("ЛОУЗ! Все втрачено."); closeGame(); }
-    else renderStock();
-}
-
-function renderFamily() {
-    document.getElementById('g-canvas').innerHTML = `
-        <p>Донька хоче ляльку, Тато - вудку. Грошей на одне.</p>
-        <button class="btn" onclick="famD(1)">Купити ляльку (Щастя дитини)</button>
-        <button class="btn" onclick="famD(2)">Купити вудку (Харчі в майбутньому)</button>
-    `;
-}
-function famD(c) {
-    alert(c===2 ? "ПЕРЕМОГА! Ви обрали інструмент виробництва!" : "ПРОГРАШ! Миттєва втіха перемогла.");
-    closeGame();
-}
-
-/* QUIZ */
+/* QUIZ V2 - NO DOUBLE CLICK */
 function loadQuestion() {
     if(currentQ >= quizData.length) { showResults(); return; }
+    canClick = true;
     const d = quizData[currentQ];
     document.getElementById('q-num').innerText = `Питання ${currentQ+1}/18`;
     document.getElementById('q-txt').innerText = d.q;
-    const box = document.getElementById('q-opts'); box.innerHTML = '';
+    const box = document.getElementById('q-opts');
+    box.innerHTML = '';
+    
     let opts = d.a.map((t,i)=>({t,i})).sort(()=>Math.random()-0.5);
     opts.forEach(o=>{
-        const dv = document.createElement('div'); dv.className='opt'; dv.innerText=o.t;
-        dv.onclick=()=>{
-            if(o.i===d.c){ dv.classList.add('correct'); score++; } else dv.classList.add('wrong');
-            setTimeout(()=>{currentQ++; loadQuestion()}, 600);
+        const dv = document.createElement('div');
+        dv.className = 'opt';
+        dv.innerHTML = `<i class="far fa-circle"></i> <span>${o.t}</span>`;
+        dv.onclick = () => {
+            if(!canClick) return;
+            canClick = false; // БЛОКУВАННЯ
+            
+            // Візуалізація блокування інших
+            document.querySelectorAll('.opt').forEach(el => el.classList.add('disabled'));
+            
+            if(o.i === d.c) {
+                dv.classList.add('correct');
+                dv.innerHTML = `<i class="fas fa-check-circle"></i> <span>${o.t}</span>`;
+                score++;
+                playSnd('snd-win');
+            } else {
+                dv.classList.add('wrong');
+                dv.innerHTML = `<i class="fas fa-times-circle"></i> <span>${o.t}</span>`;
+                playSnd('snd-err');
+            }
+            
+            setTimeout(() => {
+                currentQ++;
+                loadQuestion();
+            }, 1000);
         };
         box.appendChild(dv);
     });
 }
-function showResults(){
-    document.getElementById('q-box').style.display='none';
-    document.getElementById('q-res').style.display='block';
-    let g = Math.round((score/18)*12);
-    document.getElementById('score-val').innerText = g;
-    saveScore(userName, g);
+
+function showResults() {
+    document.getElementById('q-box').style.display = 'none';
+    document.getElementById('q-res').style.display = 'block';
+    
+    let attempts = parseInt(localStorage.getItem('att_'+userName) || 0);
+    let finalGrade = Math.round((score/18)*12);
+    
+    if(attempts >= 1) finalGrade = Math.max(0, finalGrade - 1);
+    
+    localStorage.setItem('att_'+userName, attempts + 1);
+    
+    document.getElementById('score-val').innerText = finalGrade;
+    const msg = document.getElementById('final-msg');
+    msg.innerText = finalGrade >= 10 ? "ВІТАЮ, МАЙСТРЕ!" : "Можна було краще.";
+    
+    saveScore(userName, finalGrade);
 }
-function checkCase(){ if(document.getElementById('ans').value==111000) alert("Правильно!"); else alert("Помилка"); }
-function saveScore(n,g){
-    let l = JSON.parse(localStorage.getItem('finL')||'[]');
-    l.push({n,g}); l.sort((a,b)=>b.g-a.g);
-    localStorage.setItem('finL', JSON.stringify(l.slice(0,10)));
+
+function saveScore(n, g) {
+    let l = JSON.parse(localStorage.getItem('fin_v2') || '[]');
+    l.push({n, g, d: new Date().toLocaleDateString()});
+    l.sort((a,b)=>b.g - a.g);
+    localStorage.setItem('fin_v2', JSON.stringify(l.slice(0,10)));
     updateLeaderboard();
 }
-function updateLeaderboard(){
-    let l = JSON.parse(localStorage.getItem('finL')||'[]');
+
+function updateLeaderboard() {
+    let l = JSON.parse(localStorage.getItem('fin_v2') || '[]');
     let b = document.getElementById('leader-body');
-    b.innerHTML = l.map((u,i)=>`<tr><td>${i+1}</td><td>${u.n}</td><td>${u.g}</td></tr>`).join('');
+    b.innerHTML = '<tr><th>М</th><th>Ім\'я</th><th>Бал</th></tr>' + 
+        l.map((u,i)=>`<tr><td>${i+1}</td><td>${u.n}</td><td>${u.g}</td></tr>`).join('');
+}
+
+function checkCase() {
+    if(document.getElementById('ans').value == 111000) {
+        alert("Геніально! Ви точно не пропадете.");
+        playSnd('snd-win');
+    } else {
+        alert("Спробуйте ще. (18500 * 6)");
+        playSnd('snd-err');
+    }
 }
 </script>
 </body>
