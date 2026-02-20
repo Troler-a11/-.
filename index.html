@@ -209,7 +209,7 @@ const quizData = [
     {q:"Що стоїть на вершині піраміди?", a:["Їжа","Слава","Самореалізація"], c:2},
     {q:"Чи може людина жити без духовних потреб?", a:["Так","Ні","Тільки 1 день"], c:1},
     {q:"Подушка безпеки потрібна для:", a:["Сну","Непередбачуваних витрат","Відпустки"], c:1},
-    {q:"Раціональне споживання - це:", a:["Нічого не купувати","Купувати лише потрібне","Брати все по акції"], c:1},
+    {q:"Раціональное споживання - це:", a:["Нічого не купувати","Купувати лише потрібне","Брати все по акції"], c:1},
     {q:"Час - це ресурс:", a:["Матеріальний","Трудовий/Особистий","Невичерпний"], c:1},
     {q:"Скільки рівнів у класичній піраміді Маслоу?", a:["3","5","7","10"], c:1},
     {q:"Реклама - це інструмент...", a:["Допомоги людям","Створення потреб","Економії"], c:1},
@@ -218,21 +218,28 @@ const quizData = [
 ];
 
 function playSnd(id) { 
-    try { document.getElementById(id).currentTime = 0; document.getElementById(id).play(); } catch(e){}
+    try { 
+        let s = document.getElementById(id);
+        s.currentTime = 0; 
+        s.play(); 
+    } catch(e){}
 }
 
 function startApp() {
     userName = document.getElementById('user-name').value.trim();
-    if(userName.length < 3) { alert("Введіть повне ім'я!"); return; }
+    if(userName.length < 3) { 
+        alert("Введіть ваше ім'я (мінімум 3 символи)!"); 
+        return; 
+    }
     
     let attempts = parseInt(localStorage.getItem('att_'+userName) || 0);
     if(attempts >= 2) {
-        alert("Ви вичерпали ліміт (2 спроби)!");
+        alert("Ви вже використали обидві спроби!");
         return;
     }
     
     if(attempts === 1) {
-        document.getElementById('auth-warn').innerText = "УВАГА: Друга спроба! -1 бал від результату.";
+        document.getElementById('auth-warn').innerText = "ДРУГА СПРОБА: -1 бал від результату!";
     }
     
     document.getElementById('auth-overlay').style.display = 'none';
@@ -257,7 +264,8 @@ function showM(l) {
     playSnd('snd-click');
 }
 
-/* GAMES V2 - REAL GAMEPLAY */
+/* GAMES V2 */
+let shopState = [];
 function openGame(id) {
     const canvas = document.getElementById('g-canvas');
     document.getElementById('game-modal').style.display = 'flex';
@@ -267,44 +275,81 @@ function openGame(id) {
         document.getElementById('g-title').innerText = "CRYPTO STRATEGY 2026";
         let bal = 1000;
         canvas.innerHTML = `
-            <div style="font-size:24px; font-weight:bold; color:var(--p)">Баланс: <span id="g-bal">${bal}</span>$</div>
-            <div id="chart" style="height:100px; background:#f1f5f9; margin:15px 0; border-radius:10px; display:flex; align-items:flex-end; gap:2px; padding:5px"></div>
-            <p>Купуй низько, продавай високо! Ціль: 2000$</p>
-            <button class="btn" onclick="cryptoGame(1)">КУПИТИ (All-in)</button>
-            <button class="btn" style="margin-top:10px; background:var(--suc)" onclick="cryptoGame(2)">ПРОДАТИ</button>
+            <div style="font-size:24px; font-weight:bold; color:#2563eb">Баланс: <span id="g-bal">${bal}</span>$</div>
+            <div id="chart" style="height:120px; background:#f1f5f9; margin:15px 0; border-radius:10px; display:flex; align-items:flex-end; gap:3px; padding:10px; border:1px solid #ddd"></div>
+            <p style="font-size:14px; color:#64748b; margin-bottom:15px">Ризикуй! Мета: 3000$. Якщо впадеш до 0 — програш.</p>
+            <button class="btn" onclick="cryptoGame(1)" style="background:#ef4444">КУПИТИ (HIGH RISK)</button>
+            <button class="btn" style="margin-top:10px; background:#10b981" onclick="cryptoGame(2)">ЗАКРИТИ УГОДУ</button>
         `;
         window.cryptoInt = setInterval(() => {
             let chart = document.getElementById('chart');
             if(!chart) return;
             let bar = document.createElement('div');
-            bar.style.width = "10px";
-            bar.style.height = (Math.random()*80 + 10) + "%";
-            bar.style.background = var(--p);
-            if(chart.children.length > 20) chart.removeChild(chart.children[0]);
+            bar.style.flex = "1";
+            bar.style.height = (Math.random()*90 + 5) + "%";
+            bar.style.background = "#2563eb";
+            bar.style.borderRadius = "2px";
+            if(chart.children.length > 25) chart.removeChild(chart.children[0]);
             chart.appendChild(bar);
-        }, 300);
+        }, 200);
+    } else if(id===2) {
+        document.getElementById('g-title').innerText = "МАРКЕТИНГОВИЙ ДЕТЕКТИВ";
+        shopState = [];
+        canvas.innerHTML = `
+            <p>Знайди 3 хитрощі супермаркету, які змушують нас купувати зайве:</p>
+            <div id="shop-items" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px">
+                <div class="opt" onclick="shopClick(this, true)">Червоний цінник</div>
+                <div class="opt" onclick="shopClick(this, false)">Свіжий хліб</div>
+                <div class="opt" onclick="shopClick(this, true)">Товари на рівні очей</div>
+                <div class="opt" onclick="shopClick(this, true)">Запах випічки біля входу</div>
+                <div class="opt" onclick="shopClick(this, false)">Список покупок</div>
+                <div class="opt" onclick="shopClick(this, false)">Ваги в залі</div>
+            </div>
+        `;
+    }
+}
+
+function shopClick(el, isTrap) {
+    if(el.classList.contains('disabled')) return;
+    if(isTrap) {
+        el.style.borderColor = "#10b981";
+        el.style.background = "#dcfce7";
+        shopState.push(true);
+        playSnd('snd-win');
+    } else {
+        el.style.borderColor = "#ef4444";
+        el.style.background = "#fee2e2";
+        playSnd('snd-err');
+    }
+    el.classList.add('disabled');
+    if(shopState.length === 3) {
+        setTimeout(() => { alert("Чудово! Ви розпізнали всі пастки."); closeGame(); }, 500);
     }
 }
 
 function cryptoGame(act) {
-    let bal = parseInt(document.getElementById('g-bal').innerText);
-    let risk = Math.random();
+    let balEl = document.getElementById('g-bal');
+    let bal = parseInt(balEl.innerText);
+    let change = Math.floor(Math.random() * 800) - 350;
+    
     if(act===1) {
-        if(risk > 0.5) bal += 400; else bal -= 500;
+        bal += change;
+        balEl.innerText = bal;
+        if(change > 0) playSnd('snd-win'); else playSnd('snd-err');
     } else {
-        if(bal >= 2000) { alert("ВИН! Ви фінансовий геній!"); closeGame(); }
-        else { alert("Мало! Треба 2000$."); }
+        if(bal >= 3000) { alert("ВИН! Ви стали крипто-мільйонером!"); closeGame(); }
+        else if (bal <= 0) { alert("Банкрут! Спробуйте іншу стратегію."); closeGame(); }
+        else { alert("Мало прибутку! Треба мінімум 3000$. Зараз: " + bal); }
     }
-    document.getElementById('g-bal').innerText = bal;
-    if(bal <= 0) { alert("БАНКРУТ!"); closeGame(); }
+    if(bal <= 0) { alert("Ви все програли!"); closeGame(); }
 }
 
 function closeGame() {
-    clearInterval(window.cryptoInt);
+    if(window.cryptoInt) clearInterval(window.cryptoInt);
     document.getElementById('game-modal').style.display = 'none';
 }
 
-/* QUIZ V2 - NO DOUBLE CLICK */
+/* QUIZ V2 */
 function loadQuestion() {
     if(currentQ >= quizData.length) { showResults(); return; }
     canClick = true;
@@ -321,9 +366,8 @@ function loadQuestion() {
         dv.innerHTML = `<i class="far fa-circle"></i> <span>${o.t}</span>`;
         dv.onclick = () => {
             if(!canClick) return;
-            canClick = false; // БЛОКУВАННЯ
+            canClick = false; 
             
-            // Візуалізація блокування інших
             document.querySelectorAll('.opt').forEach(el => el.classList.add('disabled'));
             
             if(o.i === d.c) {
@@ -340,7 +384,7 @@ function loadQuestion() {
             setTimeout(() => {
                 currentQ++;
                 loadQuestion();
-            }, 1000);
+            }, 1200);
         };
         box.appendChild(dv);
     });
@@ -354,13 +398,10 @@ function showResults() {
     let finalGrade = Math.round((score/18)*12);
     
     if(attempts >= 1) finalGrade = Math.max(0, finalGrade - 1);
-    
     localStorage.setItem('att_'+userName, attempts + 1);
     
     document.getElementById('score-val').innerText = finalGrade;
-    const msg = document.getElementById('final-msg');
-    msg.innerText = finalGrade >= 10 ? "ВІТАЮ, МАЙСТРЕ!" : "Можна було краще.";
-    
+    document.getElementById('final-msg').innerText = finalGrade >= 10 ? "ФІНАНСОВИЙ ГЕНІЙ!" : "Потрібно підтягнути теорію!";
     saveScore(userName, finalGrade);
 }
 
@@ -375,16 +416,16 @@ function saveScore(n, g) {
 function updateLeaderboard() {
     let l = JSON.parse(localStorage.getItem('fin_v2') || '[]');
     let b = document.getElementById('leader-body');
-    b.innerHTML = '<tr><th>М</th><th>Ім\'я</th><th>Бал</th></tr>' + 
+    b.innerHTML = '<tr><th>№</th><th>Гравець</th><th>Бал</th></tr>' + 
         l.map((u,i)=>`<tr><td>${i+1}</td><td>${u.n}</td><td>${u.g}</td></tr>`).join('');
 }
 
 function checkCase() {
     if(document.getElementById('ans').value == 111000) {
-        alert("Геніально! Ви точно не пропадете.");
+        alert("Правильно! 18500 * 6 = 111 000 грн.");
         playSnd('snd-win');
     } else {
-        alert("Спробуйте ще. (18500 * 6)");
+        alert("Помилка! Перерахуй ще раз (витрати за 6 місяців).");
         playSnd('snd-err');
     }
 }
