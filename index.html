@@ -41,7 +41,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .game-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:2000;display:none;flex-direction:column}
 .game-header{padding:20px;background:var(--s);color:#fff;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
 .game-body{flex:1;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.game-screen{width:100%;max-width:500px;background:#fff;border-radius:25px;padding:25px;box-shadow:0 20px 40px rgba(0,0,0,0.1);text-align:center;position:relative; overflow:hidden}
+.game-screen{width:100%;max-width:500px;background:#fff;border-radius:25px;padding:25px;box-shadow:0 20px 40px rgba(0,0,0,0.1);text-align:center;position:relative; overflow:hidden; min-height:450px}
 
 /* QUIZ V2 */
 .opt{padding:18px;background:#fff;border:2px solid #e2e8f0;border-radius:18px;margin-bottom:14px;font-weight:700;display:flex;align-items:center;gap:15px;transition:0.3s;cursor:pointer}
@@ -66,9 +66,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .leader-table th{text-align:left;padding:12px;border-bottom:2px solid #e2e8f0;font-size:14px}
 .leader-table td{padding:12px;border-bottom:1px solid #f1f5f9;font-size:15px}
 
-/* MINI GAME OBJECTS */
-.coin-obj{position:absolute;width:40px;height:40px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;cursor:pointer;animation:float 3s infinite ease-in-out;z-index:5}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+/* GAME UI ELEMENTS */
+.game-ui-stats{display:flex;justify-content:space-between;width:100%;margin-bottom:15px;background:#f8fafc;padding:10px;border-radius:12px;border:1px solid #e2e8f0}
+.trap-marker{position:absolute;border:3px solid var(--suc);border-radius:10px;pointer-events:none;display:none}
+.error-cross{position:absolute;color:var(--err);font-size:40px;pointer-events:none;z-index:100;animation:fadeOut 1s forwards}
+@keyframes fadeOut{from{opacity:1;transform:scale(1.2)}to{opacity:0;transform:scale(0.8)}}
 </style>
 </head>
 <body>
@@ -154,17 +156,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
         <h2><i class="fas fa-gamepad"></i> Центр Симуляцій</h2>
         <div class="game-hub">
             <div class="game-item" onclick="openGame(1)">
-                <div class="game-icon" style="background:var(--suc)"><i class="fas fa-hand-holding-dollar"></i></div>
+                <div class="game-icon" style="background:var(--suc)"><i class="fas fa-piggy-bank"></i></div>
                 <div class="game-info">
-                    <h4>Інвест-Клікер "Wealth 2026"</h4>
-                    <p>Збирай капітал та уникай інфляції в реальному часі.</p>
+                    <h4>Симулятор "Інфляційна Битва"</h4>
+                    <p>Навчись захищати заощадження від знецінення.</p>
                 </div>
             </div>
             <div class="game-item" onclick="openGame(2)">
-                <div class="game-icon" style="background:var(--p)"><i class="fas fa-magnifying-glass-dollar"></i></div>
+                <div class="game-icon" style="background:var(--p)"><i class="fas fa-search-dollar"></i></div>
                 <div class="game-info">
-                    <h4>Супермаркетний Детектив</h4>
-                    <p>Знайди приховані пастки маркетологів на полицях.</p>
+                    <h4>Супермаркетний Детектив (15 Рівнів)</h4>
+                    <p>Знайди реальні пастки: від цінників до розкладки.</p>
                 </div>
             </div>
         </div>
@@ -230,6 +232,25 @@ const quizData = [
     {q:"Найдорожчий ресурс людини:", a:["Гроші","Час","Золото"], c:1}
 ];
 
+// DATA FOR SUPERMARKET GAME
+const trapLevels = [
+    { t: "Золота полиця", desc: "Товари на рівні очей дорожчої категорії", x: 45, y: 35, w: 10, h: 10, img: "https://img.freepik.com/free-vector/supermarket-aisle-with-shelves-products_107791-532.jpg" },
+    { t: "Хитрий цінник", desc: "Велика ціна за 100г замість кг", x: 20, y: 60, w: 8, h: 8 },
+    { t: "Запах випічки", desc: "Аромат біля входу стимулює голод", x: 10, y: 10, w: 15, h: 15 },
+    { t: "Товари імпульсу", desc: "Дрібниці біля каси", x: 80, y: 70, w: 10, h: 15 },
+    { t: "Ефект дефіциту", desc: "Напис 'Тільки 2 в одні руки'", x: 60, y: 40, w: 12, h: 12 },
+    { t: "Колірна маніпуляція", desc: "Червоний колір на звичайній ціні", x: 30, y: 55, w: 7, h: 7 },
+    { t: "Великий візок", desc: "Порожній візок здається надто великим", x: 50, y: 80, w: 15, h: 10 },
+    { t: "Музичний темп", desc: "Повільна музика затримує покупця", x: 5, y: 5, w: 5, h: 5 },
+    { t: "Нижня полиця", desc: "Найдешевші товари ховають внизу", x: 45, y: 90, w: 10, h: 10 },
+    { t: "Пара паралаксу", desc: "Ціна 99.99 замість 100", x: 75, y: 25, w: 8, h: 8 },
+    { t: "Свіжість попереду", desc: "Старі товари кладуть ближче до краю", x: 15, y: 45, w: 12, h: 12 },
+    { t: "Супутні товари", desc: "Чіпси поруч із пивом", x: 65, y: 55, w: 10, h: 15 },
+    { t: "Без вікон", desc: "Відсутність вікон втрачає відчуття часу", x: 90, y: 10, w: 10, h: 20 },
+    { t: "Дзеркальне покриття", desc: "Блиск фруктів під спеціальним світлом", x: 25, y: 30, w: 15, h: 15 },
+    { t: "Лабіринт", desc: "Шлях до хліба через весь магазин", x: 50, y: 50, w: 20, h: 20 }
+];
+
 function playSnd(id) { 
     try { let s = document.getElementById(id); s.currentTime = 0; s.play(); } catch(e){}
 }
@@ -239,7 +260,6 @@ function startApp() {
     if(userName.length < 3) { alert("Введіть повне ім'я!"); return; }
     let attempts = parseInt(localStorage.getItem('att_'+userName) || 0);
     if(attempts >= 2) { alert("Ви вичерпали ліміт спроб!"); return; }
-    if(attempts === 1) { document.getElementById('auth-warn').innerText = "ДРУГА СПРОБА: -1 бал."; }
     document.getElementById('auth-overlay').style.display = 'none';
     playSnd('snd-click');
     updateLeaderboard();
@@ -251,87 +271,127 @@ function nt(el,id) {
     document.getElementById(id).classList.add('active');
     el.classList.add('active');
     if(id==='s5'&&currentQ===0) loadQuestion();
-    if(id==='s-lead') updateLeaderboard();
     playSnd('snd-click');
 }
 
 function showM(l) {
     const info = document.getElementById('m-info');
     info.style.display = 'block';
-    const texts = [
-        "",
-        "<h3>1. Фізіологічні потреби</h3><p>Це фундамент нашого життя. Сюди відноситься потреба в їжі, воді, сні та диханні. З точки зору фінансів, це обов'язкові витрати, без яких неможливо існувати. Якщо ці потреби не задоволені, людина не може думати ні про що інше. У бюджеті родини це зазвичай 50% усіх витрат.</p>",
-        "<h3>2. Потреба в безпеці</h3><p>Коли ми ситі, ми хочемо бути впевнені у завтрашньому дні. Це захист від фізичних загроз, фінансова стабільність (та сама 'фінансова подушка'), наявність житла та медичне страхування. Це потреба в порядку, законі та передбачуваності життя. Безпека — це спокій вашої родини.</p>",
-        "<h3>3. Соціальні потреби</h3><p>Людина — істота соціальна. Нам потрібно відчувати приналежність до групи, любов та дружбу. Сюди відносяться сімейні стосунки, спілкування з друзями, участь у громаді. Фінансово це може виражатися у витратах на подарунки, спільні поїздки або хобі, які об'єднують людей.</p>",
-        "<h3>4. Потреба у визнанні</h3><p>Це бажання бути шанованим, мати високий статус та досягнення. Ми хочемо, щоб оточуючі бачили нашу компетентність. Часто на цьому рівні люди потрапляють у пастки маркетингу, купуючи дорогі брендові речі 'для статусу', що може нашкодити сімейному бюджету, якщо цілі поставлені невірно.</p>",
-        "<h3>5. Самоактуалізація</h3><p>Вершина піраміди — це реалізація ваших талантів та здібностей. Це творчість, саморозвиток, пошук сенсу життя. Коли всі нижні рівні закриті, людина прагне стати тим, ким вона може бути за своєю природою. Це інвестиції в освіту, мистецтво та духовний розвиток.</p>"
+    const texts = [ "",
+        "<h3>1. Фізіологічні потреби</h3><p>Це фундамент нашого життя. Сюди відноситься потреба в їжі, воді, сні та диханні. З точки зору фінансів, це обов'язкові витрати, без яких неможливо існувати. Якщо ці потреби не задоволені, людина не може думати ні про що інше. У бюджеті родини це зазвичай 50% усіх витрат. Важливо розуміти різницю між 'потребою в їжі' та 'потребою в дорогому ресторані'.</p>",
+        "<h3>2. Потреба в безпеці</h3><p>Коли ми ситі, ми хочемо бути впевнені у завтрашньому дні. Це захист від фізичних загроз, фінансова стабільність (та сама 'фінансова подушка'), наявність житла та медичне страхування. Це потреба в порядку, законі та передбачуваності життя. Безпека — це спокій вашої родини, який купується через страхування та заощадження.</p>",
+        "<h3>3. Соціальні потреби</h3><p>Людина — істота соціальна. Нам потрібно відчувати приналежність до групи, любов та дружбу. Сюди відносяться сімейні стосунки, спілкування з друзями, участь у громаді. Фінансово це може виражатися у витратах на подарунки, спільні поїздки або хобі. Часто маркетологи грають на цьому, нав'язуючи товари як засіб 'стати частиною крутої компанії'.</p>",
+        "<h3>4. Потреба у визнанні</h3><p>Це бажання бути шанованим, мати високий статус та досягнення. Ми хочемо, щоб оточуючі бачили нашу компетентність. Часто на цьому рівні люди потрапляють у пастки маркетингу, купуючи дорогі брендові речі 'для статусу' в кредит, що руйнує бюджет. Справжнє визнання приходить через професіоналізм, а не через логотип на сумці.</p>",
+        "<h3>5. Самоактуалізація</h3><p>Вершина піраміди — це реалізація ваших талантів та здібностей. Це творчість, саморозвиток, пошук сенсу життя. Коли всі нижні рівні закриті, людина прагне стати тим, ким вона може бути за своєю природою. Це інвестиції в освіту, досвід, подорожі та духовний розвиток. Це найвищий рівень свободи особистості.</p>"
     ];
     info.innerHTML = texts[l];
     playSnd('snd-click');
 }
 
-/* GAMES 2D IMPROVED */
+/* IMPROVED GAMES SYSTEM */
+let currentTrapLvl = 0;
+let lives = 3;
+
 function openGame(id) {
     const canvas = document.getElementById('g-canvas');
     document.getElementById('game-modal').style.display = 'flex';
     canvas.innerHTML = '';
     
     if(id===1) {
-        document.getElementById('g-title').innerText = "Wealth Clicker 2D";
-        let capital = 0;
+        document.getElementById('g-title').innerText = "Інфляційна Битва";
+        let money = 1000;
+        let power = 100;
         canvas.innerHTML = `
-            <div style="background:var(--s); color:white; padding:10px; border-radius:10px; margin-bottom:10px">
-                Капітал: <span id="cap-val">0</span> грн.
+            <div class="game-ui-stats">
+                <span>Капітал: <b id="inf-money">${money}</b> грн</span>
+                <span>Купівельна спроможність: <b id="inf-pow">${power}</b>%</span>
             </div>
-            <div id="game-field" style="width:100%; height:250px; background:#e2e8f0; position:relative; border-radius:20px; border:2px solid var(--p); cursor:crosshair">
-                <p style="position:absolute; bottom:10px; width:100%; text-align:center; opacity:0.5">Лови монети!</p>
+            <div id="inf-area" style="width:100%; height:300px; background:#f1f5f9; border-radius:15px; position:relative; overflow:hidden">
+                <div id="inf-ball" style="position:absolute; top:40%; left:40%; width:60px; height:60px; background:red; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:10px; text-align:center">ІНФЛЯЦІЯ</div>
             </div>
+            <p style="font-size:12px; margin-top:10px">Тисни на 'КЛАСТИ НА ДЕПОЗИТ', щоб зупинити падіння спроможності!</p>
+            <button class="btn" style="margin-top:10px" onclick="investAction()">ДЕПОЗИТ (+5%)</button>
         `;
-        window.gameInt = setInterval(() => {
-            const field = document.getElementById('game-field');
-            if(!field) return;
-            const coin = document.createElement('div');
-            coin.className = 'coin-obj';
-            coin.innerHTML = '<i class="fas fa-coins"></i>';
-            coin.style.left = Math.random() * 80 + '%';
-            coin.style.top = Math.random() * 80 + '%';
-            coin.onclick = (e) => {
-                e.stopPropagation();
-                capital += 100;
-                document.getElementById('cap-val').innerText = capital;
-                playSnd('snd-win');
-                coin.remove();
-                if(capital >= 2000) { alert("Ціль досягнута! Ви зібрали капітал."); closeGame(); }
-            };
-            field.appendChild(coin);
-            setTimeout(() => coin.remove(), 2000);
-        }, 1000);
+        window.infInt = setInterval(() => {
+            power -= 1;
+            document.getElementById('inf-pow').innerText = power;
+            let ball = document.getElementById('inf-ball');
+            ball.style.transform = `scale(${1 + (100-power)/20})`;
+            if(power <= 0) { clearInterval(window.infInt); alert("Інфляція з'їла ваші гроші! Потрібно було інвестувати."); closeGame(); }
+        }, 500);
     } else if(id===2) {
-        document.getElementById('g-title').innerText = "Trap Hunter 2D";
-        let found = 0;
-        canvas.innerHTML = `
-            <p style="margin-bottom:10px">Знайди 3 приховані маркетингові пастки на екрані!</p>
-            <div id="shop-room" style="width:100%; height:300px; background:url('https://img.freepik.com/free-vector/supermarket-aisle-with-shelves-products_107791-532.jpg') center/cover; position:relative; border-radius:15px">
-                <div onclick="foundTrap(this)" style="position:absolute; top:20%; left:10%; width:50px; height:50px; border:2px dashed red; cursor:pointer" title="Trap"></div>
-                <div onclick="foundTrap(this)" style="position:absolute; top:50%; left:45%; width:60px; height:40px; border:2px dashed red; cursor:pointer" title="Trap"></div>
-                <div onclick="foundTrap(this)" style="position:absolute; top:70%; right:15%; width:40px; height:70px; border:2px dashed red; cursor:pointer" title="Trap"></div>
-            </div>
-            <div id="trap-count" style="margin-top:10px; font-weight:bold">Знайдено: 0/3</div>
-        `;
+        currentTrapLvl = 0;
+        lives = 3;
+        loadTrapLevel();
     }
 }
 
-function foundTrap(el) {
-    el.style.background = "rgba(255,0,0,0.3)";
-    el.onclick = null;
+function investAction() {
+    let p = document.getElementById('inf-pow');
+    let val = parseInt(p.innerText);
+    p.innerText = Math.min(100, val + 5);
     playSnd('snd-win');
-    let count = document.querySelectorAll('#shop-room div[style*="rgba"]').length;
-    document.getElementById('trap-count').innerText = `Знайдено: ${count}/3`;
-    if(count === 3) { setTimeout(() => { alert("Всі пастки виявлено!"); closeGame(); }, 500); }
+}
+
+function loadTrapLevel() {
+    const canvas = document.getElementById('g-canvas');
+    const lvl = trapLevels[currentTrapLvl];
+    document.getElementById('g-title').innerText = `Детектив: Рівень ${currentTrapLvl + 1}/15`;
+    
+    canvas.innerHTML = `
+        <div class="game-ui-stats">
+            <span>Ціль: Знайди <b>${lvl.t}</b></span>
+            <span>Спроби: <b id="lives-val">${lives}</b></span>
+        </div>
+        <div id="trap-zone" style="width:100%; height:320px; background:url('${lvl.img || trapLevels[0].img}') center/cover; position:relative; border-radius:15px; border:3px solid var(--s); cursor:crosshair">
+            <div id="success-marker" class="trap-marker" style="left:${lvl.x}%; top:${lvl.y}%; width:${lvl.w}%; height:${lvl.h}%"></div>
+        </div>
+        <p style="font-size:11px; color:#64748b; margin-top:5px">Будь уважним! Помилка коштує спроби.</p>
+    `;
+    
+    document.getElementById('trap-zone').onclick = function(e) {
+        const rect = this.getBoundingClientRect();
+        const px = ((e.clientX - rect.left) / rect.width) * 100;
+        const py = ((e.clientY - rect.top) / rect.height) * 100;
+        
+        if(px >= lvl.x && px <= (lvl.x + lvl.w) && py >= lvl.y && py <= (lvl.y + lvl.h)) {
+            // CORRECT
+            document.getElementById('success-marker').style.display = 'block';
+            playSnd('snd-win');
+            alert(`ПРАВИЛЬНО! ${lvl.desc}`);
+            currentTrapLvl++;
+            if(currentTrapLvl >= trapLevels.length) {
+                alert("ВІТАЄМО! Ви - Майстер Детектив!");
+                closeGame();
+            } else {
+                loadTrapLevel();
+            }
+        } else {
+            // WRONG
+            lives--;
+            document.getElementById('lives-val').innerText = lives;
+            showErrorAt(e.clientX - rect.left, e.clientY - rect.top);
+            playSnd('snd-err');
+            if(lives <= 0) {
+                alert("Спроби закінчилися! Спробуйте ще раз.");
+                closeGame();
+            }
+        }
+    };
+}
+
+function showErrorAt(x, y) {
+    const cross = document.createElement('div');
+    cross.className = 'error-cross';
+    cross.innerHTML = '<i class="fas fa-times"></i>';
+    cross.style.left = (x - 20) + 'px';
+    cross.style.top = (y - 20) + 'px';
+    document.getElementById('trap-zone').appendChild(cross);
+    setTimeout(() => cross.remove(), 1000);
 }
 
 function closeGame() {
-    clearInterval(window.gameInt);
+    clearInterval(window.infInt);
     document.getElementById('game-modal').style.display = 'none';
 }
 
@@ -364,14 +424,11 @@ function loadQuestion() {
 function showIntermediateResults() {
     document.getElementById('q-box').style.display = 'none';
     document.getElementById('q-res').style.display = 'block';
-    
     let attempts = parseInt(localStorage.getItem('att_'+userName) || 0);
     finalGradeInternal = Math.round((score/18)*12);
     if(attempts >= 1) finalGradeInternal = Math.max(0, finalGradeInternal - 1);
-    
     document.getElementById('score-val').innerText = finalGradeInternal;
-    
-    if(attempts < 1) { document.getElementById('retry-btn').style.display = 'block'; }
+    if(attempts < 1) document.getElementById('retry-btn').style.display = 'block';
 }
 
 function finishAndSave() {
@@ -392,7 +449,7 @@ function saveScore(n, g) {
 function updateLeaderboard() {
     let l = JSON.parse(localStorage.getItem('fin_v2') || '[]');
     let b = document.getElementById('leader-body');
-    b.innerHTML = '<tr><th>М</th><th>Ім\'я</th><th>Бал</th></tr>' + 
+    b.innerHTML = '<tr><th>М</th><th>Гравець</th><th>Бал</th></tr>' + 
         l.map((u,i)=>`<tr><td>${i+1}</td><td>${u.n}</td><td>${u.g}</td></tr>`).join('');
 }
 
