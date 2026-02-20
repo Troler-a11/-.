@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фінансова Грамотність: Урок 4 — Потреби та Інтереси</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #27ae60;
+            --accent: #e74c3c;
+            --bg: #f0f4f8;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            line-height: 1.7;
+        }
+
+        /* Навігація */
+        nav {
+            background: var(--primary);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover { color: var(--secondary); }
+
+        /* Шапка */
+        header {
+            height: 60vh;
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), 
+                        url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 { font-size: 3.5rem; margin-bottom: 10px; font-family: 'Montserrat', sans-serif; }
+        header p { font-size: 1.2rem; opacity: 0.9; max-width: 700px; }
+
+        .container { max-width: 1100px; margin: -50px auto 50px; position: relative; }
+
+        section {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        h2 { 
+            color: var(--secondary); 
+            font-size: 2rem; 
+            margin-bottom: 25px; 
+            display: flex; 
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        h2::before { content: "●"; margin-right: 15px; color: var(--accent); }
+
+        /* Цитата */
+        .quote {
+            background: #f9f9f9;
+            border-left: 8px solid var(--secondary);
+            padding: 25px;
+            margin: 30px 0;
+            font-style: italic;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        /* Таблиця */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        table th, table td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table th { background: var(--primary); color: white; }
+        table tr:nth-child(even) { background: #f2f2f2; }
+
+        /* Піраміда */
+        .pyramid-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .p-level {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 60px solid;
+            position: relative;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .level-rect {
+            height: 50px;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .level-rect:hover { filter: brightness(1.2); transform: scale(1.02); }
+
+        /* Тести */
+        .quiz-container { background: #fff; padding: 30px; border-radius: 10px; }
+        .question { font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; }
+        .options { margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .option-btn {
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            background: none;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.3s;
+        }
+        .option-btn:hover { border-color: var(--secondary); background: #f0fff4; }
+        .option-btn.selected { border-color: var(--secondary); background: var(--secondary); color: white; }
+
+        .submit-btn {
+            background: var(--secondary);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #result-box {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            background: #e1e8ed;
+            margin-bottom: 10px;
+        }
+
+        footer { background: var(--primary); color: white; padding: 40px 20px; text-align: center; }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .options { grid-template-columns: 1fr; }
+            .container { padding: 0 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="#theory">Теорія</a></li>
+        <li><a href="#maslow">Піраміда Маслоу</a></li>
+        <li><a href="#resources">Ресурси</a></li>
+        <li><a href="#quiz">Тестування</a></li>
+    </ul>
+</nav>
+
+<header>
+    <div class="status-badge">НУШ 2026 | 8 КЛАС</div>
+    <h1>Потреби та інтереси родини</h1>
+    <p>Вчимося відрізняти "хочу" від "треба" та будувати фінансово стійку сім'ю</p>
+</header>
+
+<div class="container">
+    
+    <section id="theory">
+        <h2>Що таке потреби?</h2>
+        <p>Кожен з нас щодня чогось потребує. Але в економіці <strong>потреба</strong> — це не просто бажання купити новий iPhone, а усвідомлене відчуття нестачі чогось життєво необхідного.</p>
+        
+        <div class="quote">
+            "Якщо ви цінуєте те, що у вас вже є в житті, ви завжди отримуватимете ще більше. Якщо думаєте лише про те, чого у вас немає — вам ніколи не буде достатньо."
+            <br><strong>— Опра Вінфрі</strong>
+        </div>
+
+        <h3>Класифікація потреб родини:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Вид потреби</th>
+                    <th>Опис</th>
+                    <th>Приклади</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Матеріальні</strong></td>
+                    <td>Речі, які можна відчути на дотик або купити</td>
+                    <td>Продукти, кросівки, квартира, ліки</td>
+                </tr>
+                <tr>
+                    <td><strong>Нематеріальні</strong></td>
+                    <td>Духовні та емоційні цінності</td>
+                    <td>Любов батьків, дружба, повага в класі</td>
+                </tr>
+                <tr>
+                    <td><strong>Фінансові</strong></td>
+                    <td>Потреба в грошовій безпеці</td>
+                    <td>Депозит, страховка, "подушка безпеки"</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="maslow">
+        <h2>Піраміда Абрагама Маслоу</h2>
+        <p>Чому ми не думаємо про творчість, коли хочемо їсти? Маслоу пояснив це ієрархією. Поки не задоволено фундамент — верхівка недосяжна.</p>
+        
+        
+
+        <div class="pyramid-box">
+            <div class="level-rect" style="background: #8e44ad; width: 40%;">5. Самореалізація (Таланти)</div>
+            <div class="level-rect" style="background: #2980b9; width: 55%;">4. Визнання та повага</div>
+            <div class="level-rect" style="background: #f1c40f; width: 70%;">3. Соціальні (Сім'я, друзі)</div>
+            <div class="level-rect" style="background: #d35400; width: 85%;">2. Потреби в безпеці</div>
+            <div class="level-rect" style="background: #c0392b; width: 100%;">1. Фізіологічні (Їжа, вода)</div>
+        </div>
+        <p style="text-align: center; font-size: 0.9rem; color: #666;">*Натисніть на рівень, щоб обговорити його в класі</p>
+    </section>
+
+    <section id="resources">
+        <h2>Головна проблема: Ресурси обмежені</h2>
+        <p>Людські потреби безмежні (ми завжди хочемо більше), але ресурси (гроші, час, природні копалини) завжди мають ліміт.</p>
+        <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+                <ul>
+                    <li><strong>Час:</strong> У вас лише 24 години на добу.</li>
+                    <li><strong>Фінанси:</strong> Бюджет родини не гумовий.</li>
+                    <li><strong>Здоров'я:</strong> Ресурс, який важко відновити грошима.</li>
+                </ul>
+            </div>
+            <div style="flex: 1; background: #e8f6ef; padding: 20px; border-radius: 10px;">
+                <strong>Важливо:</strong> Раціональне використання ресурсів — це і є фінансова грамотність!
+            </div>
+        </div>
+    </section>
+
+    <section id="quiz">
+        <h2>Перевір себе (Експрес-тест)</h2>
+        <div class="quiz-container" id="quiz-body">
+            <div class="question-block">
+                <p class="question">1. Яка потреба є першочерговою згідно з пірамідою Маслоу?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="selectOption(this, 1, 'a')">а) Купівля ігрової приставки</button>
+                    <button class="option-btn" onclick="selectOption(this, 1, 'b')">б) Потреба в їжі та сні</button>
+                    <button class="option-btn" onclick="selectOption(this, 1, 'c')">в) Визнання друзів</button>
+                    <button class="option-btn" onclick="selectOption(this, 1, 'd')">г) Захист від вірусу</button>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <p class="question">2. Що з переліченого є "фінансовою подушкою безпеки"?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="selectOption(this, 2, 'a')">а) Новий м'який диван</button>
+                    <button class="option-btn" onclick="selectOption(this, 2, 'b')">б) Кредитна картка</button>
+                    <button class="option-btn" onclick="selectOption(this, 2, 'c')">в) Заощадження на випадок хвороби чи втрати роботи</button>
+                    <button class="option-btn" onclick="selectOption(this, 2, 'd')">г) Гроші на відпустку</button>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <p class="question">3. До яких потреб відноситься дружба та кохання?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="selectOption(this, 3, 'a')">а) Матеріальні</button>
+                    <button class="option-btn" onclick="selectOption(this, 3, 'b')">б) Фізіологічні</button>
+                    <button class="option-btn" onclick="selectOption(this, 3, 'c')">в) Нематеріальні (Соціальні)</button>
+                    <button class="option-btn" onclick="selectOption(this, 3, 'd')">г) Економічні</button>
+                </div>
+            </div>
+
+            <button class="submit-btn" onclick="checkResults()">Здати роботу</button>
+
+            <div id="result-box">
+                <h3 id="score-text">Твій результат: 0/12</h3>
+                <p id="feedback"></p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>Розроблено спеціально для уроку фінансової грамотності в 8-му класі.</p>
+    <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">© 2026 Проєкт "Фінансова Майстерність"</p>
+</footer>
+
+<script>
+    let answers = { 1: '', 2: '', 3: '' };
+    const correctAnswers = { 1: 'b', 2: 'c', 3: 'c' };
+
+    function selectOption(btn, qNum, val) {
+        // Знімаємо виділення з усіх кнопок у цьому питанні
+        const parent = btn.parentElement;
+        parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+        
+        // Виділяємо поточну
+        btn.classList.add('selected');
+        answers[qNum] = val;
+    }
+
+    function checkResults() {
+        let score = 0;
+        let total = Object.keys(correctAnswers).length;
+
+        for(let q in correctAnswers) {
+            if(answers[q] === correctAnswers[q]) {
+                score++;
+            }
+        }
+
+        // Розрахунок по 12-бальній системі
+        let finalGrade = Math.round((score / total) * 12);
+        
+        const resultBox = document.getElementById('result-box');
+        const scoreText = document.getElementById('score-text');
+        const feedback = document.getElementById('feedback');
+
+        resultBox.style.display = 'block';
+        scoreText.innerText = `Твій результат: ${finalGrade} балів!`;
+
+        if(finalGrade >= 10) {
+            resultBox.style.background = '#d4edda';
+            feedback.innerText = "Відмінно! Ти справжній фінансовий експерт!";
+        } else if(finalGrade >= 7) {
+            resultBox.style.background = '#fff3cd';
+            feedback.innerText = "Добре, але варто ще раз перечитати про ресурси.";
+        } else {
+            resultBox.style.background = '#f8d7da';
+            feedback.innerText = "Треба підтягнути теорію. Спробуй ще раз!";
+        }
+
+        // Прокрутка до результату
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
