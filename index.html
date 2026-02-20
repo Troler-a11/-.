@@ -5,6 +5,28 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>FIN-MASTER ULTRA 2026: FAMILY STRATEGY</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+  import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDMMjZPzm45dwnrIbFLNB3PD4OhoxZbRgQ",
+    authDomain: "progekkkt.firebaseapp.com",
+    databaseURL: "https://progekkkt-default-rtdb.firebaseio.com",
+    projectId: "progekkkt",
+    storageBucket: "progekkkt.firebasestorage.app",
+    messagingSenderId: "36232515331",
+    appId: "1:36232515331:web:0d81529037d9f498aaa336",
+    measurementId: "G-MW9JW67NZC"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getDatabase(app);
+  window.db = db; // Експорт для глобального доступу
+</script>
+
 <style>
 :root{--p:#2563eb;--p-dark:#1d4ed8;--s:#0f172a;--bg:#f1f5f9;--card:#ffffff;--txt:#1e293b;--suc:#10b981;--err:#ef4444;--gold:#f59e0b;--glass:rgba(255,255,255,0.9)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -211,18 +233,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 </div>
 
 <script>
-// --- КОНФІГУРАЦІЯ FIREBASE ---
+// --- КОНФІГУРАЦІЯ FIREBASE (URL для прямого доступу як бекап) ---
 const DB_URL = "https://progekkkt-default-rtdb.firebaseio.com/leaderboard.json";
-
-// --- ОБНУЛЕННЯ ДЛЯ ТЕСТУВАННЯ ---
-// Очищаємо локальні спроби при кожному оновленні для зручності тестування
-localStorage.clear(); 
-console.log("System: LocalStorage cleared for testing session.");
 
 let userName = "", score = 0, currentQ = 0, canClick = true, finalGradeInternal = 0;
 let testStarted = false;
+let randomizedQuiz = [];
 
-const quizData = [
+const quizDataRaw = [
     {q:"Маркетингова пастка 'Ефект дефіциту' це:", a:["Знижка 50%","Тільки сьогодні!","Подарунок до покупки","Якісний товар"], c:1},
     {q:"Що є нематеріальним ресурсом родини?", a:["Автомобіль","Знання кулінарії","Запас гречки","Дача"], c:1},
     {q:"Потреба у визнанні - це який рівень Маслоу?", a:["2","3","4","5"], c:2},
@@ -243,16 +261,44 @@ const quizData = [
     {q:"Найдорожчий ресурс людини:", a:["Гроші","Час","Золото"], c:1}
 ];
 
-// --- АНТИ-ЧИТ (ПОКРАЩЕНО ДЛЯ МОБІЛЬНИХ ТА ПК) ---
-function handleVisibility() {
-    if ((document.hidden || document.visibilityState === 'hidden') && testStarted) {
+// --- ШАФЛ ФУНКЦІЯ ---
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// --- АНТИ-ЧИТ ТА ВИХІД ---
+async function penalizeUser() {
+    if(testStarted) {
         testStarted = false;
-        alert("УВАГА! Вихід із вкладки або переключення додатку ЗАБОРОНЕНО. Тест анульовано.");
+        let att = parseInt(localStorage.getItem('att_'+userName) || 0);
+        localStorage.setItem('att_'+userName, att + 1);
+        finalGradeInternal = 0;
+        await finishAndSave(true); // Автозбереження 0 балів
+        alert("ТЕСТ АНУЛЬОВАНО! Спробу використано. Ви залишили сторінку.");
         location.reload();
     }
 }
+
+function handleVisibility() {
+    if ((document.hidden || document.visibilityState === 'hidden') && testStarted) {
+        penalizeUser();
+    }
+}
 document.addEventListener("visibilitychange", handleVisibility);
-window.addEventListener("blur", () => { if(testStarted) handleVisibility(); });
+window.addEventListener("blur", () => { if(testStarted) penalizeUser(); });
+
+// --- ПІДГОТОВКА ПИТАНЬ (Рандом) ---
+function prepareQuiz() {
+    randomizedQuiz = shuffle([...quizDataRaw]).map(item => {
+        let answers = item.a.map((text, index) => ({ text, isCorrect: index === item.c }));
+        shuffle(answers);
+        return { q: item.q, answers: answers };
+    });
+}
 
 const trapLevels = [
     {
@@ -278,102 +324,6 @@ const trapLevels = [
             {x: 15, y: 70, r: 20, name: "Великий візок"},
             {x: 85, y: 65, r: 15, name: "Знижки на вході"}
         ]
-    },
-    {
-        title: "Біля Каси", img: "https://img.freepik.com/free-photo/close-up-view-shopping-checkout-area_23-2149179051.jpg",
-        targets: [
-            {x: 45, y: 50, r: 15, name: "Дрібні солодощі"},
-            {x: 20, y: 40, r: 12, name: "Журнали та батарейки"},
-            {x: 75, y: 60, r: 15, name: "Товари імпульсу"}
-        ]
-    },
-    {
-        title: "Фрукти та Овочі", img: "https://img.freepik.com/free-photo/variety-vegetables-fruits-market_23-2148784113.jpg",
-        targets: [
-            {x: 50, y: 25, r: 15, name: "Спеціальне освітлення"},
-            {x: 30, y: 50, r: 15, name: "Блискуча плівка"},
-            {x: 80, y: 45, r: 15, name: "Збризкування водою"}
-        ]
-    },
-    {
-        title: "Нижні полиці", img: "https://img.freepik.com/free-photo/shelves-with-different-products-supermarket_23-2148784119.jpg",
-        targets: [
-            {x: 50, y: 85, r: 15, name: "Дешевий аналог внизу"},
-            {x: 10, y: 90, r: 12, name: "Товар без бренду"},
-            {x: 85, y: 88, r: 15, name: "Гуртові упаковки нижче"}
-        ]
-    },
-    {
-        title: "Супутні товари", img: "https://img.freepik.com/free-photo/bottles-shelf-supermarket_23-2148149863.jpg",
-        targets: [
-            {x: 60, y: 40, r: 15, name: "Закуски біля напоїв"},
-            {x: 30, y: 45, r: 14, name: "Відкривалки в алкоголі"},
-            {x: 50, y: 70, r: 18, name: "Соуси біля м'яса"}
-        ]
-    },
-    {
-        title: "Молочний відділ", img: "https://img.freepik.com/free-photo/supermarket-refrigerator_23-2148149876.jpg",
-        targets: [
-            {x: 70, y: 30, r: 15, name: "Далекий кут для молока"},
-            {x: 40, y: 50, r: 15, name: "Ближче - старий термін"},
-            {x: 20, y: 45, r: 12, name: "Рекламна наклейка на склі"}
-        ]
-    },
-    {
-        title: "Дитячий маркетинг", img: "https://img.freepik.com/free-photo/children-toys-shelf-shop_23-2148784126.jpg",
-        targets: [
-            {x: 50, y: 70, r: 18, name: "Іграшки на рівні малюків"},
-            {x: 20, y: 75, r: 15, name: "Мультяшні персонажі"},
-            {x: 80, y: 65, r: 15, name: "Кольорові пластівці"}
-        ]
-    },
-    {
-        title: "Хлібний шлях", img: "https://img.freepik.com/free-photo/interior-modern-supermarket_23-2148784121.jpg",
-        targets: [
-            {x: 90, y: 50, r: 15, name: "Хліб у кінці зали"},
-            {x: 50, y: 50, r: 25, name: "Довгий маршрут покупця"},
-            {x: 10, y: 40, r: 15, name: "Мелодійна музика"}
-        ]
-    },
-    {
-        title: "Свіжість", img: "https://img.freepik.com/free-photo/organic-food-market_23-2148149884.jpg",
-        targets: [
-            {x: 40, y: 30, r: 15, name: "Табличка 'Фермерське'"},
-            {x: 70, y: 45, r: 15, name: "Дерев'яні ящики"},
-            {x: 20, y: 60, r: 15, name: "Відсутність вікон (час)"}
-        ]
-    },
-    {
-        title: "Заморожені", img: "https://img.freepik.com/free-photo/refrigerator-with-frozen-food_23-2148149880.jpg",
-        targets: [
-            {x: 50, y: 40, r: 18, name: "Напівфабрикати в центрі"},
-            {x: 80, y: 55, r: 15, name: "Красиве фото на коробці"},
-            {x: 20, y: 35, r: 12, name: "Акція на морозиво"}
-        ]
-    },
-    {
-        title: "Побутова хімія", img: "https://img.freepik.com/free-photo/shelf-with-cleaning-products_23-2148149882.jpg",
-        targets: [
-            {x: 60, y: 40, r: 15, name: "Еко-маркування (дорожче)"},
-            {x: 30, y: 55, r: 15, name: "Акційний блок стійка"},
-            {x: 80, y: 70, r: 15, name: "Великий об'єм (не дешевше)"}
-        ]
-    },
-    {
-        title: "Крупи та бакалія", img: "https://img.freepik.com/free-photo/shelves-supermarket_23-2148149871.jpg",
-        targets: [
-            {x: 45, y: 45, r: 15, name: "Дорога олія в центрі"},
-            {x: 20, y: 30, r: 12, name: "Популярна марка збоку"},
-            {x: 75, y: 50, r: 14, name: "Пакети зі знижкою"}
-        ]
-    },
-    {
-        title: "Великі знижки", img: "https://img.freepik.com/free-photo/sale-labels-supermarket_23-2149179044.jpg",
-        targets: [
-            {x: 50, y: 50, r: 25, name: "Кошик зі знижками"},
-            {x: 20, y: 80, r: 15, name: "Напис 'Лише сьогодні'"},
-            {x: 80, y: 20, r: 15, name: "Яскравий плакат 'АКЦІЯ'"}
-        ]
     }
 ];
 
@@ -387,26 +337,19 @@ function startApp() {
     document.getElementById('auth-overlay').style.display = 'none';
     playSnd('snd-click');
     updateLeaderboard();
-    console.log("App Started for:", userName);
 }
 
 function nt(el,id) {
     if(id === 's5') {
         let att = parseInt(localStorage.getItem('att_'+userName) || 0);
-        if(att >= 2) { 
-            alert("Ви вже використали всі 2 спроби тесту!"); 
-            return; 
-        }
-        if(!testStarted && currentQ === 0) {
+        if(att >= 2) { alert("Всі 2 спроби використано!"); return; }
+        if(!testStarted) {
             testStarted = true;
+            prepareQuiz();
             loadQuestion();
         }
     } else {
-        if(testStarted) {
-            let conf = confirm("Вихід з вкладки під час тесту анулює результат. Ви впевнені?");
-            if(!conf) return;
-            testStarted = false;
-        }
+        if(testStarted) { penalizeUser(); return; }
     }
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -419,11 +362,11 @@ function showM(l) {
     const info = document.getElementById('m-info');
     info.style.display = 'block';
     const texts = [ "",
-        "<h3>1. Фізіологічні потреби</h3><p>Це фундамент нашого життя. Сюди відноситься потреба в їжі, воді, сні та диханні. З точки зору фінансів, це обов'язкові витрати, без яких неможливо існувати. У бюджеті родини це зазвичай 50% усіх витрат. Важливо розуміти різницю між 'потребою в їжі' та 'потребою в дорогому ресторані'.</p>",
-        "<h3>2. Потреба в безпеці</h3><p>Коли ми ситі, ми хочемо бути впевнені у завтрашньому дні. Це захист від фізичних загроз, фінансова стабільність (та сама 'фінансова подушка'), наявність житла та медичне страхування. Це потреба в порядку, законі та передбачуваності життя. Безпека — це спокій вашої родини, який купується через страхування та заощадження.</p>",
-        "<h3>3. Соціальні потреби</h3><p>Людина — істота соціальна. Нам потрібно відчувати приналежність до групи, LOVE та дружбу. Сюди відносяться сімейні стосунки, спілкування з друзями, участь у громаді. Фінансово це може виражатися у витратах на подарунки, спільні поїздки або хобі. Часто маркетологи грають на цьому, нав'язуючи товари як засіб 'стати частиною крутої компанії'.</p>",
-        "<h3>4. Потреба у визнанні</h3><p>Це бажання бути шанованим, мати високий статус та досягнення. Ми хочемо, щоб оточуючі бачили нашу компетентність. Часто на цьому рівні люди потрапляють у пастки маркетингу, купуючи дорогі брендові речі 'для статусу' в кредит, що руйнує бюджет. Справжнє визнання приходить через професіоналізм, а не через логотип на сумці.</p>",
-        "<h3>5. Самоактуалізація</h3><p>Вершина піраміди — це реалізація ваших талантів та здібностей. Це творчість, саморозвиток, пошук сенсу життя. Коли всі нижні рівні закриті, людина прагне стати тим, ким вона може бути за своєю природою. Це інвестиції в освіту, досвід, подорожі та духовний розвиток. Це найвищий рівень свободи особистості.</p>"
+        "<h3>1. Фізіологічні потреби</h3><p>Фундамент: їжа, вода, сон. В бюджеті - це база.</p>",
+        "<h3>2. Безпека</h3><p>Захист, житло, фінансова подушка.</p>",
+        "<h3>3. Соціальні</h3><p>Друзі, сім'я, любов.</p>",
+        "<h3>4. Визнання</h3><p>Статус, повага. Пастка для кредитів на бренди.</p>",
+        "<h3>5. Самоактуалізація</h3><p>Розвиток талантів, освіта.</p>"
     ];
     info.innerHTML = texts[l];
     playSnd('snd-click');
@@ -443,20 +386,17 @@ function openGame(id) {
         let power = 100;
         canvas.innerHTML = `
             <div class="game-ui-stats">
-                <span>Капітал: <b id="inf-money">1000</b> грн</span>
                 <span>Спроможність: <b id="inf-pow">100</b>%</span>
             </div>
             <div id="inf-area" style="width:100%; height:300px; background:#f1f5f9; border-radius:15px; position:relative; overflow:hidden">
-                <div id="inf-ball" style="position:absolute; top:40%; left:40%; width:60px; height:60px; background:red; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:10px; text-align:center">ІНФЛЯЦІЯ</div>
+                <div id="inf-ball" style="position:absolute; top:40%; left:40%; width:60px; height:60px; background:red; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white;">ІНФЛЯЦІЯ</div>
             </div>
             <button class="btn" style="margin-top:10px" onclick="investAction()">ДЕПОЗИТ (+5%)</button>
         `;
         window.infInt = setInterval(() => {
             power -= 1;
             document.getElementById('inf-pow').innerText = power;
-            let ball = document.getElementById('inf-ball');
-            if(ball) ball.style.transform = `scale(${1 + (100-power)/15})`;
-            if(power <= 0) { clearInterval(window.infInt); alert("Інфляція з'їла ваші гроші!"); closeGame(); }
+            if(power <= 0) { clearInterval(window.infInt); alert("Гроші знецінились!"); closeGame(); }
         }, 400);
     } else if(id===2) {
         currentTrapLvl = 0;
@@ -476,18 +416,14 @@ function investAction() {
 function loadTrapLevel() {
     const canvas = document.getElementById('g-canvas');
     const lvl = trapLevels[currentTrapLvl];
+    if(!lvl) { closeGame(); return; }
     targetsFound = 0;
-    document.getElementById('g-title').innerText = `Детектив: ${lvl.title} (${currentTrapLvl+1}/15)`;
+    document.getElementById('g-title').innerText = `Детектив: ${lvl.title}`;
     
     canvas.innerHTML = `
-        <div class="game-ui-stats">
-            <span>Знайдено: <b id="found-val">0/3</b></span>
-            <span>Життя: <b id="lives-val">${lives}</b></span>
-        </div>
-        <div id="trap-zone" style="width:100%; height:320px; background:url('${lvl.img}') center/cover; position:relative; border-radius:15px; border:3px solid var(--s); cursor:crosshair">
-            ${lvl.targets.map((t, i) => `
-                <div id="target-${i}" class="trap-marker" style="left:${t.x}%; top:${t.y}%; width:${t.r*2}%; height:${t.r*2.5}%; border-radius:50%;"></div>
-            `).join('')}
+        <div class="game-ui-stats"><span>Знайдено: <b id="found-val">0/3</b></span><span>❤️ <b id="lives-val">${lives}</b></span></div>
+        <div id="trap-zone" style="width:100%; height:320px; background:url('${lvl.img}') center/cover; position:relative; border:3px solid var(--s); cursor:crosshair">
+            ${lvl.targets.map((t, i) => `<div id="target-${i}" class="trap-marker" style="left:${t.x}%; top:${t.y}%; width:${t.r*2}%; height:${t.r*2}%"></div>`).join('')}
         </div>
     `;
     
@@ -495,61 +431,32 @@ function loadTrapLevel() {
         const rect = this.getBoundingClientRect();
         const px = ((e.clientX - rect.left) / rect.width) * 100;
         const py = ((e.clientY - rect.top) / rect.height) * 100;
-        
         let hit = false;
         lvl.targets.forEach((t, i) => {
             const marker = document.getElementById(`target-${i}`);
             if(marker.style.display === 'block') return;
             const dist = Math.sqrt(Math.pow(px - t.x, 2) + Math.pow(py - t.y, 2));
             if(dist < t.r) {
-                hit = true;
-                marker.style.display = 'block';
-                targetsFound++;
+                hit = true; marker.style.display = 'block'; targetsFound++;
                 document.getElementById('found-val').innerText = `${targetsFound}/3`;
                 playSnd('snd-win');
-                if(targetsFound === 3) {
-                    setTimeout(() => {
-                        currentTrapLvl++;
-                        if(currentTrapLvl >= trapLevels.length) { closeGame(); } 
-                        else { loadTrapLevel(); }
-                    }, 500);
-                }
+                if(targetsFound === 3) { setTimeout(() => { currentTrapLvl++; loadTrapLevel(); }, 500); }
             }
         });
-        if(!hit) {
-            lives--;
-            document.getElementById('lives-val').innerText = lives;
-            showErrorAt(px, py);
-            playSnd('snd-err');
-            if(lives <= 0) { closeGame(); }
-        }
+        if(!hit) { lives--; document.getElementById('lives-val').innerText = lives; if(lives <= 0) closeGame(); }
     };
 }
 
-function showErrorAt(x, y) {
-    const zone = document.getElementById('trap-zone');
-    const cross = document.createElement('div');
-    cross.className = 'error-cross';
-    cross.innerHTML = '<i class="fas fa-times"></i>';
-    cross.style.left = x + '%';
-    cross.style.top = y + '%';
-    zone.appendChild(cross);
-    setTimeout(() => cross.remove(), 1000);
-}
-
-function closeGame() {
-    clearInterval(window.infInt);
-    document.getElementById('game-modal').style.display = 'none';
-}
+function closeGame() { clearInterval(window.infInt); document.getElementById('game-modal').style.display = 'none'; }
 
 function loadQuestion() {
-    if(currentQ >= quizData.length) { 
+    if(currentQ >= randomizedQuiz.length) { 
         testStarted = false; 
         showIntermediateResults(); 
         return; 
     }
     canClick = true;
-    const d = quizData[currentQ];
+    const d = randomizedQuiz[currentQ];
     let att = parseInt(localStorage.getItem('att_'+userName) || 0);
     document.getElementById('q-attempts-display').innerText = `Спроба: ${att + 1}`;
     document.getElementById('q-num').innerText = `Питання ${currentQ+1}/18`;
@@ -557,62 +464,49 @@ function loadQuestion() {
     const box = document.getElementById('q-opts');
     box.innerHTML = '';
     
-    d.a.forEach((t,i)=>{
+    d.answers.forEach((ans)=>{
         const dv = document.createElement('div');
         dv.className = 'opt';
-        dv.innerHTML = `<span>${t}</span>`;
+        dv.innerHTML = `<span>${ans.text}</span>`;
         dv.onclick = () => {
             if(!canClick) return;
             canClick = false;
-            if(i === d.c) { dv.classList.add('correct'); score++; playSnd('snd-win'); }
+            if(ans.isCorrect) { dv.classList.add('correct'); score++; playSnd('snd-win'); }
             else { dv.classList.add('wrong'); playSnd('snd-err'); }
-            setTimeout(() => { currentQ++; loadQuestion(); }, 800);
+            setTimeout(() => { currentQ++; loadQuestion(); }, 600);
         };
         box.appendChild(dv);
     });
 }
 
-// --- ВИПРАВЛЕННЯ БАГІВ ВІДОБРАЖЕННЯ ---
 function showIntermediateResults() {
     document.getElementById('q-box').style.display = 'none';
     document.getElementById('q-header-block').style.display = 'none';
     document.getElementById('q-res').style.display = 'block';
     
-    let attemptsCount = parseInt(localStorage.getItem('att_'+userName) || 0);
+    let attCount = parseInt(localStorage.getItem('att_'+userName) || 0);
     finalGradeInternal = Math.round((score/18)*12);
-    
-    if(attemptsCount >= 1) {
-        finalGradeInternal = Math.max(0, finalGradeInternal - 1);
-        document.getElementById('final-msg').innerText = "Штраф -1 бал за повторну спробу враховано.";
-    } else {
-        document.getElementById('final-msg').innerText = "Це ваш фінальний результат за першу спробу.";
-    }
+    if(attCount >= 1) finalGradeInternal = Math.max(0, finalGradeInternal - 1);
     
     document.getElementById('score-val').innerText = finalGradeInternal;
-    if(attemptsCount < 1) {
-        document.getElementById('retry-btn').style.display = 'block';
-    } else {
-        document.getElementById('retry-btn').style.display = 'none';
-    }
+    document.getElementById('retry-btn').style.display = (attCount < 1) ? 'block' : 'none';
 }
 
 function retryQuiz() {
     let att = parseInt(localStorage.getItem('att_'+userName) || 0);
     localStorage.setItem('att_'+userName, att + 1);
-    currentQ = 0;
-    score = 0;
+    currentQ = 0; score = 0;
     document.getElementById('q-box').style.display = 'block';
     document.getElementById('q-header-block').style.display = 'flex';
     document.getElementById('q-res').style.display = 'none';
     testStarted = true;
+    prepareQuiz();
     loadQuestion();
 }
 
-// --- ІНТЕГРАЦІЯ З FIREBASE REALTIME DB ---
-async function finishAndSave() {
+async function finishAndSave(isAuto = false) {
     const btn = document.getElementById('save-db-btn');
-    btn.disabled = true;
-    btn.innerText = "ЗБЕРЕЖЕННЯ...";
+    if(!isAuto) { btn.disabled = true; btn.innerText = "ЗБЕРЕЖЕННЯ..."; }
 
     const resultData = {
         name: userName,
@@ -622,68 +516,43 @@ async function finishAndSave() {
     };
 
     try {
-        const response = await fetch(DB_URL, {
-            method: 'POST',
-            body: JSON.stringify(resultData),
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        if(response.ok) {
-            alert("Результат успішно додано до загального рейтингу!");
+        if(window.db) {
+            const { ref, push, set } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
+            const newResRef = push(ref(window.db, 'leaderboard'));
+            await set(newResRef, resultData);
+        } else {
+            await fetch(DB_URL, { method: 'POST', body: JSON.stringify(resultData) });
+        }
+        
+        if(!isAuto) {
+            alert("Результат збережено!");
             let att = parseInt(localStorage.getItem('att_'+userName) || 0);
             localStorage.setItem('att_'+userName, att + 1);
             updateLeaderboard();
             nt(document.querySelector('.nav-tab:last-child'), 's-lead');
-        } else {
-            throw new Error("Помилка БД");
         }
     } catch (e) {
-        alert("Помилка мережі. Спробуйте пізніше.");
-        btn.disabled = false;
-        btn.innerText = "Повторити збереження";
+        if(!isAuto) alert("Помилка БД");
     }
 }
 
-// --- ОНОВЛЕННЯ РЕЙТИНГУ З FIREBASE ---
 async function updateLeaderboard() {
     let b = document.getElementById('leader-body');
-    b.innerHTML = '<tr><td colspan="3" style="text-align:center">Завантаження даних...</td></tr>';
-    
+    b.innerHTML = '<tr><td colspan="3">Оновлення...</td></tr>';
     try {
         const response = await fetch(DB_URL);
         const data = await response.json();
-        
-        if(!data) {
-            b.innerHTML = '<tr><td colspan="3">Рейтинг порожній</td></tr>';
-            return;
-        }
-
-        let list = Object.keys(data).map(key => data[key]);
-        list.sort((a,b) => b.grade - a.grade || b.ts - a.ts);
-        
+        if(!data) { b.innerHTML = '<tr><td colspan="3">Порожньо</td></tr>'; return; }
+        let list = Object.values(data).sort((a,b) => b.grade - a.grade || b.ts - a.ts);
         b.innerHTML = '<tr><th>М</th><th>Гравець</th><th>Бал</th></tr>' + 
-            list.map((u,i)=>`<tr><td>${i+1}</td><td>${u.name}</td><td style="font-weight:bold; color:var(--p)">${u.grade}</td></tr>`).join('');
-            
-    } catch (e) {
-        b.innerHTML = '<tr><td colspan="3">Помилка завантаження рейтингу</td></tr>';
-    }
+            list.map((u,i)=>`<tr><td>${i+1}</td><td>${u.name}</td><td><b>${u.grade}</b></td></tr>`).join('');
+    } catch (e) { b.innerHTML = '<tr><td colspan="3">Помилка мережі</td></tr>'; }
 }
 
 function checkCase() {
-    let val = document.getElementById('ans').value;
-    if(val == 111000) { 
-        alert("Правильно! 18,500 * 6 = 111,000 грн."); 
-        playSnd('snd-win'); 
-    } else { 
-        alert("Помилка. Спробуй ще раз (18500 * 6)"); 
-        playSnd('snd-err'); 
-    }
+    if(document.getElementById('ans').value == 111000) { alert("Вірно!"); playSnd('snd-win'); }
+    else { alert("Спробуй ще!"); playSnd('snd-err'); }
 }
-
-// Додаткова логіка ініціалізації для надійності
-window.onload = () => {
-    console.log("System UI Ready.");
-};
 </script>
 </body>
 </html>
