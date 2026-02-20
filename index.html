@@ -35,10 +35,22 @@ h2{font-size:20px;margin-bottom:12px;color:var(--p);display:flex;align-items:cen
 p{font-size:16px;margin-bottom:10px;color:#475569}
 .badge{display:inline-block;padding:5px 12px;background:var(--s);color:#fff;border-radius:8px;font-size:12px;font-weight:700;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
 
-/* GAME BOX */
-.game-area{background:var(--s);color:#fff;padding:20px;border-radius:18px;margin:15px 0;position:relative;overflow:hidden}
+/* GAME HUB & STORE STYLE */
+.game-hub{display:flex;flex-direction:column;gap:15px}
+.game-item{display:flex;align-items:center;background:#fff;padding:15px;border-radius:20px;border:1px solid #e2e8f0;gap:15px;cursor:pointer;transition:0.2s}
+.game-item:active{transform:scale(0.97);background:#f8fafc}
+.game-icon{width:60px;height:60px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff}
+.game-info{flex:1}
+.game-info h4{font-size:16px;color:var(--s)}
+.game-info p{font-size:12px;margin:0;color:#64748b}
+
+/* GAME INTERFACE */
+.game-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:2000;display:none;flex-direction:column}
+.game-header{padding:20px;background:var(--s);color:#fff;display:flex;justify-content:space-between;align-items:center}
+.game-content{flex:1;padding:20px;overflow-y:auto}
+
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.stat-card{background:rgba(255,255,255,0.1);padding:10px;border-radius:10px;text-align:center}
+.stat-card{background:var(--s);color:#fff;padding:10px;border-radius:10px;text-align:center}
 .stat-val{display:block;font-size:20px;font-weight:800;color:var(--gold)}
 
 /* PYRAMID */
@@ -76,11 +88,20 @@ p{font-size:16px;margin-bottom:10px;color:#475569}
     </div>
 </div>
 
+<div id="game-modal" class="game-overlay">
+    <div class="game-header">
+        <h3 id="g-title">Назва гри</h3>
+        <i class="fas fa-times fa-lg" onclick="closeGame()"></i>
+    </div>
+    <div class="game-content" id="g-canvas">
+        </div>
+</div>
+
 <div class="top-nav">
     <div class="nav-tab active" onclick="nt(this,'s1')"><i class="fas fa-home"></i> Вступ</div>
     <div class="nav-tab" onclick="nt(this,'s2')"><i class="fas fa-book"></i> Теорія</div>
     <div class="nav-tab" onclick="nt(this,'s3')"><i class="fas fa-layer-group"></i> Маслоу</div>
-    <div class="nav-tab" onclick="nt(this,'s-game')"><i class="fas fa-gamepad"></i> Гра: Інвестор</div>
+    <div class="nav-tab" onclick="nt(this,'s-games')"><i class="fas fa-gamepad"></i> Game Hub</div>
     <div class="nav-tab" onclick="nt(this,'s4')"><i class="fas fa-calculator"></i> Кейс</div>
     <div class="nav-tab" onclick="nt(this,'s5')"><i class="fas fa-check-double"></i> Тест (12б)</div>
     <div class="nav-tab" onclick="nt(this,'s-lead')"><i class="fas fa-trophy"></i> Рейтинг</div>
@@ -94,7 +115,7 @@ p{font-size:16px;margin-bottom:10px;color:#475569}
         </div>
         <h1>Потреби та інтереси родини</h1>
         <div class="card" style="border-left:6px solid var(--gold); background: #fffbeb">
-            <p style="font-style:italic; font-size:17px; color:#92400e">"Якщо ви цінуєте те, що у вас уже є, ви завжди отримуватимете ще більше. Якщо думаєте лише про те, чого у вас немає — вам ніколи не буде достатньо."</p>
+            <p style="font-style:italic; font-size:17px; color:#92400e">"Якщо ви цінуєте те, що у вас уже є, ви завжди отримуватимете ще більше..."</p>
             <p style="text-align:right; margin:0"><b>— Опра Вінфрі</b></p>
         </div>
         <div class="card">
@@ -102,8 +123,8 @@ p{font-size:16px;margin-bottom:10px;color:#475569}
             <ul style="padding-left:20px; color:#475569">
                 <li style="margin-bottom:8px">Розрізняти матеріальні та духовні потреби.</li>
                 <li style="margin-bottom:8px">Проаналізувати піраміду А. Маслоу.</li>
-                <li style="margin-bottom:8px">Сформувати власну стратегію фінансової безпеки.</li>
-                <li>Виграти в симуляторі сімейного бюджету.</li>
+                <li style="margin-bottom:8px">Виграти 5 фінансових викликів.</li>
+                <li>Скласти підсумковий тест.</li>
             </ul>
         </div>
     </section>
@@ -111,49 +132,73 @@ p{font-size:16px;margin-bottom:10px;color:#475569}
     <section id="s2" class="section">
         <h2>Що таке потреба?</h2>
         <div class="card">
-            <p><b>Потреба</b> — це внутрішній стан психологічного або фізіологічного відчуття браку чого-небудь, що спрямовує поведінку на його поповнення.</p>
+            <p><b>Потреба</b> — це внутрішній стан психологічного або фізіологічного відчуття браку чого-небудь.</p>
         </div>
-        
         <div class="card" style="background:#eff6ff; border-color:#bfdbfe">
-            <h3 style="color:var(--p); margin-bottom:10px">1. Матеріальні (Економічні)</h3>
-            <p>Мають речову форму. Це товари та послуги, які можна купити: їжа, смартфон, квиток у кіно, ремонт квартири.</p>
+            <h3 style="color:var(--p); margin-bottom:10px">Матеріальні</h3>
+            <p>Те, що купуємо: їжа, смартфон, житло.</p>
         </div>
-        
         <div class="card" style="background:#f0fdf4; border-color:#bbf7d0">
-            <h3 style="color:var(--suc); margin-bottom:10px">2. Нематеріальні (Духовні)</h3>
-            <p>Потреби в освіті, творчості, спілкуванні, повазі та любові. Їх неможливо просто "покласти в сумку".</p>
-        </div>
-        <div class="card" style="background:#fff1f2; border-color:#fecdd3">
-            <p style="color:var(--err); font-weight:bold; margin:0"><i class="fas fa-exclamation-triangle"></i> Головний парадокс: Ресурси (гроші, час, земля) завжди обмежені, а потреби людини — безмежні!</p>
+            <h3 style="color:var(--suc); margin-bottom:10px">Нематеріальні</h3>
+            <p>Емоції, освіта, дружба, повага.</p>
         </div>
     </section>
 
     <section id="s3" class="section">
         <h2>Піраміда Абрагама Маслоу</h2>
-        <p>Натискай на рівні, щоб вивчити ієрархію:</p>
-        
         <div class="p-stack">
-            <div class="p-item" style="background:#7c3aed; width:45%; margin:0 auto; z-index:5" onclick="showM(5)">5. САМОВИРАЖЕННЯ</div>
-            <div class="p-item" style="background:#2563eb; width:60%; margin:0 auto; z-index:4" onclick="showM(4)">4. ВИЗНАННЯ ТА ПОВАГА</div>
-            <div class="p-item" style="background:#059669; width:75%; margin:0 auto; z-index:3" onclick="showM(3)">3. СОЦІАЛЬНІ ПОТРЕБИ</div>
-            <div class="p-item" style="background:#d97706; width:85%; margin:0 auto; z-index:2" onclick="showM(2)">2. ПОТРЕБА В БЕЗПЕЦІ</div>
-            <div class="p-item" style="background:#dc2626; width:100%; z-index:1" onclick="showM(1)">1. ФІЗІОЛОГІЧНІ ПОТРЕБИ</div>
+            <div class="p-item" style="background:#7c3aed; width:45%; margin:0 auto" onclick="showM(5)">5. САМОВИРАЖЕННЯ</div>
+            <div class="p-item" style="background:#2563eb; width:60%; margin:0 auto" onclick="showM(4)">4. ПОВАГА</div>
+            <div class="p-item" style="background:#059669; width:75%; margin:0 auto" onclick="showM(3)">3. СОЦІАЛЬНІ</div>
+            <div class="p-item" style="background:#d97706; width:85%; margin:0 auto" onclick="showM(2)">2. БЕЗПЕКА</div>
+            <div class="p-item" style="background:#dc2626; width:100%" onclick="showM(1)">1. ФІЗІОЛОГІЯ</div>
         </div>
-        <div id="m-info" class="card" style="display:none; animation:fadeIn 0.3s"></div>
+        <div id="m-info" class="card" style="display:none"></div>
     </section>
 
-    <section id="s-game" class="section">
-        <h2><i class="fas fa-coins"></i> Гра: Сімейний Інвестор</h2>
-        <div class="game-area">
-            <div class="stat-grid">
-                <div class="stat-card">Капітал: <span class="stat-val" id="g-money">1000</span></div>
-                <div class="stat-card">Щастя: <span class="stat-val" id="g-happy">50</span></div>
+    <section id="s-games" class="section">
+        <h2><i class="fas fa-th-large"></i> PlayFin Hub</h2>
+        <p>Пройди всі ігри, щоб отримати статус Майстра</p>
+        <div class="game-hub">
+            <div class="game-item" onclick="openGame(1)">
+                <div class="game-icon" style="background:var(--gold)"><i class="fas fa-seedling"></i></div>
+                <div class="game-info">
+                    <h4>Фермер-Інвестор</h4>
+                    <p>Посади капітал та збери врожай прибутку.</p>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
             </div>
-            <p id="g-desc" style="color:#cbd5e1; font-size:14px; min-height:60px">Виберіть дію, щоб збалансувати бюджет родини.</p>
-            <div id="g-actions">
-                <button class="btn" style="background:#475569; margin-bottom:8px" onclick="playGame(1)">Купити акції (-300 грн, +5% шанс)</button>
-                <button class="btn" style="background:#475569; margin-bottom:8px" onclick="playGame(2)">Відпустка (-500 грн, +30 щастя)</button>
-                <button class="btn" style="background:#475569" onclick="playGame(3)">Курси саморозвитку (-200 грн, +10 щастя)</button>
+            <div class="game-item" onclick="openGame(2)">
+                <div class="game-icon" style="background:var(--p)"><i class="fas fa-shopping-cart"></i></div>
+                <div class="game-info">
+                    <h4>Розумний Шопінг</h4>
+                    <p>Купи необхідне, не впавши в борги.</p>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
+            </div>
+            <div class="game-item" onclick="openGame(3)">
+                <div class="game-icon" style="background:var(--err)"><i class="fas fa-shield-alt"></i></div>
+                <div class="game-info">
+                    <h4>Захист Подушки</h4>
+                    <p>Вбережи заощадження від інфляції та спокус.</p>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
+            </div>
+            <div class="game-item" onclick="openGame(4)">
+                <div class="game-icon" style="background:var(--suc)"><i class="fas fa-chart-line"></i></div>
+                <div class="game-info">
+                    <h4>Біржа Мрій</h4>
+                    <p>Ризикуй на ринку акцій заради великої мети.</p>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
+            </div>
+            <div class="game-item" onclick="openGame(5)">
+                <div class="game-icon" style="background:var(--s)"><i class="fas fa-users"></i></div>
+                <div class="game-info">
+                    <h4>Сімейний Радник</h4>
+                    <p>Вирішуй конфлікти потреб членів родини.</p>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
             </div>
         </div>
     </section>
@@ -161,11 +206,10 @@ p{font-size:16px;margin-bottom:10px;color:#475569}
     <section id="s4" class="section">
         <h2>Практичний розрахунок</h2>
         <div class="card">
-            <h3><i class="fas fa-piggy-bank"></i> Фінансова подушка</h3>
-            <p>Фінансова подушка безпеки — це запас грошей, який дозволить родині прожити <b>від 3 до 6 місяців</b> у разі втрати доходу.</p>
-            <p style="background:#f8fafc; padding:10px; border-radius:10px; font-size:14px"><b>Задача:</b> Щомісячні витрати вашої родини складають 18,500 грн. Розрахуйте мінімальну суму подушки на 6 місяців.</p>
-            <input type="number" id="ans" class="auth-input" placeholder="Введіть суму (грн)...">
-            <button class="btn" onclick="checkCase()">Перевірити розрахунок</button>
+            <h3>Фінансова подушка</h3>
+            <p>Розрахуйте суму на 6 місяців, якщо витрати 18,500 грн/міс.</p>
+            <input type="number" id="ans" class="auth-input" placeholder="Сума...">
+            <button class="btn" onclick="checkCase()">Перевірити</button>
         </div>
     </section>
 
@@ -175,211 +219,215 @@ p{font-size:16px;margin-bottom:10px;color:#475569}
             <div class="timer-box"><i class="fas fa-star"></i> <span id="q-score">0</span></div>
         </div>
         <div id="q-box">
-            <h3 id="q-txt" style="margin-bottom:20px; font-size:18px"></h3>
+            <h3 id="q-txt"></h3>
             <div id="q-opts"></div>
         </div>
         <div id="q-res" style="display:none; text-align:center">
-            <div style="background:var(--p); color:#fff; padding:30px; border-radius:20px; margin-bottom:20px">
-                <p style="color:rgba(255,255,255,0.8); margin:0">Ваш результат:</p>
-                <h1 id="score-val" style="font-size:70px; margin:0; color:#fff">0</h1>
-                <p style="margin:0">балів з 12</p>
-            </div>
+            <h1 id="score-val" style="font-size:60px; color:var(--p)">0</h1>
             <div id="final-msg" class="card"></div>
-            <button class="btn" onclick="location.reload()">Спробувати ще раз</button>
+            <button class="btn" onclick="location.reload()">Повторити</button>
         </div>
     </section>
 
     <section id="s-lead" class="section">
-        <h2><i class="fas fa-list-ol"></i> Таблиця лідерів</h2>
-        <div class="card">
-            <table class="leader-table" id="leader-body">
-                </table>
-        </div>
+        <h2>Таблиця лідерів</h2>
+        <div class="card"><table class="leader-table" id="leader-body"></table></div>
     </section>
 </div>
 
 <script>
-let userName = "Гість";
-let score = 0;
-let currentQ = 0;
-let totalPoints = 0;
-
-// Питання (18 штук)
+let userName = "Гість", score = 0, currentQ = 0;
 const quizData = [
-    {q:"Потреба — це відчуття...", a:["Надлишку ресурсів","Нестачі чого-небудь","Повної задоволеності","Байдужості"], c:1},
-    {q:"Хто автор піраміди потреб?", a:["Зигмунд Фрейд","Абрагам Маслоу","Стів Джобс"], c:1},
-    {q:"До матеріальних потреб належить:", a:["Дружба","Освіта","Одяг","Визнання"], c:2},
-    {q:"Ресурси людства завжди є:", a:["Безмежними","Обмеженими","Безкоштовними","Вічними"], c:1},
-    {q:"Перший (фундаментальний) рівень Маслоу:", a:["Безпека","Соціальні зв'язки","Фізіологічні потреби"], c:2},
-    {q:"Що таке 'Фінансова подушка'?", a:["М'яка подушка з грошима","Резерв на випадок кризи","Кредитний ліміт","Інвестиції в акції"], c:1},
-    {q:"Мінімальний термін подушки безпеки:", a:["1 тиждень","1 місяць","3-6 місяців","5 років"], c:2},
-    {q:"Нематеріальна потреба — це:", a:["Автомобіль","Спілкування","Їжа","Житло"], c:1},
-    {q:"Який чинник впливає на потреби родини?", a:["Склад родини","Реклама","Стан здоров'я","Всі перелічені"], c:3},
-    {q:"Опра Вінфрі радить цінувати те, що...", a:["Буде в майбутньому","Є зараз","Мають сусіди"], c:1},
-    {q:"Потреби людини з часом:", a:["Зникають","Зменшуються","Постійно зростають","Не змінюються"], c:2},
-    {q:"Рівень 'Визнання' у Маслоу включає:", a:["Сон та їжу","Статус та повагу","Захист від злодіїв"], c:1},
-    {q:"Що з цього є обмеженим ресурсом?", a:["Час","Енергія","Гроші","Усе вищевказане"], c:3},
-    {q:"Яка потреба є первинною?", a:["Самореалізація","Освіта","Харчування","Кар'єра"], c:2},
-    {q:"Реклама впливає на:", a:["Тільки на дорослих","Формування нових потреб","Зменшення витрат"], c:1},
-    {q:"Витрати на ліки для літніх людей — це:", a:["Потреба у визнанні","Фізіологічна/Безпека","Соціальна потреба"], c:1},
-    {q:"Раціональне використання ресурсів — це:", a:["Витрачати все відразу","Економія та планування","Відмова від усіх потреб"], c:1},
-    {q:"Що стоїть на вершині піраміди Маслоу?", a:["Гроші","Сім'я","Саморозвиток/Самореалізація","Безпека"], c:2}
+    {q:"Потреба — це відчуття...", a:["Надлишку","Нестачі","Радості","Байдужості"], c:1},
+    {q:"Автор піраміди потреб?", a:["Фрейд","Маслоу","Юнг"], c:1},
+    {q:"Матеріальна потреба:", a:["Книги","Смартфон","Повага","Любов"], c:1},
+    {q:"Ресурси завжди:", a:["Безмежні","Обмежені","Безкоштовні"], c:1},
+    {q:"База Маслоу це:", a:["Безпека","Фізіологія","Статус"], c:1},
+    {q:"Подушка безпеки це:", a:["Інвестиції","Резерв на кризу","Кредит"], c:1},
+    {q:"Термін подушки:", a:["1 тиждень","3-6 місяців","10 років"], c:1},
+    {q:"Нематеріальна потреба:", a:["Їжа","Навчання","Одяг"], c:1},
+    {q:"Що впливає на потреби?", a:["Вік","Реклама","Стан здоров'я","Все разом"], c:3},
+    {q:"Опра Вінфрі радить:", a:["Купувати все","Цінувати те що є","Брати кредити"], c:1},
+    {q:"Потреби з часом:", a:["Зникають","Зростають","Стабільні"], c:1},
+    {q:"Рівень 'Повага' це:", a:["Сон","Статус","Житло"], c:1},
+    {q:"Обмежений ресурс це:", a:["Час","Сонце","Вітер"], c:0},
+    {q:"Первинна потреба:", a:["Кар'єра","Харчування","Інтернет"], c:1},
+    {q:"Реклама формує:", a:["Знижки","Нові потреби","Заощадження"], c:1},
+    {q:"Ліки для дідуся це:", a:["Статус","Фізіологія/Безпека","Творчість"], c:1},
+    {q:"Раціональність це:", a:["Витрачати все","Планування","Скупість"], c:1},
+    {q:"Вершина Маслоу:", a:["Гроші","Саморозвиток","Влада"], c:1}
 ];
 
 function startApp() {
-    const input = document.getElementById('user-name');
-    if(input.value.trim().length < 2) {
-        alert("Будь ласка, введи справжнє ім'я!");
-        return;
-    }
-    userName = input.value;
+    userName = document.getElementById('user-name').value || "Гість";
     document.getElementById('auth-overlay').style.display = 'none';
     updateLeaderboard();
 }
 
-function nt(el, id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+function nt(el,id) {
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     el.classList.add('active');
-    if(id === 's5' && currentQ === 0) loadQuestion();
-    window.scrollTo(0,0);
+    if(id==='s5'&&currentQ===0) loadQuestion();
 }
 
-function showM(level) {
+function showM(l) {
     const info = document.getElementById('m-info');
     info.style.display = 'block';
-    const texts = [
-        "",
-        "<b>1. Фізіологія:</b> Базові потреби для виживання (їжа, вода, сон, повітря). Без них неможливе життя.",
-        "<b>2. Безпека:</b> Стабільність, захист від загроз, наявність житла та стабільного доходу.",
-        "<b>3. Соціальні:</b> Потреба в любові, дружбі, приналежності до групи (сім'я, коло друзів).",
-        "<b>4. Визнання:</b> Потреба в повазі, успіху, досягненні певного статусу в суспільстві.",
-        "<b>5. Саморозвиток:</b> Найвищий рівень. Реалізація здібностей, творчість, пошук сенсу життя."
-    ];
-    info.innerHTML = texts[level];
+    const t = ["","1. Фізіологія: Їжа, вода.","2. Безпека: Житло, стабільність.","3. Соціальні: Друзі, любов.","4. Повага: Статус, визнання.","5. Саморозвиток: Творчість."];
+    info.innerHTML = `<b>${t[l]}</b>`;
 }
 
-// GAME LOGIC
-let gMoney = 1000;
-let gHappy = 50;
-function playGame(choice) {
-    const desc = document.getElementById('g-desc');
-    if(choice === 1) {
-        if(gMoney >= 300) {
-            let win = Math.random() > 0.5;
-            if(win) { gMoney += 600; desc.innerText = "Успіх! Акції виросли. Ви отримали +600 грн!"; }
-            else { gMoney -= 300; desc.innerText = "Ринковий спад. Ви втратили 300 грн."; }
-        } else alert("Недостатньо грошей!");
-    } else if(choice === 2) {
-        if(gMoney >= 500) { gMoney -= 500; gHappy += 30; desc.innerText = "Чудова відпустка! Рівень щастя родини зріс!"; }
-        else alert("Недостатньо грошей!");
-    } else if(choice === 3) {
-        if(gMoney >= 200) { gMoney -= 200; gHappy += 15; desc.innerText = "Нові знання — найкраща інвестиція!"; }
-        else alert("Недостатньо грошей!");
-    }
-    document.getElementById('g-money').innerText = gMoney;
-    document.getElementById('g-happy').innerText = gHappy;
-}
+/* GAME LOGIC HUB */
+let state = {money: 1000, day: 1, inventory: []};
 
-function checkCase() {
-    const val = document.getElementById('ans').value;
-    if(val == 111000) {
-        alert("Блискуче! 18,500 * 6 = 111,000 грн. Ви готові до фінансових викликів!");
-    } else {
-        alert("Не зовсім. Помножте місячні витрати (18,500) на 6 місяців.");
+function openGame(id) {
+    const modal = document.getElementById('game-modal');
+    const canvas = document.getElementById('g-canvas');
+    modal.style.display = 'flex';
+    state = {money: 1000, day: 1, inventory: []};
+    
+    if(id===1) {
+        document.getElementById('g-title').innerText = "Фермер-Інвестор";
+        renderFarmer();
+    } else if(id===2) {
+        document.getElementById('g-title').innerText = "Розумний Шопінг";
+        renderShop();
+    } else if(id===3) {
+        document.getElementById('g-title').innerText = "Захист Подушки";
+        renderShield();
+    } else if(id===4) {
+        document.getElementById('g-title').innerText = "Біржа Мрій";
+        renderStock();
+    } else if(id===5) {
+        document.getElementById('g-title').innerText = "Сімейний Радник";
+        renderFamily();
     }
 }
 
-// QUIZ ENGINE
-function shuffle(array) {
-    return array.sort(() => Math.random() - 0.5);
+function closeGame() { document.getElementById('game-modal').style.display = 'none'; }
+
+function renderFarmer() {
+    document.getElementById('g-canvas').innerHTML = `
+        <div class="stat-grid"><div class="stat-card">Гроші: <span id="gm">${state.money}</span></div><div class="stat-card">День: ${state.day}/5</div></div>
+        <p>Ціль: Зібрати 2000 грн до 5 дня.</p>
+        <button class="btn" onclick="farmAction(500)">Інвестувати в зерно (-500, шанс 70% на х2)</button>
+        <button class="btn" onclick="farmAction(0)" style="margin-top:10px; background:#64748b">Пропустити день</button>
+    `;
+}
+function farmAction(cost) {
+    if(state.money >= cost) {
+        state.money -= cost;
+        if(cost>0) state.money += Math.random() < 0.7 ? cost*2 : 0;
+        state.day++;
+        if(state.day > 5) {
+            alert(state.money >= 2000 ? "ПЕРЕМОГА! Ви успішний фермер!" : "ПРОГРАШ! Грошей замало.");
+            closeGame();
+        } else renderFarmer();
+    }
 }
 
+function renderShop() {
+    document.getElementById('g-canvas').innerHTML = `
+        <div class="stat-grid"><div class="stat-card">Гроші: <span id="gm">${state.money}</span></div></div>
+        <p>Ціль: Купити 3 товари (Їжа, Одяг, Книга) і лишити 200+ грн.</p>
+        <button class="btn" onclick="buy(300, 'Їжа')">Їжа (300)</button>
+        <button class="btn" onclick="buy(400, 'Одяг')">Одяг (400)</button>
+        <button class="btn" onclick="buy(200, 'Книга')">Книга (200)</button>
+        <p>Куплено: ${state.inventory.join(', ')}</p>
+    `;
+}
+function buy(p, n) {
+    if(state.money >= p && !state.inventory.includes(n)) {
+        state.money -= p; state.inventory.push(n);
+        if(state.inventory.length === 3) {
+            alert(state.money >= 200 ? "ПЕРЕМОГА! Раціонально!" : "ПРОГРАШ! Ви банкрут.");
+            closeGame();
+        } else renderShop();
+    }
+}
+
+function renderShield() {
+    document.getElementById('g-canvas').innerHTML = `
+        <div class="stat-grid"><div class="stat-card">Подушка: <span id="gm">${state.money}</span></div></div>
+        <p>Ціль: Утримати 800 грн під час кризи.</p>
+        <button class="btn" onclick="shield(1)">Покласти в банк (+100)</button>
+        <button class="btn" onclick="shield(2)">Витратити на розваги (-300)</button>
+    `;
+}
+function shield(a) {
+    state.money += (a===1) ? 100 : -300;
+    state.money -= 150; // Інфляція щохвилинно
+    if(state.money < 400) { alert("ПРОГРАШ! Подушка зникла."); closeGame(); }
+    else if(state.money >= 1200) { alert("ПЕРЕМОГА! Ви в безпеці!"); closeGame(); }
+    else renderShield();
+}
+
+function renderStock() {
+    document.getElementById('g-canvas').innerHTML = `
+        <p>Капітал: ${state.money}</p>
+        <button class="btn" onclick="trade(1)">Купити Акції IT (Ризик високий)</button>
+        <button class="btn" onclick="trade(2)">Купити Облігації (Ризик низький)</button>
+    `;
+}
+function trade(t) {
+    let r = Math.random();
+    if(t===1) state.money += (r>0.6) ? 500 : -600;
+    else state.money += (r>0.2) ? 100 : -50;
+    if(state.money >= 2000) { alert("ВИН! Ви мільйонер!"); closeGame(); }
+    else if(state.money <= 0) { alert("ЛОУЗ! Все втрачено."); closeGame(); }
+    else renderStock();
+}
+
+function renderFamily() {
+    document.getElementById('g-canvas').innerHTML = `
+        <p>Донька хоче ляльку, Тато - вудку. Грошей на одне.</p>
+        <button class="btn" onclick="famD(1)">Купити ляльку (Щастя дитини)</button>
+        <button class="btn" onclick="famD(2)">Купити вудку (Харчі в майбутньому)</button>
+    `;
+}
+function famD(c) {
+    alert(c===2 ? "ПЕРЕМОГА! Ви обрали інструмент виробництва!" : "ПРОГРАШ! Миттєва втіха перемогла.");
+    closeGame();
+}
+
+/* QUIZ */
 function loadQuestion() {
-    if(currentQ >= quizData.length) {
-        showResults();
-        return;
-    }
-    
-    const data = quizData[currentQ];
-    document.getElementById('q-num').innerText = `Питання ${currentQ + 1}/${quizData.length}`;
-    document.getElementById('q-txt').innerText = data.q;
-    
-    const container = document.getElementById('q-opts');
-    container.innerHTML = '';
-    
-    // Створюємо копію варіантів для перемішування
-    let options = data.a.map((text, index) => ({ text, index }));
-    options = shuffle(options);
-    
-    options.forEach(opt => {
-        const div = document.createElement('div');
-        div.className = 'opt';
-        div.innerText = opt.text;
-        div.onclick = function() {
-            const allOpts = container.querySelectorAll('.opt');
-            allOpts.forEach(o => o.style.pointerEvents = 'none');
-            
-            if(opt.index === data.c) {
-                div.classList.add('correct');
-                score++;
-                document.getElementById('q-score').innerText = score;
-            } else {
-                div.classList.add('wrong');
-            }
-            
-            setTimeout(() => {
-                currentQ++;
-                loadQuestion();
-            }, 800);
+    if(currentQ >= quizData.length) { showResults(); return; }
+    const d = quizData[currentQ];
+    document.getElementById('q-num').innerText = `Питання ${currentQ+1}/18`;
+    document.getElementById('q-txt').innerText = d.q;
+    const box = document.getElementById('q-opts'); box.innerHTML = '';
+    let opts = d.a.map((t,i)=>({t,i})).sort(()=>Math.random()-0.5);
+    opts.forEach(o=>{
+        const dv = document.createElement('div'); dv.className='opt'; dv.innerText=o.t;
+        dv.onclick=()=>{
+            if(o.i===d.c){ dv.classList.add('correct'); score++; } else dv.classList.add('wrong');
+            setTimeout(()=>{currentQ++; loadQuestion()}, 600);
         };
-        container.appendChild(div);
+        box.appendChild(dv);
     });
 }
-
-function showResults() {
-    document.getElementById('q-box').style.display = 'none';
-    document.getElementById('q-res').style.display = 'block';
-    
-    let finalGrade = Math.round((score / quizData.length) * 12);
-    document.getElementById('score-val').innerText = finalGrade;
-    
-    const msg = document.getElementById('final-msg');
-    if(finalGrade >= 10) msg.innerText = "Вітаємо! Ви справжній фінансовий експерт!";
-    else if(finalGrade >= 7) msg.innerText = "Гарний результат, але є куди рости.";
-    else msg.innerText = "Варто ще раз перечитати теорію.";
-    
-    saveScore(userName, finalGrade);
+function showResults(){
+    document.getElementById('q-box').style.display='none';
+    document.getElementById('q-res').style.display='block';
+    let g = Math.round((score/18)*12);
+    document.getElementById('score-val').innerText = g;
+    saveScore(userName, g);
 }
-
-function saveScore(name, grade) {
-    let leaders = JSON.parse(localStorage.getItem('finLeaders') || '[]');
-    leaders.push({name, grade, date: new Date().toLocaleDateString()});
-    leaders.sort((a,b) => b.grade - a.grade);
-    localStorage.setItem('finLeaders', JSON.stringify(leaders.slice(0, 10)));
+function checkCase(){ if(document.getElementById('ans').value==111000) alert("Правильно!"); else alert("Помилка"); }
+function saveScore(n,g){
+    let l = JSON.parse(localStorage.getItem('finL')||'[]');
+    l.push({n,g}); l.sort((a,b)=>b.g-a.g);
+    localStorage.setItem('finL', JSON.stringify(l.slice(0,10)));
     updateLeaderboard();
 }
-
-function updateLeaderboard() {
-    const leaders = JSON.parse(localStorage.getItem('finLeaders') || '[]');
-    const body = document.getElementById('leader-body');
-    if(leaders.length === 0) {
-        body.innerHTML = "<tr><td colspan='3' style='text-align:center'>Поки що порожньо. Будь першим!</td></tr>";
-        return;
-    }
-    body.innerHTML = "<tr><th>№</th><th>Ім'я</th><th>Бал</th></tr>";
-    leaders.forEach((l, i) => {
-        const row = `<tr><td class="rank">${i+1}</td><td>${l.name}</td><td><b>${l.grade}</b></td></tr>`;
-        body.innerHTML += row;
-    });
+function updateLeaderboard(){
+    let l = JSON.parse(localStorage.getItem('finL')||'[]');
+    let b = document.getElementById('leader-body');
+    b.innerHTML = l.map((u,i)=>`<tr><td>${i+1}</td><td>${u.n}</td><td>${u.g}</td></tr>`).join('');
 }
-
-// Timer mock
-setInterval(() => {
-    // Просто візуальний ефект для реалістичності
-}, 1000);
-
 </script>
 </body>
 </html>
