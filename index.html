@@ -88,6 +88,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
         <p id="auth-warn" style="font-size:13px; color:var(--err); font-weight:bold; margin-top:5px"></p>
         <input type="text" id="user-name" class="auth-input" placeholder="Введіть ваше Прізвище та Ім'я">
         <button class="btn" onclick="startApp()">Авторизуватися <i class="fas fa-sign-in-alt"></i></button>
+        <div style="margin-top:15px; font-size:10px; color:#ccc;">SESSION_RESET_ACTIVE: TRUE</div>
     </div>
 </div>
 
@@ -212,6 +213,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 <script>
 // --- КОНФІГУРАЦІЯ FIREBASE ---
 const DB_URL = "https://progekkkt-default-rtdb.firebaseio.com/leaderboard.json";
+
+// --- ОБНУЛЕННЯ ДЛЯ ТЕСТУВАННЯ ---
+// Очищаємо локальні спроби при кожному оновленні для зручності тестування
+localStorage.clear(); 
+console.log("System: LocalStorage cleared for testing session.");
 
 let userName = "", score = 0, currentQ = 0, canClick = true, finalGradeInternal = 0;
 let testStarted = false;
@@ -381,6 +387,7 @@ function startApp() {
     document.getElementById('auth-overlay').style.display = 'none';
     playSnd('snd-click');
     updateLeaderboard();
+    console.log("App Started for:", userName);
 }
 
 function nt(el,id) {
@@ -414,7 +421,7 @@ function showM(l) {
     const texts = [ "",
         "<h3>1. Фізіологічні потреби</h3><p>Це фундамент нашого життя. Сюди відноситься потреба в їжі, воді, сні та диханні. З точки зору фінансів, це обов'язкові витрати, без яких неможливо існувати. У бюджеті родини це зазвичай 50% усіх витрат. Важливо розуміти різницю між 'потребою в їжі' та 'потребою в дорогому ресторані'.</p>",
         "<h3>2. Потреба в безпеці</h3><p>Коли ми ситі, ми хочемо бути впевнені у завтрашньому дні. Це захист від фізичних загроз, фінансова стабільність (та сама 'фінансова подушка'), наявність житла та медичне страхування. Це потреба в порядку, законі та передбачуваності життя. Безпека — це спокій вашої родини, який купується через страхування та заощадження.</p>",
-        "<h3>3. Соціальні потреби</h3><p>Людина — істота соціальна. Нам потрібно відчувати приналежність до групи, любов та дружбу. Сюди відносяться сімейні стосунки, спілкування з друзями, участь у громаді. Фінансово це може виражатися у витратах на подарунки, спільні поїздки або хобі. Часто маркетологи грають на цьому, нав'язуючи товари як засіб 'стати частиною крутої компанії'.</p>",
+        "<h3>3. Соціальні потреби</h3><p>Людина — істота соціальна. Нам потрібно відчувати приналежність до групи, LOVE та дружбу. Сюди відносяться сімейні стосунки, спілкування з друзями, участь у громаді. Фінансово це може виражатися у витратах на подарунки, спільні поїздки або хобі. Часто маркетологи грають на цьому, нав'язуючи товари як засіб 'стати частиною крутої компанії'.</p>",
         "<h3>4. Потреба у визнанні</h3><p>Це бажання бути шанованим, мати високий статус та досягнення. Ми хочемо, щоб оточуючі бачили нашу компетентність. Часто на цьому рівні люди потрапляють у пастки маркетингу, купуючи дорогі брендові речі 'для статусу' в кредит, що руйнує бюджет. Справжнє визнання приходить через професіоналізм, а не через логотип на сумці.</p>",
         "<h3>5. Самоактуалізація</h3><p>Вершина піраміди — це реалізація ваших талантів та здібностей. Це творчість, саморозвиток, пошук сенсу життя. Коли всі нижні рівні закриті, людина прагне стати тим, ким вона може бути за своєю природою. Це інвестиції в освіту, досвід, подорожі та духовний розвиток. Це найвищий рівень свободи особистості.</p>"
     ];
@@ -592,7 +599,13 @@ function showIntermediateResults() {
 function retryQuiz() {
     let att = parseInt(localStorage.getItem('att_'+userName) || 0);
     localStorage.setItem('att_'+userName, att + 1);
-    location.reload();
+    currentQ = 0;
+    score = 0;
+    document.getElementById('q-box').style.display = 'block';
+    document.getElementById('q-header-block').style.display = 'flex';
+    document.getElementById('q-res').style.display = 'none';
+    testStarted = true;
+    loadQuestion();
 }
 
 // --- ІНТЕГРАЦІЯ З FIREBASE REALTIME DB ---
@@ -604,7 +617,8 @@ async function finishAndSave() {
     const resultData = {
         name: userName,
         grade: finalGradeInternal,
-        date: new Date().toLocaleString('uk-UA')
+        date: new Date().toLocaleString('uk-UA'),
+        ts: Date.now()
     };
 
     try {
@@ -644,11 +658,8 @@ async function updateLeaderboard() {
             return;
         }
 
-        // Конвертація об'єкту Firebase у масив
         let list = Object.keys(data).map(key => data[key]);
-        
-        // Сортування за балами
-        list.sort((a,b) => b.grade - a.grade);
+        list.sort((a,b) => b.grade - a.grade || b.ts - a.ts);
         
         b.innerHTML = '<tr><th>М</th><th>Гравець</th><th>Бал</th></tr>' + 
             list.map((u,i)=>`<tr><td>${i+1}</td><td>${u.name}</td><td style="font-weight:bold; color:var(--p)">${u.grade}</td></tr>`).join('');
@@ -659,9 +670,20 @@ async function updateLeaderboard() {
 }
 
 function checkCase() {
-    if(document.getElementById('ans').value == 111000) { alert("Правильно!"); playSnd('snd-win'); }
-    else { alert("Помилка (18500 * 6)"); playSnd('snd-err'); }
+    let val = document.getElementById('ans').value;
+    if(val == 111000) { 
+        alert("Правильно! 18,500 * 6 = 111,000 грн."); 
+        playSnd('snd-win'); 
+    } else { 
+        alert("Помилка. Спробуй ще раз (18500 * 6)"); 
+        playSnd('snd-err'); 
+    }
 }
+
+// Додаткова логіка ініціалізації для надійності
+window.onload = () => {
+    console.log("System UI Ready.");
+};
 </script>
 </body>
 </html>
