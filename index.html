@@ -2,229 +2,187 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>FIN-MASTER: Потреби Родини (Повний курс)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>FIN-MASTER MOBILE 2026</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
 <style>
-:root{--p:#2563eb;--s:#0f172a;--acc:#f59e0b;--suc:#10b981;--err:#ef4444;--bg:#f1f5f9;--white:#fff;--sh:0 15px 35px rgba(0,0,0,0.1)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--s);overflow-x:hidden}
-/* NAVIGATION */
-.sidebar{position:fixed;left:0;top:0;height:100vh;width:300px;background:var(--s);color:#fff;padding:40px 20px;z-index:1000;display:flex;flex-direction:column}
-.nav-btn{padding:18px;margin-bottom:12px;border-radius:15px;cursor:pointer;display:flex;align-items:center;gap:15px;transition:0.4s;color:#94a3b8;border:1px solid transparent}
-.nav-btn:hover,.nav-btn.active{background:rgba(37,99,235,0.15);color:var(--p);border-color:var(--p)}
-.nav-btn.active{background:var(--p);color:#fff}
-/* MAIN LAYOUT */
-.main{margin-left:300px;padding:50px;max-width:1400px;transition:0.5s}
-.section{display:none;animation:slideUp 0.6s cubic-bezier(0.23,1,0.32,1)}
+:root{--p:#2563eb;--s:#0f172a;--bg:#ffffff;--card:#f8fafc;--txt:#1e293b;--suc:#10b981}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6}
+
+/* MOBILE NAV */
+.top-nav{position:sticky;top:0;background:var(--s);color:#fff;padding:15px;z-index:1000;display:flex;overflow-x:auto;gap:10px;scrollbar-width:none}
+.top-nav::-webkit-scrollbar{display:none}
+.nav-tab{padding:8px 15px;background:rgba(255,255,255,0.1);border-radius:20px;white-space:nowrap;font-size:13px;font-weight:600;transition:0.3s}
+.nav-tab.active{background:var(--p);color:#fff}
+
+/* CONTENT CONTAINER */
+.container{padding:20px;max-width:100%}
+.section{display:none;animation:fadeIn 0.4s ease}
 .section.active{display:block}
-@keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-/* COMPONENTS */
-.card{background:var(--white);padding:40px;border-radius:30px;box-shadow:var(--sh);margin-bottom:40px;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;width:8px;height:100%;background:var(--p)}
-.h-xl{font-size:4rem;font-weight:900;line-height:1;margin-bottom:30px;font-family:'Playfair Display',serif}
-.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px}
-/* PYRAMID PRO */
-.pyramid-container{margin:60px auto;position:relative;width:100%;max-width:800px;height:600px}
-.level-wrap{position:absolute;left:50%;transform:translateX(-50%);cursor:pointer;transition:0.5s;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;text-align:center;box-shadow:0 10px 20px rgba(0,0,0,0.2)}
-.level-wrap:hover{transform:translateX(-50%) scale(1.08) rotate(-1deg);z-index:100}
-.lv5{top:0;width:200px;height:100px;background:#8b5cf6;clip-path:polygon(50% 0%, 0% 100%, 100% 100%)}
-.lv4{top:110px;width:350px;height:100px;background:#3b82f6;clip-path:polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)}
-.lv3{top:220px;width:500px;height:100px;background:#10b981;clip-path:polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%)}
-.lv2{top:330px;width:650px;height:100px;background:#f59e0b;clip-path:polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)}
-.lv1{top:440px;width:800px;height:100px;background:#ef4444;clip-path:polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%)}
-/* INTERACTIVE ELEMENTS */
-.timer-box{background:var(--s);color:var(--acc);padding:20px;border-radius:20px;display:inline-flex;align-items:center;gap:15px;font-family:'Roboto Mono',monospace;font-size:1.5rem;margin-bottom:20px}
-.case-study{background:#fff7ed;border:2px dashed var(--acc);padding:30px;border-radius:20px}
-.quiz-opt{padding:25px;border:3px solid #e2e8f0;border-radius:20px;margin-bottom:15px;cursor:pointer;transition:0.3s;display:flex;align-items:center;gap:20px;font-size:1.2rem;font-weight:600}
-.quiz-opt:hover{border-color:var(--p);background:#eff6ff}
-.correct{background:#dcfce7 !important;border-color:var(--suc) !important}
-.wrong{background:#fee2e2 !important;border-color:var(--err) !important}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* UI ELEMENTS */
+.card{background:var(--card);padding:20px;border-radius:15px;margin-bottom:20px;border:1px solid #e2e8f0}
+h1{font-size:24px;margin-bottom:15px;color:var(--s);line-height:1.2}
+h2{font-size:20px;margin-bottom:12px;color:var(--p)}
+p{font-size:16px;margin-bottom:10px}
+.badge{display:inline-block;padding:4px 10px;background:var(--p);color:#fff;border-radius:5px;font-size:12px;font-weight:700;margin-bottom:10px}
+
+/* PYRAMID MOBILE */
+.p-stack{display:flex;flex-direction:column;gap:5px;margin:20px 0}
+.p-item{padding:15px;color:#fff;font-weight:900;text-align:center;border-radius:8px;font-size:14px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+
+/* QUIZ MOBILE */
+.opt{padding:18px;background:#fff;border:2px solid #e2e8f0;border-radius:12px;margin-bottom:10px;font-weight:600;display:flex;align-items:center;gap:10px}
+.opt.correct{background:#dcfce7;border-color:var(--suc)}
+.opt.wrong{background:#fee2e2;border-color:#ef4444}
+.btn{width:100%;padding:15px;background:var(--p);color:#fff;border:none;border-radius:12px;font-weight:700;font-size:16px;margin-top:10px}
+
+.timer{font-family:monospace;background:var(--s);color:#fbbf24;padding:5px 10px;border-radius:5px;float:right}
 </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <div style="margin-bottom:50px"><h2 style="font-family:'Playfair Display'">FIN-EDU <span style="color:var(--p)">2026</span></h2><p style="font-size:0.8rem;color:#64748b">АКАДЕМІЧНИЙ ПЛАН УРОКУ</p></div>
-    <div class="nav-btn active" onclick="nav(this,'intro')"><i class="fas fa-play"></i> 00-10: Вступ та Цитата</div>
-    <div class="nav-btn" onclick="nav(this,'theory')"><i class="fas fa-brain"></i> 10-25: Глибока Теорія</div>
-    <div class="nav-btn" onclick="nav(this,'maslow')"><i class="fas fa-pyramid"></i> 25-40: Практикум Маслоу</div>
-    <div class="nav-btn" onclick="nav(this,'workshop')"><i class="fas fa-tools"></i> 40-50: Кейс-Лабораторія</div>
-    <div class="nav-btn" onclick="nav(this,'exam')"><i class="fas fa-graduation-cap"></i> 50-60: Екзамен</div>
-    <div style="margin-top:auto;text-align:center"><div class="badge" style="background:var(--p);padding:10px;border-radius:10px">Клас: 8-Б НУШ</div></div>
+<div class="top-nav">
+    <div class="nav-tab active" onclick="nt(this,'s1')">0-10: Вступ</div>
+    <div class="nav-tab" onclick="nt(this,'s2')">10-25: Теорія</div>
+    <div class="nav-tab" onclick="nt(this,'s3')">25-40: Маслоу</div>
+    <div class="nav-tab" onclick="nt(this,'s4')">40-50: Кейс</div>
+    <div class="nav-tab" onclick="nt(this,'s5')">50-60: Тест</div>
 </div>
 
-<div class="main">
-    <section id="intro" class="section active">
-        <div class="timer-box"><i class="fas fa-stopwatch"></i> <span id="t1">10:00</span></div>
-        <h1 class="h-xl">Потреби та інтереси родини</h1>
+<div class="container">
+    <section id="s1" class="section active">
+        <span class="timer">10:00</span>
+        <span class="badge">ТЕМА 4</span>
+        <h1>Потреби та інтереси родини</h1>
+        <div class="card" style="border-left:5px solid #f59e0b">
+            <p style="font-style:italic; font-size:18px">"Якщо ви цінуєте те, що у вас уже є, ви завжди отримуватимете ще більше..."</p>
+            <p style="text-align:right"><b>— Опра Вінфрі</b></p>
+        </div>
         <div class="card">
-            <h2 style="margin-bottom:20px">Філософський старт</h2>
-            <blockquote style="font-size:2rem;font-family:'Playfair Display';line-height:1.4;color:var(--s)">
-                "Якщо ви цінуєте те, що у вас уже є в житті, ви завжди отримуватимете ще більше. Якщо думаєте лише про те, чого у вас немає, — вам ніколи не буде достатньо."
-            </blockquote>
-            <p style="margin-top:20px;text-align:right;font-weight:900">— Опра Вінфрі</p>
+            <h2>Твоя мета сьогодні:</h2>
+            <ul style="padding-left:20px">
+                <li>Розуміти види потреб</li>
+                <li>Знати ієрархію Маслоу</li>
+                <li>Вміти створювати «фінансову подушку»</li>
+            </ul>
         </div>
-        <div class="case-study">
-            <h3>Завдання для обговорення (5 хв):</h3>
-            <p>Які потреби ви мали, збираючись сьогодні до школи? Чи замислювалися ви, які потреби є у ваших батьків прямо зараз?</p>
-        </div>
-            </section>
-
-    <section id="theory" class="section">
-        <div class="timer-box"><i class="fas fa-stopwatch"></i> <span>15:00</span></div>
-        <h2>Глибинний аналіз термінів</h2>
-        <div class="grid-3">
-            <div class="card">
-                <h3 style="color:var(--p)">Що таке потреба?</h3>
-                <p>Це відчуття нестачі, брак чого-небудь, що є необхідним для підтримання життєдіяльності й розвитку особистості та суспільства загалом.</p>
-            </div>
-            <div class="card">
-                <h3 style="color:var(--suc)">Матеріальні</h3>
-                <p>Ті, що можна купити за гроші: добротний одяг, комфорт у домі, сучасна техніка, медичні послуги.</p>
-                            </div>
-            <div class="card">
-                <h3 style="color:var(--acc)">Нематеріальні</h3>
-                <p>Емоції, взаємодія, стосунки, самореалізація та духовні цінності, які неможливо виміряти грошима.</p>
-            </div>
-        </div>
-        <div class="card" style="border-left:8px solid var(--err)">
-            <h3>Золоте правило економіки</h3>
-            <p style="font-size:1.5rem">Потреби людини <b>БЕЗМЕЖНІ</b>, а ресурси (час, гроші, природні багатства) — завжди <b>ОБМЕЖЕНІ</b>.</p>
-        </div>
-            </section>
-
-    <section id="maslow" class="section">
-        <h2 style="text-align:center">Практикум: Піраміда Абрагама Маслоу</h2>
-        <p style="text-align:center;margin-bottom:40px">Клацніть на сектор для глибокого вивчення</p>
         
-                
-        <div class="pyramid-container">
-            <div class="level-wrap lv5" onclick="showInfo(5)">САМОРЕАЛІЗАЦІЯ</div>
-            <div class="level-wrap lv4" onclick="showInfo(4)">ВИЗНАННЯ</div>
-            <div class="level-wrap lv3" onclick="showInfo(3)">СОЦІАЛЬНІ</div>
-            <div class="level-wrap lv2" onclick="showInfo(2)">БЕЗПЕКА</div>
-            <div class="level-wrap lv1" onclick="showInfo(1)">ФІЗІОЛОГІЯ</div>
-        </div>
-        <div id="m-info" class="card" style="margin-top:20px;background:var(--s);color:#fff;display:none"></div>
     </section>
 
-    <section id="workshop" class="section">
-        <h2>Лабораторія рішень: "Фінансова подушка"</h2>
-        <div class="grid-3">
-            <div class="card" style="grid-column: span 2">
-                <h3>Завдання: Розрахунок стабільності</h3>
-                <p>Згідно з програмою НУШ, родина має формувати «фінансову подушку безпеки» для стійкості в разі непередбачуваних обставин.</p>
-                <div style="background:#f1f5f9;padding:20px;border-radius:15px;margin-top:20px">
-                    <p><b>Кейс:</b> Витрати родини — 20,000 грн/міс. Скільки потрібно заощадити на 6 місяців?</p>
-                    <input type="number" id="calc" style="width:100%;padding:15px;margin-top:10px;border-radius:10px;border:1px solid #ccc">
-                    <button class="nav-btn active" style="margin-top:10px" onclick="checkCalc()">Перевірити розрахунок</button>
-                </div>
-            </div>
-            <div class="card">
-                <h3>Чинники потреб</h3>
-                <ul style="margin-left:20px">
-                    <li>Вік та склад родини</li>
-                    <li>Стан здоров'я</li>
-                    <li>Освітні та професійні цілі</li>
-                </ul>
-                            </div>
-        </div>
-    </section>
-
-    <section id="exam" class="section">
+    <section id="s2" class="section">
+        <span class="timer">15:00</span>
+        <h2>Що таке потреба?</h2>
         <div class="card">
-            <h2>Підсумковий іспит (Сертифікація)</h2>
-            <div id="quiz-area">
-                <h3 id="q-txt" style="margin-bottom:30px"></h3>
-                <div id="opts"></div>
-            </div>
-            <div id="results" style="display:none;text-align:center">
-                <h1 id="final-score" style="font-size:5rem;color:var(--p)">0/12</h1>
-                <p id="grade-msg"></p>
-                <button class="nav-btn active" onclick="location.reload()">Перезапустити систему</button>
-            </div>
+            <p><b>Потреба</b> — це відчуття нестачі чого-небудь, необхідного для життя та розвитку.</p>
+        </div>
+        
+        <h2>Види потреб:</h2>
+        <div class="card" style="background:#eff6ff">
+            <h3 style="color:var(--p)">1. Матеріальні</h3>
+            <p>Те, що купуємо за гроші: їжа, одяг, житло, техніка.</p>
+        </div>
+        
+        <div class="card" style="background:#f0fdf4">
+            <h3 style="color:var(--suc)">2. Нематеріальні</h3>
+            <p>Емоції, стосунки, навчання, самореалізація.</p>
+        </div>
+        <p style="color:#ef4444; font-weight:bold">Запам'ятай: Ресурси обмежені, а потреби — безмежні!</p>
+    </section>
+
+    <section id="s3" class="section">
+        <span class="timer">15:00</span>
+        <h2>Піраміда Маслоу</h2>
+        <p>Клацни на рівень, щоб дізнатися деталі:</p>
+        
+        <div class="p-stack">
+            <div class="p-item" style="background:#8b5cf6; width:50%; margin:0 auto" onclick="alert('5. САМОРЕАЛІЗАЦІЯ: Творчість, цілі.')">5. САМОРОЗВИТОК</div>
+            <div class="p-item" style="background:#3b82f6; width:65%; margin:0 auto" onclick="alert('4. ВИЗНАННЯ: Успіх, статус, повага.')">4. ВИЗНАННЯ</div>
+            <div class="p-item" style="background:#10b981; width:80%; margin:0 auto" onclick="alert('3. СОЦІАЛЬНІ: Родина, друзі, любов.')">3. СОЦІАЛЬНІ</div>
+            <div class="p-item" style="background:#f59e0b; width:90%; margin:0 auto" onclick="alert('2. БЕЗПЕКА: Гроші, житло, здоров\'я.')">2. БЕЗПЕКА</div>
+            <div class="p-item" style="background:#ef4444; width:100%" onclick="alert('1. ФІЗІОЛОГІЯ: Їжа, вода, сон.')">1. ФІЗІОЛОГІЯ</div>
+        </div>
+        <div class="card">
+            <p><b>Чинники впливу:</b> склад родини, вік, стан здоров'я, реклама.</p>
+        </div>
+    </section>
+
+    <section id="s4" class="section">
+        <span class="timer">10:00</span>
+        <h2>Практична лабораторія</h2>
+        <div class="card">
+            <h3>Завдання: Подушка безпеки</h3>
+            <p>Родина витрачає 15,000 грн на місяць. Яка сума потрібна для "подушки" на 6 місяців?</p>
+            <input type="number" id="ans" placeholder="Введіть суму..." style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #ccc">
+            <button class="btn" onclick="checkA()">Перевірити розрахунок</button>
+        </div>
+        
+    </section>
+
+    <section id="s5" class="section">
+        <h2>Підсумковий тест (12 балів)</h2>
+        <div id="q-box">
+            <h3 id="q-txt" style="margin-bottom:20px"></h3>
+            <div id="q-opts"></div>
+        </div>
+        <div id="q-res" style="display:none; text-align:center">
+            <h1 id="score-val" style="font-size:60px; color:var(--p)">0</h1>
+            <p>Твій бал за урок. Можеш показати вчителю!</p>
+            <button class="btn" onclick="location.reload()">Повторити</button>
         </div>
     </section>
 </div>
 
 <script>
-// NAVIGATION
-function nav(btn,id){
+function nt(el,id){
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
+    el.classList.add('active');
+    window.scrollTo(0,0);
 }
 
-// MASLOW INFO
-function showInfo(lvl){
-    const info = document.getElementById('m-info');
-    info.style.display = 'block';
-    const data = [
-        "",
-        "<b>Фізіологічні потреби:</b> Повітря, їжа, вода, сон. Фундамент життя.",
-        "<b>Потреби в безпеці:</b> Здоров'я, стабільний дохід, власний дах над головою, захист майна.",
-        "<b>Соціальні потреби:</b> Дружба, любов, спілкування, належність до родини чи групи.",
-        "<b>Потреби у визнанні:</b> Успіх, статус, повага оточуючих, престиж.",
-        "<b>Самореалізація:</b> Досягнення найвищих цілей, розвиток талантів, творчість."
-    ];
-    info.innerHTML = `<h3>Рівень ${lvl}</h3><p style="font-size:1.3rem">${data[lvl]}</p>`;
+function checkA(){
+    if(document.getElementById('ans').value == 90000) alert("Правильно! (15,000 * 6)");
+    else alert("Спробуй ще раз!");
 }
 
-function checkCalc(){
-    const val = document.getElementById('calc').value;
-    if(val == 120000) alert("Правильно! 120,000 грн — це мінімальний запас міцності.");
-    else alert("Спробуй ще! (Витрати х 6 місяців)");
-}
-
-// QUIZ SYSTEM (12 QUESTIONS)
-const questions = [
-    {q:"Потреба — це відчуття...", a:["Багатства","Нестачі","Радості","Втоми"], c:1},
-    {q:"Які потреби не можна виміряти грошима?", a:["Матеріальні","Нематеріальні","Економічні","Вторинні"], c:1},
-    {q:"Головна проблема: потреби людини...", a:["Обмежені","Безмежні","Відсутні","Малі"], c:1},
-    {q:"Хто автор піраміди потреб?", a:["Опра Вінфрі","А. Маслоу","А. Сміт","Дж. Кейнс"], c:1},
-    {q:"До якого рівня відносяться їжа та сон?", a:["Безпека","Фізіологія","Визнання","Соціальні"], c:1},
-    {q:"Що таке 'фінансова подушка'?", a:["М'яка подушка","Запас грошей на випадок ризиків","Кредитна картка","Гаманець"], c:1},
-    {q:"З віком потреби людини...", a:["Зникають","Змінюються","Зменшуються","Залишаються сталими"], c:1},
-    {q:"Ресурси на планеті Земля завжди...", a:["Безмежні","Обмежені","Безкоштовні","Спільні"], c:1},
-    {q:"Самовираження — це який рівень піраміди?", a:["1-й","5-й","3-й","2-й"], c:1},
-    {q:"Реклама впливає на...", a:["Тільки ціну","Вибір товарів і послуг","Погоду","Здоров'я"], c:1},
-    {q:"Яка цитата належить Опрі Вінфрі?", a:["Час-гроші","Цінуйте те, що маєте","Живи сьогодні","Будь першим"], c:1},
-    {q:"Раціональне використання ресурсів потрібне для...", a:["Лише батьків","Майбутніх поколінь","Тільки бізнесу","Держави"], c:1}
+const qs = [
+    {q:"Потреба — це відчуття...", a:["Надлишку","Нестачі","Радості"], c:1},
+    {q:"Яка цитата належить Опрі Вінфрі?", a:["Час - це гроші","Цінуйте те, що маєте","Гроші не пахнуть"], c:1},
+    {q:"Перший рівень Маслоу це:", a:["Безпека","Фізіологія","Повага"], c:1},
+    {q:"Ресурси завжди є...", a:["Безмежними","Обмеженими","Безкоштовними"], c:1},
+    {q:"Матеріальна потреба — це:", a:["Освіта","Одяг","Дружба"], c:1},
+    {q:"Фінансова подушка має бути на:", a:["1 місяць","3-6 місяців","10 років"], c:1}
 ];
 
-let curQ = 0, score = 0;
-function loadQuiz(){
-    const q = questions[curQ];
-    document.getElementById('q-txt').innerText = `${curQ+1}. ${q.q}`;
-    const opts = document.getElementById('opts');
-    opts.innerHTML = '';
-    q.a.forEach((ans,i)=>{
-        const b = document.createElement('div');
-        b.className = 'quiz-opt';
-        b.innerText = ans;
-        b.onclick = () => {
-            if(i === q.c) { b.classList.add('correct'); score++; }
-            else { b.classList.add('wrong'); }
-            setTimeout(()=>{
-                curQ++;
-                if(curQ < questions.length) loadQuiz();
-                else showFinal();
-            }, 800);
+let cur = 0, sc = 0;
+function loadQ(){
+    if(cur >= qs.length){
+        document.getElementById('q-box').style.display='none';
+        document.getElementById('q-res').style.display='block';
+        document.getElementById('score-val').innerText = Math.round((sc/qs.length)*12);
+        return;
+    }
+    const q = qs[cur];
+    document.getElementById('q-txt').innerText = q.q;
+    const box = document.getElementById('q-opts');
+    box.innerHTML = '';
+    q.a.forEach((o,i)=>{
+        const d = document.createElement('div');
+        d.className = 'opt';
+        d.innerText = o;
+        d.onclick = ()=>{
+            if(i===q.c){ d.classList.add('correct'); sc++; }
+            else d.classList.add('wrong');
+            setTimeout(()=>{cur++; loadQ()}, 600);
         };
-        opts.appendChild(b);
+        box.appendChild(d);
     });
 }
-
-function showFinal(){
-    document.getElementById('quiz-area').style.display = 'none';
-    document.getElementById('results').style.display = 'block';
-    document.getElementById('final-score').innerText = `${score}/12`;
-    document.getElementById('grade-msg').innerText = score >= 10 ? "Ти — фінансовий експерт! (12 балів)" : "Гарна спроба, але варто повторити теорію.";
-}
-loadQuiz();
+loadQ();
 </script>
 </body>
 </html>
