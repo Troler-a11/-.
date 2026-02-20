@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>FIN-MASTER 10.0</title>
+<title>FIN-MASTER ULTRA 2026: FAMILY STRATEGY</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
 :root{--p:#2563eb;--p-dark:#1d4ed8;--s:#0f172a;--bg:#f1f5f9;--card:#ffffff;--txt:#1e293b;--suc:#10b981;--err:#ef4444;--gold:#f59e0b;--glass:rgba(255,255,255,0.9)}
@@ -54,16 +54,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .btn:active{transform:scale(0.96)}
 .btn-alt{background:var(--s)}
 
+/* PYRAMID V2 */
 .p-stack{perspective:1000px;margin:30px 0}
 .p-item{padding:15px;margin:5px auto;color:#fff;font-weight:900;text-align:center;border-radius:8px;cursor:pointer;transition:0.4s;transform:rotateX(20deg);box-shadow:0 10px 0 rgba(0,0,0,0.2)}
 .p-item:hover{transform:rotateX(0deg) scale(1.05);box-shadow:0 15px 25px rgba(0,0,0,0.2)}
 
 .timer-box{background:#fff;padding:8px 15px;border-radius:12px;border:2px solid var(--s);font-weight:bold;color:var(--s)}
 
+/* LEADERBOARD TABLE */
 .leader-table{width:100%;border-collapse:collapse;margin-top:10px}
 .leader-table th{text-align:left;padding:12px;border-bottom:2px solid #e2e8f0;font-size:14px}
 .leader-table td{padding:12px;border-bottom:1px solid #f1f5f9;font-size:15px}
 
+/* GAME UI ELEMENTS */
 .game-ui-stats{display:flex;justify-content:space-between;width:100%;margin-bottom:15px;background:#f8fafc;padding:10px;border-radius:12px;border:1px solid #e2e8f0}
 .trap-marker{position:absolute;border:4px solid var(--suc);border-radius:50%;pointer-events:none;transform:translate(-50%, -50%);display:none}
 .error-cross{position:absolute;color:var(--err);font-size:40px;pointer-events:none;z-index:100;animation:fadeOut 1s forwards;transform:translate(-50%, -50%)}
@@ -82,8 +85,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
             <i class="fas fa-fingerprint fa-2x" style="color:var(--p)"></i>
         </div>
         <h2>Система FIN-PRO</h2>
-        <input type="text" id="user-name" class="auth-input" placeholder="Прізвище та Ім'я">
-        <button class="btn" onclick="startApp()">Ввійти</button>
+        <p id="auth-warn" style="font-size:13px; color:var(--err); font-weight:bold; margin-top:5px"></p>
+        <input type="text" id="user-name" class="auth-input" placeholder="Введіть ваше Прізвище та Ім'я">
+        <button class="btn" onclick="startApp()">Авторизуватися <i class="fas fa-sign-in-alt"></i></button>
+        <div style="margin-top:15px; font-size:10px; color:#ccc;">SESSION_RESET_ACTIVE: TRUE</div>
     </div>
 </div>
 
@@ -98,32 +103,46 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 </div>
 
 <div class="top-nav">
-    <div class="nav-tab active" onclick="nt(this,'s1')"><i class="fas fa-compass"></i> Старт</div>
-    <div class="nav-tab" onclick="nt(this,'s2')"><i class="fas fa-brain"></i> Теорія</div>
+    <div class="nav-tab active" onclick="nt(this,'s1')"><i class="fas fa-compass"></i> Початок</div>
+    <div class="nav-tab" onclick="nt(this,'s2')"><i class="fas fa-brain"></i> Теорія+</div>
     <div class="nav-tab" onclick="nt(this,'s3')"><i class="fas fa-stream"></i> Маслоу</div>
-    <div class="nav-tab" onclick="nt(this,'s-games')"><i class="fas fa-play"></i> Ігри (+1 бал)</div>
+    <div class="nav-tab" onclick="nt(this,'s-games')"><i class="fas fa-play"></i> Ігровий Центр</div>
     <div class="nav-tab" onclick="nt(this,'s4')"><i class="fas fa-coins"></i> Подушка</div>
-    <div class="nav-tab" onclick="nt(this,'s5')"><i class="fas fa-tasks"></i> ТЕСТ</div>
-    <div class="nav-tab" onclick="nt(this,'s-lead')"><i class="fas fa-award"></i> Рейтинг</div>
+    <div class="nav-tab" onclick="nt(this,'s5')"><i class="fas fa-tasks"></i> Тест 12б</div>
+    <div class="nav-tab" onclick="nt(this,'s-lead')"><i class="fas fa-award"></i> Зал Слави</div>
 </div>
 
 <div class="container">
     <section id="s1" class="section active">
-        <span class="badge" style="background:var(--gold)">Макс: 10 балів</span>
-        <h1>Фінансова стратегія</h1>
+        <span class="badge" style="background:var(--gold)"><i class="fas fa-fire"></i> Тренд 2026</span>
+        <h1>Фінансова грамотність родини</h1>
         <div class="card" style="border-left:8px solid var(--p)">
-            <p>Пройди тест (макс 9б) + виконай гру-детектив (бонус +1б) для отримання найвищої оцінки.</p>
+            <p>Сьогодні ми вивчаємо, як потреби формують наш бюджет. <b>Увага:</b> тест можна пройти лише 2 рази.</p>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-info-circle"></i> Чому це важливо?</h3>
+            <p>Тому що маркетологи витрачають мільярди, щоб ваші "бажання" випередили ваші "потреби".</p>
         </div>
     </section>
 
     <section id="s2" class="section">
-        <h2>Ресурси та Пастки</h2>
+        <h2>Розширений курс потреб</h2>
+        <div class="card" style="background: linear-gradient(135deg, #fff, #f8fafc)">
+            <h3>1. Маркетингові пастки</h3>
+            <p>Бренди використовують <b>Ефект дефіциту</b> (тільки 2 штуки залишилось!) та <b>Ефект соціального доказу</b> (всі твої друзі вже купили), щоб створювати штучні потреби.</p>
+        </div>
         <div class="card">
-            <p>Маркетологи діють на підсвідомість. Важливо знати: <b>дефіцит</b> та <b>соціальний доказ</b> — це ваші головні вороги при покупці.</p>
+            <h3>2. Види ресурсів родини</h3>
+            <ul style="padding-left:20px">
+                <li><b>Матеріальні:</b> Нерухомість, гроші, техніка.</li>
+                <li><b>Трудові:</b> Час та сили членів родини.</li>
+                <li><b>Інформаційні:</b> Знання про те, де купити дешевше або як інвестувати.</li>
+            </ul>
         </div>
     </section>
 
     <section id="s3" class="section">
+        <h2>Інтерактивна Піраміда</h2>
         <div class="p-stack">
             <div class="p-item" style="background:#4c1d95; width:40%" onclick="showM(5)">САМОВИРАЖЕННЯ</div>
             <div class="p-item" style="background:#1e40af; width:55%" onclick="showM(4)">ВИЗНАННЯ</div>
@@ -131,18 +150,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
             <div class="p-item" style="background:#92400e; width:85%" onclick="showM(2)">БЕЗПЕКА</div>
             <div class="p-item" style="background:#991b1b; width:100%" onclick="showM(1)">ФІЗІОЛОГІЯ</div>
         </div>
-        <div id="m-info" class="card" style="display:none"></div>
+        <div id="m-info" class="card" style="display:none; border:2px dashed var(--p)"></div>
     </section>
 
     <section id="s-games" class="section">
-        <h2>Бонусна Зона</h2>
-        <div class="card">Пройди 5 рівнів детективу, щоб отримати бонусний +1 бал до рейтингу.</div>
+        <h2><i class="fas fa-gamepad"></i> Центр Симуляцій</h2>
         <div class="game-hub">
+            <div class="game-item" onclick="openGame(1)">
+                <div class="game-icon" style="background:var(--suc)"><i class="fas fa-piggy-bank"></i></div>
+                <div class="game-info">
+                    <h4>Симулятор "Інфляційна Битва"</h4>
+                    <p>Навчись захищати заощадження від знецінення.</p>
+                </div>
+            </div>
             <div class="game-item" onclick="openGame(2)">
                 <div class="game-icon" style="background:var(--p)"><i class="fas fa-search-dollar"></i></div>
                 <div class="game-info">
-                    <h4>Детектив пасток</h4>
-                    <p id="bonus-status">Бонус: Не отримано</p>
+                    <h4>Супермаркетний Детектив (15 Рівнів)</h4>
+                    <p>Знайди реальні пастки: від цінників до розкладки.</p>
                 </div>
             </div>
         </div>
@@ -150,15 +175,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
     <section id="s4" class="section">
         <div class="card">
-            <h3>Подушка (18500 * 6 міс)</h3>
+            <h3>Калькулятор виживання</h3>
+            <p>Введи суму подушки на пів року при витратах 18,500 грн/міс:</p>
             <input type="number" id="ans" class="auth-input">
-            <button class="btn" onclick="checkCase()">Перевірити</button>
+            <button class="btn" onclick="checkCase()">Підтвердити цифру</button>
         </div>
     </section>
 
     <section id="s5" class="section">
-        <div id="q-header-block" class="q-header" style="display:flex; justify-content:space-between; margin-bottom:10px">
+        <div id="q-header-block" class="q-header">
             <span id="q-num" class="badge">Питання 1/18</span>
+            <div class="timer-box" id="q-attempts-display">Спроба: 1</div>
         </div>
         <div id="q-box">
             <h3 id="q-txt" style="margin-bottom:20px"></h3>
@@ -167,173 +194,496 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
         <div id="q-res" style="display:none">
             <div class="card" style="text-align:center">
                 <h1 id="score-val" style="font-size:80px; color:var(--p)">0</h1>
-                <p id="bonus-msg"></p>
-                <button id="save-db-btn" class="btn" onclick="finishAndSave()">Зберегти в Рейтинг</button>
+                <p>Ваш бал (бачимо тільки ми)</p>
+                <div id="final-msg" style="margin:20px 0; font-weight:bold; color:var(--err)">Бал з'явиться в Залі Слави ПІСЛЯ завершення!</div>
+                <div style="display:grid; gap:10px">
+                    <button id="save-db-btn" class="btn" onclick="finishAndSave()">Завершити тест та зберегти у рейтинг</button>
+                    <button id="retry-btn" class="btn btn-alt" onclick="retryQuiz()" style="display:none">Спробувати ще раз (-1 бал)</button>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="s-lead" class="section">
-        <h2>LIVE Рейтинг</h2>
+        <h2>Рейтинг Гравців (LIVE DATABASE)</h2>
         <div class="card"><table class="leader-table" id="leader-body"></table></div>
     </section>
 </div>
 
 <script>
+// --- КОНФІГУРАЦІЯ FIREBASE ---
 const DB_URL = "https://progekkkt-default-rtdb.firebaseio.com/leaderboard.json";
-let userName = "", score = 0, currentQ = 0, testStarted = false, bonusPoint = 0;
+
+// --- ОБНУЛЕННЯ ДЛЯ ТЕСТУВАННЯ ---
+// Очищаємо локальні спроби при кожному оновленні для зручності тестування
+localStorage.clear(); 
+console.log("System: LocalStorage cleared for testing session.");
+
+let userName = "", score = 0, currentQ = 0, canClick = true, finalGradeInternal = 0;
+let testStarted = false;
 
 const quizData = [
-    {q:"Маркетингова пастка 'Ефект дефіциту' це:", a:["Знижка 50%","Тільки сьогодні!","Подарунок до покупки"], c:1},
-    {q:"Що є нематеріальним ресурсом родини?", a:["Автомобіль","Знання кулінарії","Дача"], c:1},
-    {q:"Потреба у визнанні - це який рівень Маслоу?", a:["2","3","4"], c:2},
-    {q:"Яка потреба є первинною?", a:["Кіно","Сон","Новий iPhone"], c:1},
+    {q:"Маркетингова пастка 'Ефект дефіциту' це:", a:["Знижка 50%","Тільки сьогодні!","Подарунок до покупки","Якісний товар"], c:1},
+    {q:"Що є нематеріальним ресурсом родини?", a:["Автомобіль","Знання кулінарії","Запас гречки","Дача"], c:1},
+    {q:"Потреба у визнанні - це який рівень Маслоу?", a:["2","3","4","5"], c:2},
+    {q:"Яка потреба є первинною?", a:["Кіно","Сон","Новий iPhone","Похвала"], c:1},
     {q:"Бюджет родини - це:", a:["Тільки витрати","План доходів і витрат","Сума в банку"], c:1},
     {q:"Економічна потреба - це завжди:", a:["Безкоштовно","Вимагає ресурсів","Духовно"], c:1},
-    {q:"Хто така Опра Вінфрі?", a:["Економіст","Приклад успіху","Маркетолог"], c:1},
+    {q:"Хто така Опра Вінфрі в контексті уроку?", a:["Економіст","Приклад успіху і порадниця","Маркетолог"], c:1},
     {q:"Ресурси завжди...", a:["Безмежні","Обмежені","Нікому не потрібні"], c:1},
     {q:"Потреба у безпеці це:", a:["Друзі","Замок на дверях","Малювання"], c:1},
-    {q:"Вершина піраміди?", a:["Їжа","Слава","Самореалізація"], c:2},
-    {q:"Чи може людина жити без духовних потреб?", a:["Так","Ні","1 день"], c:1},
+    {q:"Що стоїть на вершині піраміди?", a:["Їжа","Слава","Самореалізація"], c:2},
+    {q:"Чи може людина жити без духовних потреб?", a:["Так","Ні","Тільки 1 день"], c:1},
     {q:"Подушка безпеки потрібна для:", a:["Сну","Непередбачуваних витрат","Відпустки"], c:1},
-    {q:"Раціональное споживання - це:", a:["Нічого","Тільки потрібне","Все по акції"], c:1},
-    {q:"Час - це ресурс:", a:["Матеріальний","Трудовий","Невичерпний"], c:1},
-    {q:"Рівнів у піраміді Маслоу:", a:["3","5","7"], c:1},
-    {q:"Реклама - це інструмент...", a:["Допомоги","Створення потреб","Економії"], c:1},
+    {q:"Раціональное споживання - це:", a:["Нічого не купувати","Купувати лише потрібне","Брати все по акції"], c:1},
+    {q:"Час - це ресурс:", a:["Матеріальний","Трудовий/Особистий","Невичерпний"], c:1},
+    {q:"Скільки рівнів у класичній піраміді Маслоу?", a:["3","5","7","10"], c:1},
+    {q:"Реклама - це інструмент...", a:["Допомоги людям","Створення потреб","Економії"], c:1},
     {q:"Потреба у спілкуванні - це:", a:["Фізіологічна","Соціальна","Економічна"], c:1},
-    {q:"Найдорожчий ресурс:", a:["Гроші","Час","Золото"], c:1}
+    {q:"Найдорожчий ресурс людини:", a:["Гроші","Час","Золото"], c:1}
 ];
+
+// --- АНТИ-ЧИТ (ПОКРАЩЕНО ДЛЯ МОБІЛЬНИХ ТА ПК) ---
+function handleVisibility() {
+    if ((document.hidden || document.visibilityState === 'hidden') && testStarted) {
+        testStarted = false;
+        alert("УВАГА! Вихід із вкладки або переключення додатку ЗАБОРОНЕНО. Тест анульовано.");
+        location.reload();
+    }
+}
+document.addEventListener("visibilitychange", handleVisibility);
+window.addEventListener("blur", () => { if(testStarted) handleVisibility(); });
 
 const trapLevels = [
-    {title: "Очі", img: "https://img.freepik.com/free-photo/view-supermarket-aisle_23-2150129064.jpg", targets: [{x:50,y:40,r:15},{x:20,y:45,r:12},{x:80,y:38,r:14}]},
-    {title: "Знижки", img: "https://img.freepik.com/free-photo/supermarket-sale-tags-with-products_23-2149179040.jpg", targets: [{x:30,y:60,r:15},{x:70,y:55,r:15},{x:50,y:80,r:15}]},
-    {title: "Вхід", img: "https://img.freepik.com/free-photo/bakery-supermarket_23-2148011271.jpg", targets: [{x:40,y:30,r:18},{x:15,y:70,r:20},{x:85,y:65,r:15}]},
-    {title: "Каса", img: "https://img.freepik.com/free-photo/close-up-view-shopping-checkout-area_23-2149179051.jpg", targets: [{x:45,y:50,r:15},{x:20,y:40,r:12},{x:75,y:60,r:15}]},
-    {title: "Фрукти", img: "https://img.freepik.com/free-photo/variety-vegetables-fruits-market_23-2148784113.jpg", targets: [{x:50,y:25,r:15},{x:30,y:50,r:15},{x:80,y:45,r:15}]}
+    {
+        title: "Полиці (Очі)", img: "https://img.freepik.com/free-photo/view-supermarket-aisle_23-2150129064.jpg",
+        targets: [
+            {x: 50, y: 40, r: 15, name: "Золота полиця (дороге)"},
+            {x: 20, y: 45, r: 12, name: "Брендовий товар на рівні рук"},
+            {x: 80, y: 38, r: 14, name: "Яскрава новинка в центрі"}
+        ]
+    },
+    {
+        title: "Знижки та Акції", img: "https://img.freepik.com/free-photo/supermarket-sale-tags-with-products_23-2149179040.jpg",
+        targets: [
+            {x: 30, y: 60, r: 15, name: "Червоний цінник (психологія)"},
+            {x: 70, y: 55, r: 15, name: "1+1=3 пастка"},
+            {x: 50, y: 80, r: 15, name: "Ціна за 100г замість кг"}
+        ]
+    },
+    {
+        title: "Вхідна зона", img: "https://img.freepik.com/free-photo/bakery-supermarket_23-2148011271.jpg",
+        targets: [
+            {x: 40, y: 30, r: 18, name: "Запах випічки (стимул)"},
+            {x: 15, y: 70, r: 20, name: "Великий візок"},
+            {x: 85, y: 65, r: 15, name: "Знижки на вході"}
+        ]
+    },
+    {
+        title: "Біля Каси", img: "https://img.freepik.com/free-photo/close-up-view-shopping-checkout-area_23-2149179051.jpg",
+        targets: [
+            {x: 45, y: 50, r: 15, name: "Дрібні солодощі"},
+            {x: 20, y: 40, r: 12, name: "Журнали та батарейки"},
+            {x: 75, y: 60, r: 15, name: "Товари імпульсу"}
+        ]
+    },
+    {
+        title: "Фрукти та Овочі", img: "https://img.freepik.com/free-photo/variety-vegetables-fruits-market_23-2148784113.jpg",
+        targets: [
+            {x: 50, y: 25, r: 15, name: "Спеціальне освітлення"},
+            {x: 30, y: 50, r: 15, name: "Блискуча плівка"},
+            {x: 80, y: 45, r: 15, name: "Збризкування водою"}
+        ]
+    },
+    {
+        title: "Нижні полиці", img: "https://img.freepik.com/free-photo/shelves-with-different-products-supermarket_23-2148784119.jpg",
+        targets: [
+            {x: 50, y: 85, r: 15, name: "Дешевий аналог внизу"},
+            {x: 10, y: 90, r: 12, name: "Товар без бренду"},
+            {x: 85, y: 88, r: 15, name: "Гуртові упаковки нижче"}
+        ]
+    },
+    {
+        title: "Супутні товари", img: "https://img.freepik.com/free-photo/bottles-shelf-supermarket_23-2148149863.jpg",
+        targets: [
+            {x: 60, y: 40, r: 15, name: "Закуски біля напоїв"},
+            {x: 30, y: 45, r: 14, name: "Відкривалки в алкоголі"},
+            {x: 50, y: 70, r: 18, name: "Соуси біля м'яса"}
+        ]
+    },
+    {
+        title: "Молочний відділ", img: "https://img.freepik.com/free-photo/supermarket-refrigerator_23-2148149876.jpg",
+        targets: [
+            {x: 70, y: 30, r: 15, name: "Далекий кут для молока"},
+            {x: 40, y: 50, r: 15, name: "Ближче - старий термін"},
+            {x: 20, y: 45, r: 12, name: "Рекламна наклейка на склі"}
+        ]
+    },
+    {
+        title: "Дитячий маркетинг", img: "https://img.freepik.com/free-photo/children-toys-shelf-shop_23-2148784126.jpg",
+        targets: [
+            {x: 50, y: 70, r: 18, name: "Іграшки на рівні малюків"},
+            {x: 20, y: 75, r: 15, name: "Мультяшні персонажі"},
+            {x: 80, y: 65, r: 15, name: "Кольорові пластівці"}
+        ]
+    },
+    {
+        title: "Хлібний шлях", img: "https://img.freepik.com/free-photo/interior-modern-supermarket_23-2148784121.jpg",
+        targets: [
+            {x: 90, y: 50, r: 15, name: "Хліб у кінці зали"},
+            {x: 50, y: 50, r: 25, name: "Довгий маршрут покупця"},
+            {x: 10, y: 40, r: 15, name: "Мелодійна музика"}
+        ]
+    },
+    {
+        title: "Свіжість", img: "https://img.freepik.com/free-photo/organic-food-market_23-2148149884.jpg",
+        targets: [
+            {x: 40, y: 30, r: 15, name: "Табличка 'Фермерське'"},
+            {x: 70, y: 45, r: 15, name: "Дерев'яні ящики"},
+            {x: 20, y: 60, r: 15, name: "Відсутність вікон (час)"}
+        ]
+    },
+    {
+        title: "Заморожені", img: "https://img.freepik.com/free-photo/refrigerator-with-frozen-food_23-2148149880.jpg",
+        targets: [
+            {x: 50, y: 40, r: 18, name: "Напівфабрикати в центрі"},
+            {x: 80, y: 55, r: 15, name: "Красиве фото на коробці"},
+            {x: 20, y: 35, r: 12, name: "Акція на морозиво"}
+        ]
+    },
+    {
+        title: "Побутова хімія", img: "https://img.freepik.com/free-photo/shelf-with-cleaning-products_23-2148149882.jpg",
+        targets: [
+            {x: 60, y: 40, r: 15, name: "Еко-маркування (дорожче)"},
+            {x: 30, y: 55, r: 15, name: "Акційний блок стійка"},
+            {x: 80, y: 70, r: 15, name: "Великий об'єм (не дешевше)"}
+        ]
+    },
+    {
+        title: "Крупи та бакалія", img: "https://img.freepik.com/free-photo/shelves-supermarket_23-2148149871.jpg",
+        targets: [
+            {x: 45, y: 45, r: 15, name: "Дорога олія в центрі"},
+            {x: 20, y: 30, r: 12, name: "Популярна марка збоку"},
+            {x: 75, y: 50, r: 14, name: "Пакети зі знижкою"}
+        ]
+    },
+    {
+        title: "Великі знижки", img: "https://img.freepik.com/free-photo/sale-labels-supermarket_23-2149179044.jpg",
+        targets: [
+            {x: 50, y: 50, r: 25, name: "Кошик зі знижками"},
+            {x: 20, y: 80, r: 15, name: "Напис 'Лише сьогодні'"},
+            {x: 80, y: 20, r: 15, name: "Яскравий плакат 'АКЦІЯ'"}
+        ]
+    }
 ];
 
-function playSnd(id){ try{document.getElementById(id).play()}catch(e){} }
+function playSnd(id) { 
+    try { let s = document.getElementById(id); s.currentTime = 0; s.play(); } catch(e){}
+}
 
 function startApp() {
     userName = document.getElementById('user-name').value.trim();
-    if(userName.length < 3) return alert("Вкажіть ПІБ");
+    if(userName.length < 3) { alert("Введіть повне ім'я!"); return; }
     document.getElementById('auth-overlay').style.display = 'none';
+    playSnd('snd-click');
     updateLeaderboard();
+    console.log("App Started for:", userName);
 }
 
 function nt(el,id) {
-    if(id==='s5' && !testStarted) { testStarted = true; loadQuestion(); }
+    if(id === 's5') {
+        let att = parseInt(localStorage.getItem('att_'+userName) || 0);
+        if(att >= 2) { 
+            alert("Ви вже використали всі 2 спроби тесту!"); 
+            return; 
+        }
+        if(!testStarted && currentQ === 0) {
+            testStarted = true;
+            loadQuestion();
+        }
+    } else {
+        if(testStarted) {
+            let conf = confirm("Вихід з вкладки під час тесту анулює результат. Ви впевнені?");
+            if(!conf) return;
+            testStarted = false;
+        }
+    }
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     el.classList.add('active');
+    playSnd('snd-click');
+}
+
+function showM(l) {
+    const info = document.getElementById('m-info');
+    info.style.display = 'block';
+    const texts = [ "",
+        "<h3>1. Фізіологічні потреби</h3><p>Це фундамент нашого життя. Сюди відноситься потреба в їжі, воді, сні та диханні. З точки зору фінансів, це обов'язкові витрати, без яких неможливо існувати. У бюджеті родини це зазвичай 50% усіх витрат. Важливо розуміти різницю між 'потребою в їжі' та 'потребою в дорогому ресторані'.</p>",
+        "<h3>2. Потреба в безпеці</h3><p>Коли ми ситі, ми хочемо бути впевнені у завтрашньому дні. Це захист від фізичних загроз, фінансова стабільність (та сама 'фінансова подушка'), наявність житла та медичне страхування. Це потреба в порядку, законі та передбачуваності життя. Безпека — це спокій вашої родини, який купується через страхування та заощадження.</p>",
+        "<h3>3. Соціальні потреби</h3><p>Людина — істота соціальна. Нам потрібно відчувати приналежність до групи, LOVE та дружбу. Сюди відносяться сімейні стосунки, спілкування з друзями, участь у громаді. Фінансово це може виражатися у витратах на подарунки, спільні поїздки або хобі. Часто маркетологи грають на цьому, нав'язуючи товари як засіб 'стати частиною крутої компанії'.</p>",
+        "<h3>4. Потреба у визнанні</h3><p>Це бажання бути шанованим, мати високий статус та досягнення. Ми хочемо, щоб оточуючі бачили нашу компетентність. Часто на цьому рівні люди потрапляють у пастки маркетингу, купуючи дорогі брендові речі 'для статусу' в кредит, що руйнує бюджет. Справжнє визнання приходить через професіоналізм, а не через логотип на сумці.</p>",
+        "<h3>5. Самоактуалізація</h3><p>Вершина піраміди — це реалізація ваших талантів та здібностей. Це творчість, саморозвиток, пошук сенсу життя. Коли всі нижні рівні закриті, людина прагне стати тим, ким вона може бути за своєю природою. Це інвестиції в освіту, досвід, подорожі та духовний розвиток. Це найвищий рівень свободи особистості.</p>"
+    ];
+    info.innerHTML = texts[l];
+    playSnd('snd-click');
+}
+
+let currentTrapLvl = 0;
+let lives = 3;
+let targetsFound = 0;
+
+function openGame(id) {
+    const canvas = document.getElementById('g-canvas');
+    document.getElementById('game-modal').style.display = 'flex';
+    canvas.innerHTML = '';
+    
+    if(id===1) {
+        document.getElementById('g-title').innerText = "Інфляційна Битва";
+        let power = 100;
+        canvas.innerHTML = `
+            <div class="game-ui-stats">
+                <span>Капітал: <b id="inf-money">1000</b> грн</span>
+                <span>Спроможність: <b id="inf-pow">100</b>%</span>
+            </div>
+            <div id="inf-area" style="width:100%; height:300px; background:#f1f5f9; border-radius:15px; position:relative; overflow:hidden">
+                <div id="inf-ball" style="position:absolute; top:40%; left:40%; width:60px; height:60px; background:red; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:10px; text-align:center">ІНФЛЯЦІЯ</div>
+            </div>
+            <button class="btn" style="margin-top:10px" onclick="investAction()">ДЕПОЗИТ (+5%)</button>
+        `;
+        window.infInt = setInterval(() => {
+            power -= 1;
+            document.getElementById('inf-pow').innerText = power;
+            let ball = document.getElementById('inf-ball');
+            if(ball) ball.style.transform = `scale(${1 + (100-power)/15})`;
+            if(power <= 0) { clearInterval(window.infInt); alert("Інфляція з'їла ваші гроші!"); closeGame(); }
+        }, 400);
+    } else if(id===2) {
+        currentTrapLvl = 0;
+        lives = 3;
+        loadTrapLevel();
+    }
+}
+
+function investAction() {
+    let p = document.getElementById('inf-pow');
+    if(!p) return;
+    let val = parseInt(p.innerText);
+    p.innerText = Math.min(100, val + 5);
+    playSnd('snd-win');
+}
+
+function loadTrapLevel() {
+    const canvas = document.getElementById('g-canvas');
+    const lvl = trapLevels[currentTrapLvl];
+    targetsFound = 0;
+    document.getElementById('g-title').innerText = `Детектив: ${lvl.title} (${currentTrapLvl+1}/15)`;
+    
+    canvas.innerHTML = `
+        <div class="game-ui-stats">
+            <span>Знайдено: <b id="found-val">0/3</b></span>
+            <span>Життя: <b id="lives-val">${lives}</b></span>
+        </div>
+        <div id="trap-zone" style="width:100%; height:320px; background:url('${lvl.img}') center/cover; position:relative; border-radius:15px; border:3px solid var(--s); cursor:crosshair">
+            ${lvl.targets.map((t, i) => `
+                <div id="target-${i}" class="trap-marker" style="left:${t.x}%; top:${t.y}%; width:${t.r*2}%; height:${t.r*2.5}%; border-radius:50%;"></div>
+            `).join('')}
+        </div>
+    `;
+    
+    document.getElementById('trap-zone').onclick = function(e) {
+        const rect = this.getBoundingClientRect();
+        const px = ((e.clientX - rect.left) / rect.width) * 100;
+        const py = ((e.clientY - rect.top) / rect.height) * 100;
+        
+        let hit = false;
+        lvl.targets.forEach((t, i) => {
+            const marker = document.getElementById(`target-${i}`);
+            if(marker.style.display === 'block') return;
+            const dist = Math.sqrt(Math.pow(px - t.x, 2) + Math.pow(py - t.y, 2));
+            if(dist < t.r) {
+                hit = true;
+                marker.style.display = 'block';
+                targetsFound++;
+                document.getElementById('found-val').innerText = `${targetsFound}/3`;
+                playSnd('snd-win');
+                if(targetsFound === 3) {
+                    setTimeout(() => {
+                        currentTrapLvl++;
+                        if(currentTrapLvl >= trapLevels.length) { closeGame(); } 
+                        else { loadTrapLevel(); }
+                    }, 500);
+                }
+            }
+        });
+        if(!hit) {
+            lives--;
+            document.getElementById('lives-val').innerText = lives;
+            showErrorAt(px, py);
+            playSnd('snd-err');
+            if(lives <= 0) { closeGame(); }
+        }
+    };
+}
+
+function showErrorAt(x, y) {
+    const zone = document.getElementById('trap-zone');
+    const cross = document.createElement('div');
+    cross.className = 'error-cross';
+    cross.innerHTML = '<i class="fas fa-times"></i>';
+    cross.style.left = x + '%';
+    cross.style.top = y + '%';
+    zone.appendChild(cross);
+    setTimeout(() => cross.remove(), 1000);
+}
+
+function closeGame() {
+    clearInterval(window.infInt);
+    document.getElementById('game-modal').style.display = 'none';
 }
 
 function loadQuestion() {
-    if(currentQ >= quizData.length) return showFinal();
+    if(currentQ >= quizData.length) { 
+        testStarted = false; 
+        showIntermediateResults(); 
+        return; 
+    }
+    canClick = true;
     const d = quizData[currentQ];
+    let att = parseInt(localStorage.getItem('att_'+userName) || 0);
+    document.getElementById('q-attempts-display').innerText = `Спроба: ${att + 1}`;
     document.getElementById('q-num').innerText = `Питання ${currentQ+1}/18`;
     document.getElementById('q-txt').innerText = d.q;
     const box = document.getElementById('q-opts');
     box.innerHTML = '';
+    
     d.a.forEach((t,i)=>{
         const dv = document.createElement('div');
         dv.className = 'opt';
-        dv.innerText = t;
+        dv.innerHTML = `<span>${t}</span>`;
         dv.onclick = () => {
-            if(i===d.c) { dv.classList.add('correct'); score++; playSnd('snd-win'); }
+            if(!canClick) return;
+            canClick = false;
+            if(i === d.c) { dv.classList.add('correct'); score++; playSnd('snd-win'); }
             else { dv.classList.add('wrong'); playSnd('snd-err'); }
-            setTimeout(()=>{currentQ++; loadQuestion();}, 600);
+            setTimeout(() => { currentQ++; loadQuestion(); }, 800);
         };
         box.appendChild(dv);
     });
 }
 
-function showFinal() {
+// --- ВИПРАВЛЕННЯ БАГІВ ВІДОБРАЖЕННЯ ---
+function showIntermediateResults() {
     document.getElementById('q-box').style.display = 'none';
+    document.getElementById('q-header-block').style.display = 'none';
     document.getElementById('q-res').style.display = 'block';
-    // Макс за тест 9 балів (score / 18 * 9)
-    let baseGrade = Math.round((score/18)*9);
-    let total = baseGrade + bonusPoint;
-    document.getElementById('score-val').innerText = total;
-    document.getElementById('bonus-msg').innerText = bonusPoint > 0 ? "+1 бонус за гру враховано!" : "Бонус за гру не отримано (макс 9)";
+    
+    let attemptsCount = parseInt(localStorage.getItem('att_'+userName) || 0);
+    finalGradeInternal = Math.round((score/18)*12);
+    
+    if(attemptsCount >= 1) {
+        finalGradeInternal = Math.max(0, finalGradeInternal - 1);
+        document.getElementById('final-msg').innerText = "Штраф -1 бал за повторну спробу враховано.";
+    } else {
+        document.getElementById('final-msg').innerText = "Це ваш фінальний результат за першу спробу.";
+    }
+    
+    document.getElementById('score-val').innerText = finalGradeInternal;
+    if(attemptsCount < 1) {
+        document.getElementById('retry-btn').style.display = 'block';
+    } else {
+        document.getElementById('retry-btn').style.display = 'none';
+    }
 }
 
-let curLvl = 0, targetsFound = 0;
-function openGame(id) {
-    document.getElementById('game-modal').style.display = 'flex';
-    curLvl = 0; loadTrapLevel();
+function retryQuiz() {
+    let att = parseInt(localStorage.getItem('att_'+userName) || 0);
+    localStorage.setItem('att_'+userName, att + 1);
+    currentQ = 0;
+    score = 0;
+    document.getElementById('q-box').style.display = 'block';
+    document.getElementById('q-header-block').style.display = 'flex';
+    document.getElementById('q-res').style.display = 'none';
+    testStarted = true;
+    loadQuestion();
 }
 
-function loadTrapLevel() {
-    const canvas = document.getElementById('g-canvas');
-    const lvl = trapLevels[curLvl];
-    targetsFound = 0;
-    document.getElementById('g-title').innerText = `Рівень ${curLvl+1}/5`;
-    canvas.innerHTML = `<div id="trap-zone" style="width:100%;height:320px;background:url('${lvl.img}') center/cover;position:relative;border-radius:15px">
-        ${lvl.targets.map((t,i)=>`<div id="t-${i}" class="trap-marker" style="left:${t.x}%;top:${t.y}%;width:${t.r*2}%;height:${t.r*2}%"></div>`).join('')}
-    </div>`;
-    document.getElementById('trap-zone').onclick = function(e){
-        const r = this.getBoundingClientRect();
-        const px = ((e.clientX-r.left)/r.width)*100, py = ((e.clientY-r.top)/r.height)*100;
-        lvl.targets.forEach((t,i)=>{
-            const m = document.getElementById(`t-${i}`);
-            if(m.style.display==='block') return;
-            if(Math.sqrt((px-t.x)**2+(py-t.y)**2) < t.r) {
-                m.style.display='block'; targetsFound++;
-                if(targetsFound===3) {
-                    curLvl++; 
-                    if(curLvl>=5) { 
-                        bonusPoint = 1; 
-                        document.getElementById('bonus-status').innerText = "Бонус: ОТРИМАНО (+1)";
-                        alert("Бонус отримано!"); closeGame(); 
-                    } else setTimeout(loadTrapLevel, 500);
-                }
-            }
-        });
-    };
-}
-
-function closeGame() { document.getElementById('game-modal').style.display = 'none'; }
-
+// --- ІНТЕГРАЦІЯ З FIREBASE REALTIME DB ---
 async function finishAndSave() {
     const btn = document.getElementById('save-db-btn');
     btn.disabled = true;
-    let finalG = Math.min(10, Math.round((score/18)*9) + bonusPoint);
+    btn.innerText = "ЗБЕРЕЖЕННЯ...";
+
+    const resultData = {
+        name: userName,
+        grade: finalGradeInternal,
+        date: new Date().toLocaleString('uk-UA'),
+        ts: Date.now()
+    };
+
     try {
-        await fetch(DB_URL, {
+        const response = await fetch(DB_URL, {
             method: 'POST',
-            body: JSON.stringify({name: userName, grade: finalG, date: new Date().toLocaleString()}),
-            headers: {'Content-Type': 'application/json'}
+            body: JSON.stringify(resultData),
+            headers: { 'Content-Type': 'application/json' }
         });
-        alert("Збережено!");
-        updateLeaderboard();
-        nt(document.querySelector('.nav-tab:last-child'), 's-lead');
-    } catch(e) { alert("Помилка БД"); btn.disabled = false; }
+
+        if(response.ok) {
+            alert("Результат успішно додано до загального рейтингу!");
+            let att = parseInt(localStorage.getItem('att_'+userName) || 0);
+            localStorage.setItem('att_'+userName, att + 1);
+            updateLeaderboard();
+            nt(document.querySelector('.nav-tab:last-child'), 's-lead');
+        } else {
+            throw new Error("Помилка БД");
+        }
+    } catch (e) {
+        alert("Помилка мережі. Спробуйте пізніше.");
+        btn.disabled = false;
+        btn.innerText = "Повторити збереження";
+    }
 }
 
+// --- ОНОВЛЕННЯ РЕЙТИНГУ З FIREBASE ---
 async function updateLeaderboard() {
-    const b = document.getElementById('leader-body');
+    let b = document.getElementById('leader-body');
+    b.innerHTML = '<tr><td colspan="3" style="text-align:center">Завантаження даних...</td></tr>';
+    
     try {
-        const r = await fetch(DB_URL);
-        const d = await r.json();
-        if(!d) return;
-        let list = Object.values(d).sort((a,b)=>b.grade-a.grade);
-        b.innerHTML = '<tr><th>№</th><th>Ім\'я</th><th>Бал</th></tr>' + 
-            list.map((u,i)=>`<tr><td>${i+1}</td><td>${u.name}</td><td><b>${u.grade}</b></td></tr>`).join('');
-    } catch(e){}
+        const response = await fetch(DB_URL);
+        const data = await response.json();
+        
+        if(!data) {
+            b.innerHTML = '<tr><td colspan="3">Рейтинг порожній</td></tr>';
+            return;
+        }
+
+        let list = Object.keys(data).map(key => data[key]);
+        list.sort((a,b) => b.grade - a.grade || b.ts - a.ts);
+        
+        b.innerHTML = '<tr><th>М</th><th>Гравець</th><th>Бал</th></tr>' + 
+            list.map((u,i)=>`<tr><td>${i+1}</td><td>${u.name}</td><td style="font-weight:bold; color:var(--p)">${u.grade}</td></tr>`).join('');
+            
+    } catch (e) {
+        b.innerHTML = '<tr><td colspan="3">Помилка завантаження рейтингу</td></tr>';
+    }
 }
 
 function checkCase() {
-    if(document.getElementById('ans').value == 111000) { alert("Вірно!"); playSnd('snd-win'); }
-    else { alert("Помилка"); playSnd('snd-err'); }
+    let val = document.getElementById('ans').value;
+    if(val == 111000) { 
+        alert("Правильно! 18,500 * 6 = 111,000 грн."); 
+        playSnd('snd-win'); 
+    } else { 
+        alert("Помилка. Спробуй ще раз (18500 * 6)"); 
+        playSnd('snd-err'); 
+    }
 }
 
-function showM(l){
-    const info = document.getElementById('m-info'); info.style.display = 'block';
-    const t = ["","Фізіологія (їжа)","Безпека (гроші)","Соціум (друзі)","Визнання (статус)","Саморозвиток"];
-    info.innerHTML = `<h3>${t[l]}</h3>`;
-}
+// Додаткова логіка ініціалізації для надійності
+window.onload = () => {
+    console.log("System UI Ready.");
+};
 </script>
 </body>
 </html>
