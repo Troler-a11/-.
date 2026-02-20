@@ -68,9 +68,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 /* GAME UI ELEMENTS */
 .game-ui-stats{display:flex;justify-content:space-between;width:100%;margin-bottom:15px;background:#f8fafc;padding:10px;border-radius:12px;border:1px solid #e2e8f0}
-.trap-marker{position:absolute;border:3px solid var(--suc);border-radius:10px;pointer-events:none;display:none}
-.error-cross{position:absolute;color:var(--err);font-size:40px;pointer-events:none;z-index:100;animation:fadeOut 1s forwards}
-@keyframes fadeOut{from{opacity:1;transform:scale(1.2)}to{opacity:0;transform:scale(0.8)}}
+.trap-marker{position:absolute;border:4px solid var(--suc);border-radius:50%;pointer-events:none;transform:translate(-50%, -50%);display:none}
+.error-cross{position:absolute;color:var(--err);font-size:40px;pointer-events:none;z-index:100;animation:fadeOut 1s forwards;transform:translate(-50%, -50%)}
+@keyframes fadeOut{from{opacity:1;transform:translate(-50%, -50%) scale(1.2)}to{opacity:0;transform:translate(-50%, -50%) scale(0.8)}}
 </style>
 </head>
 <body>
@@ -232,23 +232,128 @@ const quizData = [
     {q:"Найдорожчий ресурс людини:", a:["Гроші","Час","Золото"], c:1}
 ];
 
-// DATA FOR SUPERMARKET GAME
+// DATA FOR SUPERMARKET GAME - 15 Levels, each has 3 targets
 const trapLevels = [
-    { t: "Золота полиця", desc: "Товари на рівні очей дорожчої категорії", x: 45, y: 35, w: 10, h: 10, img: "https://img.freepik.com/free-vector/supermarket-aisle-with-shelves-products_107791-532.jpg" },
-    { t: "Хитрий цінник", desc: "Велика ціна за 100г замість кг", x: 20, y: 60, w: 8, h: 8 },
-    { t: "Запах випічки", desc: "Аромат біля входу стимулює голод", x: 10, y: 10, w: 15, h: 15 },
-    { t: "Товари імпульсу", desc: "Дрібниці біля каси", x: 80, y: 70, w: 10, h: 15 },
-    { t: "Ефект дефіциту", desc: "Напис 'Тільки 2 в одні руки'", x: 60, y: 40, w: 12, h: 12 },
-    { t: "Колірна маніпуляція", desc: "Червоний колір на звичайній ціні", x: 30, y: 55, w: 7, h: 7 },
-    { t: "Великий візок", desc: "Порожній візок здається надто великим", x: 50, y: 80, w: 15, h: 10 },
-    { t: "Музичний темп", desc: "Повільна музика затримує покупця", x: 5, y: 5, w: 5, h: 5 },
-    { t: "Нижня полиця", desc: "Найдешевші товари ховають внизу", x: 45, y: 90, w: 10, h: 10 },
-    { t: "Пара паралаксу", desc: "Ціна 99.99 замість 100", x: 75, y: 25, w: 8, h: 8 },
-    { t: "Свіжість попереду", desc: "Старі товари кладуть ближче до краю", x: 15, y: 45, w: 12, h: 12 },
-    { t: "Супутні товари", desc: "Чіпси поруч із пивом", x: 65, y: 55, w: 10, h: 15 },
-    { t: "Без вікон", desc: "Відсутність вікон втрачає відчуття часу", x: 90, y: 10, w: 10, h: 20 },
-    { t: "Дзеркальне покриття", desc: "Блиск фруктів під спеціальним світлом", x: 25, y: 30, w: 15, h: 15 },
-    { t: "Лабіринт", desc: "Шлях до хліба через весь магазин", x: 50, y: 50, w: 20, h: 20 }
+    {
+        title: "Полиці (Очі)", img: "https://img.freepik.com/free-photo/view-supermarket-aisle_23-2150129064.jpg",
+        targets: [
+            {x: 50, y: 40, r: 15, name: "Золота полиця (дороге)"},
+            {x: 20, y: 45, r: 12, name: "Брендовий товар на рівні рук"},
+            {x: 80, y: 38, r: 14, name: "Яскрава новинка в центрі"}
+        ]
+    },
+    {
+        title: "Знижки та Акції", img: "https://img.freepik.com/free-photo/supermarket-sale-tags-with-products_23-2149179040.jpg",
+        targets: [
+            {x: 30, y: 60, r: 15, name: "Червоний цінник (психологія)"},
+            {x: 70, y: 55, r: 15, name: "1+1=3 пастка"},
+            {x: 50, y: 80, r: 15, name: "Ціна за 100г замість кг"}
+        ]
+    },
+    {
+        title: "Вхідна зона", img: "https://img.freepik.com/free-photo/bakery-supermarket_23-2148011271.jpg",
+        targets: [
+            {x: 40, y: 30, r: 18, name: "Запах випічки (стимул)"},
+            {x: 15, y: 70, r: 20, name: "Великий візок"},
+            {x: 85, y: 65, r: 15, name: "Знижки на вході"}
+        ]
+    },
+    {
+        title: "Біля Каси", img: "https://img.freepik.com/free-photo/close-up-view-shopping-checkout-area_23-2149179051.jpg",
+        targets: [
+            {x: 45, y: 50, r: 15, name: "Дрібні солодощі"},
+            {x: 20, y: 40, r: 12, name: "Журнали та батарейки"},
+            {x: 75, y: 60, r: 15, name: "Товари імпульсу"}
+        ]
+    },
+    {
+        title: "Фрукти та Овочі", img: "https://img.freepik.com/free-photo/variety-vegetables-fruits-market_23-2148784113.jpg",
+        targets: [
+            {x: 50, y: 25, r: 15, name: "Спеціальне освітлення"},
+            {x: 30, y: 50, r: 15, name: "Блискуча плівка"},
+            {x: 80, y: 45, r: 15, name: "Збризкування водою"}
+        ]
+    },
+    {
+        title: "Нижні полиці", img: "https://img.freepik.com/free-photo/shelves-with-different-products-supermarket_23-2148784119.jpg",
+        targets: [
+            {x: 50, y: 85, r: 15, name: "Дешевий аналог внизу"},
+            {x: 10, y: 90, r: 12, name: "Товар без бренду"},
+            {x: 85, y: 88, r: 15, name: "Гуртові упаковки нижче"}
+        ]
+    },
+    {
+        title: "Супутні товари", img: "https://img.freepik.com/free-photo/bottles-shelf-supermarket_23-2148149863.jpg",
+        targets: [
+            {x: 60, y: 40, r: 15, name: "Закуски біля напоїв"},
+            {x: 30, y: 45, r: 14, name: "Відкривалки в алкоголі"},
+            {x: 50, y: 70, r: 18, name: "Соуси біля м'яса"}
+        ]
+    },
+    {
+        title: "Молочний відділ", img: "https://img.freepik.com/free-photo/supermarket-refrigerator_23-2148149876.jpg",
+        targets: [
+            {x: 70, y: 30, r: 15, name: "Далекий кут для молока"},
+            {x: 40, y: 50, r: 15, name: "Ближче - старий термін"},
+            {x: 20, y: 45, r: 12, name: "Рекламна наклейка на склі"}
+        ]
+    },
+    {
+        title: "Дитячий маркетинг", img: "https://img.freepik.com/free-photo/children-toys-shelf-shop_23-2148784126.jpg",
+        targets: [
+            {x: 50, y: 70, r: 18, name: "Іграшки на рівні малюків"},
+            {x: 20, y: 75, r: 15, name: "Мультяшні персонажі"},
+            {x: 80, y: 65, r: 15, name: "Кольорові пластівці"}
+        ]
+    },
+    {
+        title: "Хлібний шлях", img: "https://img.freepik.com/free-photo/interior-modern-supermarket_23-2148784121.jpg",
+        targets: [
+            {x: 90, y: 50, r: 15, name: "Хліб у кінці зали"},
+            {x: 50, y: 50, r: 25, name: "Довгий маршрут покупця"},
+            {x: 10, y: 40, r: 15, name: "Мелодійна музика"}
+        ]
+    },
+    {
+        title: "Свіжість", img: "https://img.freepik.com/free-photo/organic-food-market_23-2148149884.jpg",
+        targets: [
+            {x: 40, y: 30, r: 15, name: "Табличка 'Фермерське'"},
+            {x: 70, y: 45, r: 15, name: "Дерев'яні ящики"},
+            {x: 20, y: 60, r: 15, name: "Відсутність вікон (час)"}
+        ]
+    },
+    {
+        title: "Заморожені", img: "https://img.freepik.com/free-photo/refrigerator-with-frozen-food_23-2148149880.jpg",
+        targets: [
+            {x: 50, y: 40, r: 18, name: "Напівфабрикати в центрі"},
+            {x: 80, y: 55, r: 15, name: "Красиве фото на коробці"},
+            {x: 20, y: 35, r: 12, name: "Акція на морозиво"}
+        ]
+    },
+    {
+        title: "Побутова хімія", img: "https://img.freepik.com/free-photo/shelf-with-cleaning-products_23-2148149882.jpg",
+        targets: [
+            {x: 60, y: 40, r: 15, name: "Еко-маркування (дорожче)"},
+            {x: 30, y: 55, r: 15, name: "Акційний блок стійка"},
+            {x: 80, y: 70, r: 15, name: "Великий об'єм (не дешевше)"}
+        ]
+    },
+    {
+        title: "Крупи та бакалія", img: "https://img.freepik.com/free-photo/shelves-supermarket_23-2148149871.jpg",
+        targets: [
+            {x: 45, y: 45, r: 15, name: "Дорога олія в центрі"},
+            {x: 20, y: 30, r: 12, name: "Популярна марка збоку"},
+            {x: 75, y: 50, r: 14, name: "Пакети зі знижкою"}
+        ]
+    },
+    {
+        title: "Великі знижки", img: "https://img.freepik.com/free-photo/sale-labels-supermarket_23-2149179044.jpg",
+        targets: [
+            {x: 50, y: 50, r: 25, name: "Кошик зі знижками"},
+            {x: 20, y: 80, r: 15, name: "Напис 'Лише сьогодні'"},
+            {x: 80, y: 20, r: 15, name: "Яскравий плакат 'АКЦІЯ'"}
+        ]
+    }
 ];
 
 function playSnd(id) { 
@@ -278,7 +383,7 @@ function showM(l) {
     const info = document.getElementById('m-info');
     info.style.display = 'block';
     const texts = [ "",
-        "<h3>1. Фізіологічні потреби</h3><p>Це фундамент нашого життя. Сюди відноситься потреба в їжі, воді, сні та диханні. З точки зору фінансів, це обов'язкові витрати, без яких неможливо існувати. Якщо ці потреби не задоволені, людина не може думати ні про що інше. У бюджеті родини це зазвичай 50% усіх витрат. Важливо розуміти різницю між 'потребою в їжі' та 'потребою в дорогому ресторані'.</p>",
+        "<h3>1. Фізіологічні потреби</h3><p>Це фундамент нашого життя. Сюди відноситься потреба в їжі, воді, сні та диханні. З точки зору фінансів, це обов'язкові витрати, без яких неможливо існувати. У бюджеті родини це зазвичай 50% усіх витрат. Важливо розуміти різницю між 'потребою в їжі' та 'потребою в дорогому ресторані'.</p>",
         "<h3>2. Потреба в безпеці</h3><p>Коли ми ситі, ми хочемо бути впевнені у завтрашньому дні. Це захист від фізичних загроз, фінансова стабільність (та сама 'фінансова подушка'), наявність житла та медичне страхування. Це потреба в порядку, законі та передбачуваності життя. Безпека — це спокій вашої родини, який купується через страхування та заощадження.</p>",
         "<h3>3. Соціальні потреби</h3><p>Людина — істота соціальна. Нам потрібно відчувати приналежність до групи, любов та дружбу. Сюди відносяться сімейні стосунки, спілкування з друзями, участь у громаді. Фінансово це може виражатися у витратах на подарунки, спільні поїздки або хобі. Часто маркетологи грають на цьому, нав'язуючи товари як засіб 'стати частиною крутої компанії'.</p>",
         "<h3>4. Потреба у визнанні</h3><p>Це бажання бути шанованим, мати високий статус та досягнення. Ми хочемо, щоб оточуючі бачили нашу компетентність. Часто на цьому рівні люди потрапляють у пастки маркетингу, купуючи дорогі брендові речі 'для статусу' в кредит, що руйнує бюджет. Справжнє визнання приходить через професіоналізм, а не через логотип на сумці.</p>",
@@ -291,6 +396,7 @@ function showM(l) {
 /* IMPROVED GAMES SYSTEM */
 let currentTrapLvl = 0;
 let lives = 3;
+let targetsFound = 0;
 
 function openGame(id) {
     const canvas = document.getElementById('g-canvas');
@@ -299,26 +405,24 @@ function openGame(id) {
     
     if(id===1) {
         document.getElementById('g-title').innerText = "Інфляційна Битва";
-        let money = 1000;
         let power = 100;
         canvas.innerHTML = `
             <div class="game-ui-stats">
-                <span>Капітал: <b id="inf-money">${money}</b> грн</span>
-                <span>Купівельна спроможність: <b id="inf-pow">${power}</b>%</span>
+                <span>Капітал: <b id="inf-money">1000</b> грн</span>
+                <span>Спроможність: <b id="inf-pow">100</b>%</span>
             </div>
             <div id="inf-area" style="width:100%; height:300px; background:#f1f5f9; border-radius:15px; position:relative; overflow:hidden">
                 <div id="inf-ball" style="position:absolute; top:40%; left:40%; width:60px; height:60px; background:red; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:10px; text-align:center">ІНФЛЯЦІЯ</div>
             </div>
-            <p style="font-size:12px; margin-top:10px">Тисни на 'КЛАСТИ НА ДЕПОЗИТ', щоб зупинити падіння спроможності!</p>
             <button class="btn" style="margin-top:10px" onclick="investAction()">ДЕПОЗИТ (+5%)</button>
         `;
         window.infInt = setInterval(() => {
             power -= 1;
             document.getElementById('inf-pow').innerText = power;
             let ball = document.getElementById('inf-ball');
-            ball.style.transform = `scale(${1 + (100-power)/20})`;
-            if(power <= 0) { clearInterval(window.infInt); alert("Інфляція з'їла ваші гроші! Потрібно було інвестувати."); closeGame(); }
-        }, 500);
+            if(ball) ball.style.transform = `scale(${1 + (100-power)/15})`;
+            if(power <= 0) { clearInterval(window.infInt); alert("Інфляція з'їла ваші гроші!"); closeGame(); }
+        }, 400);
     } else if(id===2) {
         currentTrapLvl = 0;
         lives = 3;
@@ -328,6 +432,7 @@ function openGame(id) {
 
 function investAction() {
     let p = document.getElementById('inf-pow');
+    if(!p) return;
     let val = parseInt(p.innerText);
     p.innerText = Math.min(100, val + 5);
     playSnd('snd-win');
@@ -336,17 +441,20 @@ function investAction() {
 function loadTrapLevel() {
     const canvas = document.getElementById('g-canvas');
     const lvl = trapLevels[currentTrapLvl];
-    document.getElementById('g-title').innerText = `Детектив: Рівень ${currentTrapLvl + 1}/15`;
+    targetsFound = 0;
+    document.getElementById('g-title').innerText = `Детектив: ${lvl.title} (${currentTrapLvl+1}/15)`;
     
     canvas.innerHTML = `
         <div class="game-ui-stats">
-            <span>Ціль: Знайди <b>${lvl.t}</b></span>
-            <span>Спроби: <b id="lives-val">${lives}</b></span>
+            <span>Знайдено: <b id="found-val">0/3</b></span>
+            <span>Життя: <b id="lives-val">${lives}</b></span>
         </div>
-        <div id="trap-zone" style="width:100%; height:320px; background:url('${lvl.img || trapLevels[0].img}') center/cover; position:relative; border-radius:15px; border:3px solid var(--s); cursor:crosshair">
-            <div id="success-marker" class="trap-marker" style="left:${lvl.x}%; top:${lvl.y}%; width:${lvl.w}%; height:${lvl.h}%"></div>
+        <div id="trap-zone" style="width:100%; height:320px; background:url('${lvl.img}') center/cover; position:relative; border-radius:15px; border:3px solid var(--s); cursor:crosshair">
+            ${lvl.targets.map((t, i) => `
+                <div id="target-${i}" class="trap-marker" style="left:${t.x}%; top:${t.y}%; width:${t.r*2}%; height:${t.r*2.5}%; border-radius:50%;"></div>
+            `).join('')}
         </div>
-        <p style="font-size:11px; color:#64748b; margin-top:5px">Будь уважним! Помилка коштує спроби.</p>
+        <p style="font-size:12px; margin-top:8px">Знайди 3 маркетингові пастки на цьому фото!</p>
     `;
     
     document.getElementById('trap-zone').onclick = function(e) {
@@ -354,26 +462,40 @@ function loadTrapLevel() {
         const px = ((e.clientX - rect.left) / rect.width) * 100;
         const py = ((e.clientY - rect.top) / rect.height) * 100;
         
-        if(px >= lvl.x && px <= (lvl.x + lvl.w) && py >= lvl.y && py <= (lvl.y + lvl.h)) {
-            // CORRECT
-            document.getElementById('success-marker').style.display = 'block';
-            playSnd('snd-win');
-            alert(`ПРАВИЛЬНО! ${lvl.desc}`);
-            currentTrapLvl++;
-            if(currentTrapLvl >= trapLevels.length) {
-                alert("ВІТАЄМО! Ви - Майстер Детектив!");
-                closeGame();
-            } else {
-                loadTrapLevel();
+        let hit = false;
+        lvl.targets.forEach((t, i) => {
+            const marker = document.getElementById(`target-${i}`);
+            if(marker.style.display === 'block') return; // Already found
+
+            // Simple distance check for click
+            const dist = Math.sqrt(Math.pow(px - t.x, 2) + Math.pow(py - t.y, 2));
+            if(dist < t.r) {
+                hit = true;
+                marker.style.display = 'block';
+                targetsFound++;
+                document.getElementById('found-val').innerText = `${targetsFound}/3`;
+                playSnd('snd-win');
+                if(targetsFound === 3) {
+                    setTimeout(() => {
+                        currentTrapLvl++;
+                        if(currentTrapLvl >= trapLevels.length) {
+                            alert("ВІТАЄМО! Ви пройшли всі 15 рівнів!");
+                            closeGame();
+                        } else {
+                            loadTrapLevel();
+                        }
+                    }, 500);
+                }
             }
-        } else {
-            // WRONG
+        });
+
+        if(!hit) {
             lives--;
             document.getElementById('lives-val').innerText = lives;
-            showErrorAt(e.clientX - rect.left, e.clientY - rect.top);
+            showErrorAt(px, py);
             playSnd('snd-err');
             if(lives <= 0) {
-                alert("Спроби закінчилися! Спробуйте ще раз.");
+                alert("Гра закінчена! Спробуйте спочатку.");
                 closeGame();
             }
         }
@@ -381,12 +503,13 @@ function loadTrapLevel() {
 }
 
 function showErrorAt(x, y) {
+    const zone = document.getElementById('trap-zone');
     const cross = document.createElement('div');
     cross.className = 'error-cross';
     cross.innerHTML = '<i class="fas fa-times"></i>';
-    cross.style.left = (x - 20) + 'px';
-    cross.style.top = (y - 20) + 'px';
-    document.getElementById('trap-zone').appendChild(cross);
+    cross.style.left = x + '%';
+    cross.style.top = y + '%';
+    zone.appendChild(cross);
     setTimeout(() => cross.remove(), 1000);
 }
 
