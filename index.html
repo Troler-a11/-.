@@ -182,7 +182,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
     </section>
 
     <section id="s5" class="section">
-        <div class="q-header">
+        <div id="q-header-block" class="q-header">
             <span id="q-num" class="badge">Питання 1/18</span>
             <div class="timer-box" id="q-attempts-display">Спроба: 1</div>
         </div>
@@ -196,7 +196,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
                 <p>Ваш бал (бачимо тільки ми)</p>
                 <div id="final-msg" style="margin:20px 0; font-weight:bold; color:var(--err)">Бал з'явиться в Залі Слави ПІСЛЯ завершення!</div>
                 <div style="display:grid; gap:10px">
-                    <button class="btn" onclick="finishAndSave()">Завершити тест та зберегти у рейтинг</button>
+                    <button id="save-db-btn" class="btn" onclick="finishAndSave()">Завершити тест та зберегти у рейтинг</button>
                     <button id="retry-btn" class="btn btn-alt" onclick="retryQuiz()" style="display:none">Спробувати ще раз (-1 бал)</button>
                 </div>
             </div>
@@ -204,12 +204,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
     </section>
 
     <section id="s-lead" class="section">
-        <h2>Рейтинг Гравців</h2>
+        <h2>Рейтинг Гравців (LIVE DATABASE)</h2>
         <div class="card"><table class="leader-table" id="leader-body"></table></div>
     </section>
 </div>
 
 <script>
+// --- КОНФІГУРАЦІЯ FIREBASE ---
+const DB_URL = "https://progekkkt-default-rtdb.firebaseio.com/leaderboard.json";
+
 let userName = "", score = 0, currentQ = 0, canClick = true, finalGradeInternal = 0;
 let testStarted = false;
 
@@ -234,14 +237,16 @@ const quizData = [
     {q:"Найдорожчий ресурс людини:", a:["Гроші","Час","Золото"], c:1}
 ];
 
-// Anti-cheat: detection of visibility change
-document.addEventListener("visibilitychange", function() {
-    if (document.hidden && testStarted) {
+// --- АНТИ-ЧИТ (ПОКРАЩЕНО ДЛЯ МОБІЛЬНИХ ТА ПК) ---
+function handleVisibility() {
+    if ((document.hidden || document.visibilityState === 'hidden') && testStarted) {
         testStarted = false;
-        alert("УВАГА! Ми помітили, що ви виходили із вкладки тесту. Тест закрито автоматично через підозру у списуванні.");
+        alert("УВАГА! Вихід із вкладки або переключення додатку ЗАБОРОНЕНО. Тест анульовано.");
         location.reload();
     }
-});
+}
+document.addEventListener("visibilitychange", handleVisibility);
+window.addEventListener("blur", () => { if(testStarted) handleVisibility(); });
 
 const trapLevels = [
     {
@@ -390,7 +395,6 @@ function nt(el,id) {
             loadQuestion();
         }
     } else {
-        // If they leave the test section while it's active
         if(testStarted) {
             let conf = confirm("Вихід з вкладки під час тесту анулює результат. Ви впевнені?");
             if(!conf) return;
@@ -561,21 +565,27 @@ function loadQuestion() {
     });
 }
 
+// --- ВИПРАВЛЕННЯ БАГІВ ВІДОБРАЖЕННЯ ---
 function showIntermediateResults() {
     document.getElementById('q-box').style.display = 'none';
+    document.getElementById('q-header-block').style.display = 'none';
     document.getElementById('q-res').style.display = 'block';
     
     let attemptsCount = parseInt(localStorage.getItem('att_'+userName) || 0);
     finalGradeInternal = Math.round((score/18)*12);
     
-    // Penalty for retry
     if(attemptsCount >= 1) {
         finalGradeInternal = Math.max(0, finalGradeInternal - 1);
+        document.getElementById('final-msg').innerText = "Штраф -1 бал за повторну спробу враховано.";
+    } else {
+        document.getElementById('final-msg').innerText = "Це ваш фінальний результат за першу спробу.";
     }
     
     document.getElementById('score-val').innerText = finalGradeInternal;
     if(attemptsCount < 1) {
         document.getElementById('retry-btn').style.display = 'block';
+    } else {
+        document.getElementById('retry-btn').style.display = 'none';
     }
 }
 
@@ -585,25 +595,67 @@ function retryQuiz() {
     location.reload();
 }
 
-function finishAndSave() {
-    saveScore(userName, finalGradeInternal);
-    let att = parseInt(localStorage.getItem('att_'+userName) || 0);
-    localStorage.setItem('att_'+userName, att + 1);
-    nt(document.querySelector('.nav-tab:last-child'), 's-lead');
+// --- ІНТЕГРАЦІЯ З FIREBASE REALTIME DB ---
+async function finishAndSave() {
+    const btn = document.getElementById('save-db-btn');
+    btn.disabled = true;
+    btn.innerText = "ЗБЕРЕЖЕННЯ...";
+
+    const resultData = {
+        name: userName,
+        grade: finalGradeInternal,
+        date: new Date().toLocaleString('uk-UA')
+    };
+
+    try {
+        const response = await fetch(DB_URL, {
+            method: 'POST',
+            body: JSON.stringify(resultData),
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if(response.ok) {
+            alert("Результат успішно додано до загального рейтингу!");
+            let att = parseInt(localStorage.getItem('att_'+userName) || 0);
+            localStorage.setItem('att_'+userName, att + 1);
+            updateLeaderboard();
+            nt(document.querySelector('.nav-tab:last-child'), 's-lead');
+        } else {
+            throw new Error("Помилка БД");
+        }
+    } catch (e) {
+        alert("Помилка мережі. Спробуйте пізніше.");
+        btn.disabled = false;
+        btn.innerText = "Повторити збереження";
+    }
 }
 
-function saveScore(n, g) {
-    let l = JSON.parse(localStorage.getItem('fin_v2') || '[]');
-    l.push({n, g, d: new Date().toLocaleDateString()});
-    l.sort((a,b)=>b.g - a.g);
-    localStorage.setItem('fin_v2', JSON.stringify(l.slice(0,10)));
-}
-
-function updateLeaderboard() {
-    let l = JSON.parse(localStorage.getItem('fin_v2') || '[]');
+// --- ОНОВЛЕННЯ РЕЙТИНГУ З FIREBASE ---
+async function updateLeaderboard() {
     let b = document.getElementById('leader-body');
-    b.innerHTML = '<tr><th>М</th><th>Гравець</th><th>Бал</th></tr>' + 
-        l.map((u,i)=>`<tr><td>${i+1}</td><td>${u.n}</td><td>${u.g}</td></tr>`).join('');
+    b.innerHTML = '<tr><td colspan="3" style="text-align:center">Завантаження даних...</td></tr>';
+    
+    try {
+        const response = await fetch(DB_URL);
+        const data = await response.json();
+        
+        if(!data) {
+            b.innerHTML = '<tr><td colspan="3">Рейтинг порожній</td></tr>';
+            return;
+        }
+
+        // Конвертація об'єкту Firebase у масив
+        let list = Object.keys(data).map(key => data[key]);
+        
+        // Сортування за балами
+        list.sort((a,b) => b.grade - a.grade);
+        
+        b.innerHTML = '<tr><th>М</th><th>Гравець</th><th>Бал</th></tr>' + 
+            list.map((u,i)=>`<tr><td>${i+1}</td><td>${u.name}</td><td style="font-weight:bold; color:var(--p)">${u.grade}</td></tr>`).join('');
+            
+    } catch (e) {
+        b.innerHTML = '<tr><td colspan="3">Помилка завантаження рейтингу</td></tr>';
+    }
 }
 
 function checkCase() {
