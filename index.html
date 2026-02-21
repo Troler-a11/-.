@@ -237,7 +237,7 @@ const quizData = [
     {q:"Найдорожчий ресурс людини:", a:["Гроші","Час","Золото"], c:1}
 ];
 
-// --- АНТИ-ЧИТ (ПОКРАЩЕНО ДЛЯ МОБІЛЬНИХ ТА ПК) ---
+// --- АНТИ-ЧИТ (ДЛЯ МОБІЛОК ТА ПК) ---
 function handleVisibility() {
     if ((document.hidden || document.visibilityState === 'hidden') && testStarted) {
         testStarted = false;
@@ -248,6 +248,7 @@ function handleVisibility() {
 document.addEventListener("visibilitychange", handleVisibility);
 window.addEventListener("blur", () => { if(testStarted) handleVisibility(); });
 
+// --- ЛОГІКА ДЕТЕКТИВА (15 РІВНІВ) ---
 const trapLevels = [
     {
         title: "Полиці (Очі)", img: "https://img.freepik.com/free-photo/view-supermarket-aisle_23-2150129064.jpg",
@@ -412,11 +413,11 @@ function showM(l) {
     const info = document.getElementById('m-info');
     info.style.display = 'block';
     const texts = [ "",
-        "<h3>1. Фізіологічні потреби</h3><p>Це фундамент нашого життя. Сюди відноситься потреба в їжі, воді, сні та диханні. З точки зору фінансів, це обов'язкові витрати, без яких неможливо існувати. У бюджеті родини це зазвичай 50% усіх витрат. Важливо розуміти різницю між 'потребою в їжі' та 'потребою в дорогому ресторані'.</p>",
-        "<h3>2. Потреба в безпеці</h3><p>Коли ми ситі, ми хочемо бути впевнені у завтрашньому дні. Це захист від фізичних загроз, фінансова стабільність (та сама 'фінансова подушка'), наявність житла та медичне страхування. Це потреба в порядку, законі та передбачуваності життя. Безпека — це спокій вашої родини, який купується через страхування та заощадження.</p>",
-        "<h3>3. Соціальні потреби</h3><p>Людина — істота соціальна. Нам потрібно відчувати приналежність до групи, любов та дружбу. Сюди відносяться сімейні стосунки, спілкування з друзями, участь у громаді. Фінансово це може виражатися у витратах на подарунки, спільні поїздки або хобі. Часто маркетологи грають на цьому, нав'язуючи товари як засіб 'стати частиною крутої компанії'.</p>",
-        "<h3>4. Потреба у визнанні</h3><p>Це бажання бути шанованим, мати високий статус та досягнення. Ми хочемо, щоб оточуючі бачили нашу компетентність. Часто на цьому рівні люди потрапляють у пастки маркетингу, купуючи дорогі брендові речі 'для статусу' в кредит, що руйнує бюджет. Справжнє визнання приходить через професіоналізм, а не через логотип на сумці.</p>",
-        "<h3>5. Самоактуалізація</h3><p>Вершина піраміди — це реалізація ваших талантів та здібностей. Це творчість, саморозвиток, пошук сенсу життя. Коли всі нижні рівні закриті, людина прагне стати тим, ким вона може бути за своєю природою. Це інвестиції в освіту, досвід, подорожі та духовний розвиток. Це найвищий рівень свободи особистості.</p>"
+        "<h3>1. Фізіологічні потреби</h3><p>Це фундамент нашого життя. Сюди відноситься потреба в їжі, воді, сні та диханні. З точки зору фінансів, це обов'язкові витрати, без яких неможливо існувати. У бюджеті родини це зазвичай 50% усіх витрат. Важливо розуміти різницю між 'потребою в їжі' та 'потребою в дорогому ресторані'. Справжня фізіологічна потреба — це калорії для виживання, а не делікатеси.</p>",
+        "<h3>2. Потреба в безпеці</h3><p>Коли ми ситі, ми хочемо бути впевнені у завтрашньому дні. Це захист від фізичних загроз, фінансова стабільність (та сама 'фінансова подушка'), наявність житла та медичне страхування. Це потреба в порядку, законі та передбачуваності життя. Безпека — це спокій вашої родини, який купується через страхування, сигналізацію та банківські заощадження на випадок кризи.</p>",
+        "<h3>3. Соціальні потреби</h3><p>Людина — істота соціальна. Нам потрібно відчувати приналежність до групи, любов та дружбу. Сюди відносяться сімейні стосунки, спілкування з друзями, участь у громаді. Фінансово це може виражатися у витратах на подарунки, спільні поїздки або хобі. Часто маркетологи грають на цьому, нав'язуючи товари як засіб 'стати частиною крутої компанії' або засіб завоювати любов.</p>",
+        "<h3>4. Потреба у визнанні</h3><p>Це бажання бути шанованим, мати високий статус та досягнення. Ми хочемо, щоб оточуючі бачили нашу компетентність та успіх. Часто на цьому рівні люди потрапляють у пастки маркетингу, купуючи дорогі брендові речі 'для статусу' в кредит, що руйнує бюджет. Справжнє визнання приходить через реальний професіоналізм, а не через логотип на сумці чи останню модель телефону в розстрочку.</p>",
+        "<h3>5. Самоактуалізація</h3><p>Вершина піраміди — це реалізація ваших талантів та здібностей. Це творчість, саморозвиток, пошук сенсу життя. Коли всі нижні рівні закриті, людина прагне стати тим, ким вона може бути за своєю природою. Це інвестиції в освіту, новий досвід, подорожі та духовний розвиток. Це найвищий рівень свободи особистості, де фінанси стають лише інструментом для досягнення цілей.</p>"
     ];
     info.innerHTML = texts[l];
     playSnd('snd-click');
@@ -446,7 +447,8 @@ function openGame(id) {
         `;
         window.infInt = setInterval(() => {
             power -= 1;
-            document.getElementById('inf-pow').innerText = power;
+            let pElem = document.getElementById('inf-pow');
+            if(pElem) pElem.innerText = power;
             let ball = document.getElementById('inf-ball');
             if(ball) ball.style.transform = `scale(${1 + (100-power)/15})`;
             if(power <= 0) { clearInterval(window.infInt); alert("Інфляція з'їла ваші гроші!"); closeGame(); }
@@ -514,7 +516,7 @@ function loadTrapLevel() {
             document.getElementById('lives-val').innerText = lives;
             showErrorAt(px, py);
             playSnd('snd-err');
-            if(lives <= 0) { closeGame(); }
+            if(lives <= 0) { alert("Вас обманули забагато разів!"); closeGame(); }
         }
     };
 }
@@ -531,7 +533,7 @@ function showErrorAt(x, y) {
 }
 
 function closeGame() {
-    clearInterval(window.infInt);
+    if(window.infInt) clearInterval(window.infInt);
     document.getElementById('game-modal').style.display = 'none';
 }
 
@@ -565,7 +567,6 @@ function loadQuestion() {
     });
 }
 
-// --- ВИПРАВЛЕННЯ БАГІВ ВІДОБРАЖЕННЯ ---
 function showIntermediateResults() {
     document.getElementById('q-box').style.display = 'none';
     document.getElementById('q-header-block').style.display = 'none';
@@ -595,11 +596,10 @@ function retryQuiz() {
     location.reload();
 }
 
-// --- ІНТЕГРАЦІЯ З FIREBASE REALTIME DB ---
 async function finishAndSave() {
     const btn = document.getElementById('save-db-btn');
     btn.disabled = true;
-    btn.innerText = "ЗБЕРЕЖЕННЯ...";
+    btn.innerText = "ЗБЕРЕЖЕННЯ В DATABASE...";
 
     const resultData = {
         name: userName,
@@ -615,52 +615,49 @@ async function finishAndSave() {
         });
 
         if(response.ok) {
-            alert("Результат успішно додано до загального рейтингу!");
+            alert("Дані відправлено на сервер! Тепер ви в Залі Слави.");
             let att = parseInt(localStorage.getItem('att_'+userName) || 0);
             localStorage.setItem('att_'+userName, att + 1);
             updateLeaderboard();
             nt(document.querySelector('.nav-tab:last-child'), 's-lead');
         } else {
-            throw new Error("Помилка БД");
+            throw new Error("Сервер недоступний.");
         }
     } catch (e) {
-        alert("Помилка мережі. Спробуйте пізніше.");
+        alert("Помилка підключення до Firebase!");
         btn.disabled = false;
-        btn.innerText = "Повторити збереження";
+        btn.innerText = "Спробувати ще раз";
     }
 }
 
-// --- ОНОВЛЕННЯ РЕЙТИНГУ З FIREBASE ---
 async function updateLeaderboard() {
     let b = document.getElementById('leader-body');
-    b.innerHTML = '<tr><td colspan="3" style="text-align:center">Завантаження даних...</td></tr>';
+    b.innerHTML = '<tr><td colspan="3" style="text-align:center">Синхронізація з сервером...</td></tr>';
     
     try {
         const response = await fetch(DB_URL);
         const data = await response.json();
         
         if(!data) {
-            b.innerHTML = '<tr><td colspan="3">Рейтинг порожній</td></tr>';
+            b.innerHTML = '<tr><td colspan="3">Рейтинг поки що порожній.</td></tr>';
             return;
         }
 
-        // Конвертація об'єкту Firebase у масив
         let list = Object.keys(data).map(key => data[key]);
-        
-        // Сортування за балами
         list.sort((a,b) => b.grade - a.grade);
         
-        b.innerHTML = '<tr><th>М</th><th>Гравець</th><th>Бал</th></tr>' + 
+        b.innerHTML = '<tr><th>М</th><th>Ім’я Гравця</th><th>Бал (max 12)</th></tr>' + 
             list.map((u,i)=>`<tr><td>${i+1}</td><td>${u.name}</td><td style="font-weight:bold; color:var(--p)">${u.grade}</td></tr>`).join('');
             
     } catch (e) {
-        b.innerHTML = '<tr><td colspan="3">Помилка завантаження рейтингу</td></tr>';
+        b.innerHTML = '<tr><td colspan="3">Помилка завантаження даних.</td></tr>';
     }
 }
 
 function checkCase() {
-    if(document.getElementById('ans').value == 111000) { alert("Правильно!"); playSnd('snd-win'); }
-    else { alert("Помилка (18500 * 6)"); playSnd('snd-err'); }
+    let val = document.getElementById('ans').value;
+    if(val == 111000) { alert("Правильний розрахунок!"); playSnd('snd-win'); }
+    else { alert("Невірно. Рахуйте: 18500 * 6 місяців."); playSnd('snd-err'); }
 }
 </script>
 </body>
