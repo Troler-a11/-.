@@ -12,14 +12,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 /* AUTH MODAL */
 #auth-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--s);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
-.auth-card{background:#fff;padding:30px;border-radius:24px;width:100%;max-width:420px;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2)}
+.auth-card{background:#fff;padding:40px;border-radius:24px;width:100%;max-width:420px;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2)}
 .auth-input{width:100%;padding:18px;margin:15px 0;border:2px solid #e2e8f0;border-radius:15px;font-size:16px;outline:none;transition:0.3s;box-shadow:inset 0 2px 4px rgba(0,0,0,0.05)}
 .auth-input:focus{border-color:var(--p);box-shadow:0 0 0 4px rgba(37,99,235,0.1)}
 
 /* MOBILE NAV */
 .top-nav{position:sticky;top:0;background:var(--s);color:#fff;padding:15px;z-index:1000;display:flex;overflow-x:auto;gap:12px;scrollbar-width:none;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);backdrop-filter:blur(10px)}
 .top-nav::-webkit-scrollbar{display:none}
-.nav-tab{padding:12px 20px;background:rgba(255,255,255,0.08);border-radius:15px;white-space:nowrap;font-size:13px;font-weight:700;transition:0.3s;border:1px solid transparent;display:flex;align-items:center;gap:8px}
+.nav-tab{padding:12px 20px;background:rgba(255,255,255,0.08);border-radius:15px;white-space:nowrap;font-size:13px;font-weight:700;transition:0.3s;border:1px solid transparent;display:flex;align-items:center;gap:8px;cursor:pointer}
 .nav-tab.active{background:var(--p);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,0.4)}
 
 /* CONTENT */
@@ -31,19 +31,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .card{background:var(--card);padding:24px;border-radius:20px;margin-bottom:20px;border:1px solid #e2e8f0;box-shadow:0 4px 20px -2px rgba(0,0,0,0.05)}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:var(--s);color:#fff;border-radius:10px;font-size:11px;font-weight:800;margin-bottom:15px;text-transform:uppercase}
 
-/* GAMES V2 */
+/* GAMES */
 .game-hub{display:grid;grid-template-columns:1fr;gap:15px}
 .game-item{display:flex;align-items:center;background:#fff;padding:18px;border-radius:22px;border:1px solid #e2e8f0;gap:18px;cursor:pointer;transition:0.3s;position:relative;overflow:hidden}
 .game-item:hover{transform:translateY(-3px);box-shadow:0 10px 25px -5px rgba(0,0,0,0.1)}
 .game-icon{width:65px;height:65px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;flex-shrink:0}
 
-/* GAME CANVAS V2 */
+/* GAME CANVAS */
 .game-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:2000;display:none;flex-direction:column}
 .game-header{padding:20px;background:var(--s);color:#fff;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
 .game-body{flex:1;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .game-screen{width:100%;max-width:500px;background:#fff;border-radius:25px;padding:25px;box-shadow:0 20px 40px rgba(0,0,0,0.1);text-align:center;position:relative; overflow:hidden; min-height:450px}
 
-/* QUIZ V2 */
+/* QUIZ */
 .opt{padding:18px;background:#fff;border:2px solid #e2e8f0;border-radius:18px;margin-bottom:14px;font-weight:700;display:flex;align-items:center;gap:15px;transition:0.3s;cursor:pointer}
 .opt.disabled{pointer-events:none;opacity:0.7}
 .opt.correct{background:#dcfce7;border-color:var(--suc);color:#15803d;transform:scale(1.02)}
@@ -54,7 +54,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .btn:active{transform:scale(0.96)}
 .btn-alt{background:var(--s)}
 
-/* PYRAMID V2 */
+/* PYRAMID */
 .p-stack{perspective:1000px;margin:30px 0}
 .p-item{padding:15px;margin:5px auto;color:#fff;font-weight:900;text-align:center;border-radius:8px;cursor:pointer;transition:0.4s;transform:rotateX(20deg);box-shadow:0 10px 0 rgba(0,0,0,0.2)}
 .p-item:hover{transform:rotateX(0deg) scale(1.05);box-shadow:0 15px 25px rgba(0,0,0,0.2)}
@@ -66,7 +66,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .leader-table th{text-align:left;padding:12px;border-bottom:2px solid #e2e8f0;font-size:14px}
 .leader-table td{padding:12px;border-bottom:1px solid #f1f5f9;font-size:15px}
 
-/* GAME UI ELEMENTS */
 .game-ui-stats{display:flex;justify-content:space-between;width:100%;margin-bottom:15px;background:#f8fafc;padding:10px;border-radius:12px;border:1px solid #e2e8f0}
 .trap-marker{position:absolute;border:4px solid var(--suc);border-radius:50%;pointer-events:none;transform:translate(-50%, -50%);display:none}
 .error-cross{position:absolute;color:var(--err);font-size:40px;pointer-events:none;z-index:100;animation:fadeOut 1s forwards;transform:translate(-50%, -50%)}
@@ -182,7 +181,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
     </section>
 
     <section id="s5" class="section">
-        <div id="q-header-block" class="q-header">
+        <div id="q-header-block" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
             <span id="q-num" class="badge">Питання 1/18</span>
             <div class="timer-box" id="q-attempts-display">Спроба: 1</div>
         </div>
@@ -194,7 +193,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
             <div class="card" style="text-align:center">
                 <h1 id="score-val" style="font-size:80px; color:var(--p)">0</h1>
                 <p>Ваш бал (бачимо тільки ми)</p>
-                <div id="final-msg" style="margin:20px 0; font-weight:bold; color:var(--err)">Бал з'явиться в Залі Слави ПІСЛЯ завершення!</div>
+                <div id="final-msg" style="margin:20px 0; font-weight:bold; color:var(--err)">Бал з'явиться в Залі Слави ПІСЛЯ збереження!</div>
                 <div style="display:grid; gap:10px">
                     <button id="save-db-btn" class="btn" onclick="finishAndSave()">Завершити тест та зберегти у рейтинг</button>
                     <button id="retry-btn" class="btn btn-alt" onclick="retryQuiz()" style="display:none">Спробувати ще раз (-1 бал)</button>
@@ -210,7 +209,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 </div>
 
 <script>
-// --- КОНФІГУРАЦІЯ FIREBASE ---
 const DB_URL = "https://progekkkt-default-rtdb.firebaseio.com/leaderboard.json";
 
 let userName = "", score = 0, currentQ = 0, canClick = true, finalGradeInternal = 0;
@@ -237,148 +235,35 @@ const quizData = [
     {q:"Найдорожчий ресурс людини:", a:["Гроші","Час","Золото"], c:1}
 ];
 
-// --- АНТИ-ЧИТ (ДЛЯ МОБІЛОК ТА ПК) ---
-function handleVisibility() {
-    if ((document.hidden || document.visibilityState === 'hidden') && testStarted) {
-        testStarted = false;
-        alert("УВАГА! Вихід із вкладки або переключення додатку ЗАБОРОНЕНО. Тест анульовано.");
-        location.reload();
-    }
-}
-document.addEventListener("visibilitychange", handleVisibility);
-window.addEventListener("blur", () => { if(testStarted) handleVisibility(); });
-
-// --- ЛОГІКА ДЕТЕКТИВА (15 РІВНІВ) ---
 const trapLevels = [
-    {
-        title: "Полиці (Очі)", img: "https://img.freepik.com/free-photo/view-supermarket-aisle_23-2150129064.jpg",
-        targets: [
-            {x: 50, y: 40, r: 15, name: "Золота полиця (дороге)"},
-            {x: 20, y: 45, r: 12, name: "Брендовий товар на рівні рук"},
-            {x: 80, y: 38, r: 14, name: "Яскрава новинка в центрі"}
-        ]
-    },
-    {
-        title: "Знижки та Акції", img: "https://img.freepik.com/free-photo/supermarket-sale-tags-with-products_23-2149179040.jpg",
-        targets: [
-            {x: 30, y: 60, r: 15, name: "Червоний цінник (психологія)"},
-            {x: 70, y: 55, r: 15, name: "1+1=3 пастка"},
-            {x: 50, y: 80, r: 15, name: "Ціна за 100г замість кг"}
-        ]
-    },
-    {
-        title: "Вхідна зона", img: "https://img.freepik.com/free-photo/bakery-supermarket_23-2148011271.jpg",
-        targets: [
-            {x: 40, y: 30, r: 18, name: "Запах випічки (стимул)"},
-            {x: 15, y: 70, r: 20, name: "Великий візок"},
-            {x: 85, y: 65, r: 15, name: "Знижки на вході"}
-        ]
-    },
-    {
-        title: "Біля Каси", img: "https://img.freepik.com/free-photo/close-up-view-shopping-checkout-area_23-2149179051.jpg",
-        targets: [
-            {x: 45, y: 50, r: 15, name: "Дрібні солодощі"},
-            {x: 20, y: 40, r: 12, name: "Журнали та батарейки"},
-            {x: 75, y: 60, r: 15, name: "Товари імпульсу"}
-        ]
-    },
-    {
-        title: "Фрукти та Овочі", img: "https://img.freepik.com/free-photo/variety-vegetables-fruits-market_23-2148784113.jpg",
-        targets: [
-            {x: 50, y: 25, r: 15, name: "Спеціальне освітлення"},
-            {x: 30, y: 50, r: 15, name: "Блискуча плівка"},
-            {x: 80, y: 45, r: 15, name: "Збризкування водою"}
-        ]
-    },
-    {
-        title: "Нижні полиці", img: "https://img.freepik.com/free-photo/shelves-with-different-products-supermarket_23-2148784119.jpg",
-        targets: [
-            {x: 50, y: 85, r: 15, name: "Дешевий аналог внизу"},
-            {x: 10, y: 90, r: 12, name: "Товар без бренду"},
-            {x: 85, y: 88, r: 15, name: "Гуртові упаковки нижче"}
-        ]
-    },
-    {
-        title: "Супутні товари", img: "https://img.freepik.com/free-photo/bottles-shelf-supermarket_23-2148149863.jpg",
-        targets: [
-            {x: 60, y: 40, r: 15, name: "Закуски біля напоїв"},
-            {x: 30, y: 45, r: 14, name: "Відкривалки в алкоголі"},
-            {x: 50, y: 70, r: 18, name: "Соуси біля м'яса"}
-        ]
-    },
-    {
-        title: "Молочний відділ", img: "https://img.freepik.com/free-photo/supermarket-refrigerator_23-2148149876.jpg",
-        targets: [
-            {x: 70, y: 30, r: 15, name: "Далекий кут для молока"},
-            {x: 40, y: 50, r: 15, name: "Ближче - старий термін"},
-            {x: 20, y: 45, r: 12, name: "Рекламна наклейка на склі"}
-        ]
-    },
-    {
-        title: "Дитячий маркетинг", img: "https://img.freepik.com/free-photo/children-toys-shelf-shop_23-2148784126.jpg",
-        targets: [
-            {x: 50, y: 70, r: 18, name: "Іграшки на рівні малюків"},
-            {x: 20, y: 75, r: 15, name: "Мультяшні персонажі"},
-            {x: 80, y: 65, r: 15, name: "Кольорові пластівці"}
-        ]
-    },
-    {
-        title: "Хлібний шлях", img: "https://img.freepik.com/free-photo/interior-modern-supermarket_23-2148784121.jpg",
-        targets: [
-            {x: 90, y: 50, r: 15, name: "Хліб у кінці зали"},
-            {x: 50, y: 50, r: 25, name: "Довгий маршрут покупця"},
-            {x: 10, y: 40, r: 15, name: "Мелодійна музика"}
-        ]
-    },
-    {
-        title: "Свіжість", img: "https://img.freepik.com/free-photo/organic-food-market_23-2148149884.jpg",
-        targets: [
-            {x: 40, y: 30, r: 15, name: "Табличка 'Фермерське'"},
-            {x: 70, y: 45, r: 15, name: "Дерев'яні ящики"},
-            {x: 20, y: 60, r: 15, name: "Відсутність вікон (час)"}
-        ]
-    },
-    {
-        title: "Заморожені", img: "https://img.freepik.com/free-photo/refrigerator-with-frozen-food_23-2148149880.jpg",
-        targets: [
-            {x: 50, y: 40, r: 18, name: "Напівфабрикати в центрі"},
-            {x: 80, y: 55, r: 15, name: "Красиве фото на коробці"},
-            {x: 20, y: 35, r: 12, name: "Акція на морозиво"}
-        ]
-    },
-    {
-        title: "Побутова хімія", img: "https://img.freepik.com/free-photo/shelf-with-cleaning-products_23-2148149882.jpg",
-        targets: [
-            {x: 60, y: 40, r: 15, name: "Еко-маркування (дорожче)"},
-            {x: 30, y: 55, r: 15, name: "Акційний блок стійка"},
-            {x: 80, y: 70, r: 15, name: "Великий об'єм (не дешевше)"}
-        ]
-    },
-    {
-        title: "Крупи та бакалія", img: "https://img.freepik.com/free-photo/shelves-supermarket_23-2148149871.jpg",
-        targets: [
-            {x: 45, y: 45, r: 15, name: "Дорога олія в центрі"},
-            {x: 20, y: 30, r: 12, name: "Популярна марка збоку"},
-            {x: 75, y: 50, r: 14, name: "Пакети зі знижкою"}
-        ]
-    },
-    {
-        title: "Великі знижки", img: "https://img.freepik.com/free-photo/sale-labels-supermarket_23-2149179044.jpg",
-        targets: [
-            {x: 50, y: 50, r: 25, name: "Кошик зі знижками"},
-            {x: 20, y: 80, r: 15, name: "Напис 'Лише сьогодні'"},
-            {x: 80, y: 20, r: 15, name: "Яскравий плакат 'АКЦІЯ'"}
-        ]
-    }
+    { title: "Полиці (Очі)", img: "https://img.freepik.com/free-photo/view-supermarket-aisle_23-2150129064.jpg", targets: [{x: 50, y: 40, r: 15}, {x: 20, y: 45, r: 12}, {x: 80, y: 38, r: 14}] },
+    { title: "Знижки та Акції", img: "https://img.freepik.com/free-photo/supermarket-sale-tags-with-products_23-2149179040.jpg", targets: [{x: 30, y: 60, r: 15}, {x: 70, y: 55, r: 15}, {x: 50, y: 80, r: 15}] },
+    { title: "Вхідна зона", img: "https://img.freepik.com/free-photo/bakery-supermarket_23-2148011271.jpg", targets: [{x: 40, y: 30, r: 18}, {x: 15, y: 70, r: 20}, {x: 85, y: 65, r: 15}] },
+    { title: "Біля Каси", img: "https://img.freepik.com/free-photo/close-up-view-shopping-checkout-area_23-2149179051.jpg", targets: [{x: 45, y: 50, r: 15}, {x: 20, y: 40, r: 12}, {x: 75, y: 60, r: 15}] },
+    { title: "Фрукти та Овочі", img: "https://img.freepik.com/free-photo/variety-vegetables-fruits-market_23-2148784113.jpg", targets: [{x: 50, y: 25, r: 15}, {x: 30, y: 50, r: 15}, {x: 80, y: 45, r: 15}] },
+    { title: "Нижні полиці", img: "https://img.freepik.com/free-photo/shelves-with-different-products-supermarket_23-2148784119.jpg", targets: [{x: 50, y: 85, r: 15}, {x: 10, y: 90, r: 12}, {x: 85, y: 88, r: 15}] },
+    { title: "Супутні товари", img: "https://img.freepik.com/free-photo/bottles-shelf-supermarket_23-2148149863.jpg", targets: [{x: 60, y: 40, r: 15}, {x: 30, y: 45, r: 14}, {x: 50, y: 70, r: 18}] },
+    { title: "Молочний відділ", img: "https://img.freepik.com/free-photo/supermarket-refrigerator_23-2148149876.jpg", targets: [{x: 70, y: 30, r: 15}, {x: 40, y: 50, r: 15}, {x: 20, y: 45, r: 12}] },
+    { title: "Дитячий маркетинг", img: "https://img.freepik.com/free-photo/children-toys-shelf-shop_23-2148784126.jpg", targets: [{x: 50, y: 70, r: 18}, {x: 20, y: 75, r: 15}, {x: 80, y: 65, r: 15}] },
+    { title: "Хлібний шлях", img: "https://img.freepik.com/free-photo/interior-modern-supermarket_23-2148784121.jpg", targets: [{x: 90, y: 50, r: 15}, {x: 50, y: 50, r: 25}, {x: 10, y: 40, r: 15}] },
+    { title: "Свіжість", img: "https://img.freepik.com/free-photo/organic-food-market_23-2148149884.jpg", targets: [{x: 40, y: 30, r: 15}, {x: 70, y: 45, r: 15}, {x: 20, y: 60, r: 15}] },
+    { title: "Заморожені", img: "https://img.freepik.com/free-photo/refrigerator-with-frozen-food_23-2148149880.jpg", targets: [{x: 50, y: 40, r: 18}, {x: 80, y: 55, r: 15}, {x: 20, y: 35, r: 12}] },
+    { title: "Побутова хімія", img: "https://img.freepik.com/free-photo/shelf-with-cleaning-products_23-2148149882.jpg", targets: [{x: 60, y: 40, r: 15}, {x: 30, y: 55, r: 15}, {x: 80, y: 70, r: 15}] },
+    { title: "Крупи та бакалія", img: "https://img.freepik.com/free-photo/shelves-supermarket_23-2148149871.jpg", targets: [{x: 45, y: 45, r: 15}, {x: 20, y: 30, r: 12}, {x: 75, y: 50, r: 14}] },
+    { title: "Великі знижки", img: "https://img.freepik.com/free-photo/sale-labels-supermarket_23-2149179044.jpg", targets: [{x: 50, y: 50, r: 25}, {x: 20, y: 80, r: 15}, {x: 80, y: 20, r: 15}] }
 ];
 
-function playSnd(id) { 
-    try { let s = document.getElementById(id); s.currentTime = 0; s.play(); } catch(e){}
-}
+// --- АНТИ-ЧИТ ---
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden && testStarted) {
+        alert("УВАГА! Перемикання вкладки заборонено. Тест анульовано.");
+        location.reload();
+    }
+});
 
 function startApp() {
     userName = document.getElementById('user-name').value.trim();
-    if(userName.length < 3) { alert("Введіть повне ім'я!"); return; }
+    if(userName.length < 3) return alert("Введіть повне ім'я!");
     document.getElementById('auth-overlay').style.display = 'none';
     playSnd('snd-click');
     updateLeaderboard();
@@ -387,278 +272,141 @@ function startApp() {
 function nt(el,id) {
     if(id === 's5') {
         let att = parseInt(localStorage.getItem('att_'+userName) || 0);
-        if(att >= 2) { 
-            alert("Ви вже використали всі 2 спроби тесту!"); 
-            return; 
-        }
+        if(att >= 2) return alert("Спроби вичерпано!");
         if(!testStarted && currentQ === 0) {
             testStarted = true;
             loadQuestion();
-        }
-    } else {
-        if(testStarted) {
-            let conf = confirm("Вихід з вкладки під час тесту анулює результат. Ви впевнені?");
-            if(!conf) return;
-            testStarted = false;
         }
     }
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     el.classList.add('active');
-    playSnd('snd-click');
 }
 
 function showM(l) {
     const info = document.getElementById('m-info');
     info.style.display = 'block';
     const texts = [ "",
-        "<h3>1. Фізіологічні потреби</h3><p>Це фундамент нашого життя. Сюди відноситься потреба в їжі, воді, сні та диханні. З точки зору фінансів, це обов'язкові витрати, без яких неможливо існувати. У бюджеті родини це зазвичай 50% усіх витрат. Важливо розуміти різницю між 'потребою в їжі' та 'потребою в дорогому ресторані'. Справжня фізіологічна потреба — це калорії для виживання, а не делікатеси.</p>",
-        "<h3>2. Потреба в безпеці</h3><p>Коли ми ситі, ми хочемо бути впевнені у завтрашньому дні. Це захист від фізичних загроз, фінансова стабільність (та сама 'фінансова подушка'), наявність житла та медичне страхування. Це потреба в порядку, законі та передбачуваності життя. Безпека — це спокій вашої родини, який купується через страхування, сигналізацію та банківські заощадження на випадок кризи.</p>",
-        "<h3>3. Соціальні потреби</h3><p>Людина — істота соціальна. Нам потрібно відчувати приналежність до групи, любов та дружбу. Сюди відносяться сімейні стосунки, спілкування з друзями, участь у громаді. Фінансово це може виражатися у витратах на подарунки, спільні поїздки або хобі. Часто маркетологи грають на цьому, нав'язуючи товари як засіб 'стати частиною крутої компанії' або засіб завоювати любов.</p>",
-        "<h3>4. Потреба у визнанні</h3><p>Це бажання бути шанованим, мати високий статус та досягнення. Ми хочемо, щоб оточуючі бачили нашу компетентність та успіх. Часто на цьому рівні люди потрапляють у пастки маркетингу, купуючи дорогі брендові речі 'для статусу' в кредит, що руйнує бюджет. Справжнє визнання приходить через реальний професіоналізм, а не через логотип на сумці чи останню модель телефону в розстрочку.</p>",
-        "<h3>5. Самоактуалізація</h3><p>Вершина піраміди — це реалізація ваших талантів та здібностей. Це творчість, саморозвиток, пошук сенсу життя. Коли всі нижні рівні закриті, людина прагне стати тим, ким вона може бути за своєю природою. Це інвестиції в освіту, новий досвід, подорожі та духовний розвиток. Це найвищий рівень свободи особистості, де фінанси стають лише інструментом для досягнення цілей.</p>"
+        "<h3>1. Фізіологічні потреби</h3><p>Їжа, вода, сон. Це фундамент. У бюджеті це 50% витрат.</p>",
+        "<h3>2. Потреба в безпеці</h3><p>Житло, здоров'я, заощадження (подушка). Спокій за завтра.</p>",
+        "<h3>3. Соціальні потреби</h3><p>Сім'я, друзі, любов. Витрати на подарунки та спільне дозвілля.</p>",
+        "<h3>4. Потреба у визнанні</h3><p>Статус, повага. Пастка кредитів на брендові речі.</p>",
+        "<h3>5. Самоактуалізація</h3><p>Розвиток талантів, освіта, хобі. Вищий рівень свободи.</p>"
     ];
     info.innerHTML = texts[l];
     playSnd('snd-click');
 }
 
-let currentTrapLvl = 0;
-let lives = 3;
-let targetsFound = 0;
-
+let curLvl = 0, lives = 3, targetsFound = 0;
 function openGame(id) {
     const canvas = document.getElementById('g-canvas');
     document.getElementById('game-modal').style.display = 'flex';
     canvas.innerHTML = '';
-    
     if(id===1) {
         document.getElementById('g-title').innerText = "Інфляційна Битва";
         let power = 100;
-        canvas.innerHTML = `
-            <div class="game-ui-stats">
-                <span>Капітал: <b id="inf-money">1000</b> грн</span>
-                <span>Спроможність: <b id="inf-pow">100</b>%</span>
-            </div>
-            <div id="inf-area" style="width:100%; height:300px; background:#f1f5f9; border-radius:15px; position:relative; overflow:hidden">
-                <div id="inf-ball" style="position:absolute; top:40%; left:40%; width:60px; height:60px; background:red; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:10px; text-align:center">ІНФЛЯЦІЯ</div>
-            </div>
-            <button class="btn" style="margin-top:10px" onclick="investAction()">ДЕПОЗИТ (+5%)</button>
-        `;
+        canvas.innerHTML = `<div class="game-ui-stats"><span>Капітал: 1000 грн</span><span>Сила грошей: <b id="inf-pow">100</b>%</span></div>
+        <div id="inf-area" style="width:100%; height:300px; background:#f1f5f9; position:relative; overflow:hidden; border-radius:15px">
+        <div id="inf-ball" style="position:absolute; top:40%; left:40%; width:60px; height:60px; background:red; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:10px">ІНФЛЯЦІЯ</div>
+        </div><button class="btn" style="margin-top:10px" onclick="invest()">ДЕПОЗИТ (+5%)</button>`;
         window.infInt = setInterval(() => {
-            power -= 1;
-            let pElem = document.getElementById('inf-pow');
-            if(pElem) pElem.innerText = power;
-            let ball = document.getElementById('inf-ball');
-            if(ball) ball.style.transform = `scale(${1 + (100-power)/15})`;
-            if(power <= 0) { clearInterval(window.infInt); alert("Інфляція з'їла ваші гроші!"); closeGame(); }
-        }, 400);
-    } else if(id===2) {
-        currentTrapLvl = 0;
-        lives = 3;
-        loadTrapLevel();
-    }
+            power -= 2;
+            document.getElementById('inf-pow').innerText = power;
+            document.getElementById('inf-ball').style.transform = `scale(${1 + (100-power)/20})`;
+            if(power <= 0) { clearInterval(window.infInt); alert("Гроші знецінились!"); closeGame(); }
+        }, 500);
+    } else if(id===2) { curLvl = 0; lives = 3; loadTrapLevel(); }
 }
 
-function investAction() {
+function invest() { 
     let p = document.getElementById('inf-pow');
-    if(!p) return;
-    let val = parseInt(p.innerText);
-    p.innerText = Math.min(100, val + 5);
+    if(p) p.innerText = Math.min(100, parseInt(p.innerText) + 5);
     playSnd('snd-win');
 }
 
 function loadTrapLevel() {
     const canvas = document.getElementById('g-canvas');
-    const lvl = trapLevels[currentTrapLvl];
+    const lvl = trapLevels[curLvl];
     targetsFound = 0;
-    document.getElementById('g-title').innerText = `Детектив: ${lvl.title} (${currentTrapLvl+1}/15)`;
-    
-    canvas.innerHTML = `
-        <div class="game-ui-stats">
-            <span>Знайдено: <b id="found-val">0/3</b></span>
-            <span>Життя: <b id="lives-val">${lives}</b></span>
-        </div>
-        <div id="trap-zone" style="width:100%; height:320px; background:url('${lvl.img}') center/cover; position:relative; border-radius:15px; border:3px solid var(--s); cursor:crosshair">
-            ${lvl.targets.map((t, i) => `
-                <div id="target-${i}" class="trap-marker" style="left:${t.x}%; top:${t.y}%; width:${t.r*2}%; height:${t.r*2.5}%; border-radius:50%;"></div>
-            `).join('')}
-        </div>
-    `;
-    
-    document.getElementById('trap-zone').onclick = function(e) {
-        const rect = this.getBoundingClientRect();
-        const px = ((e.clientX - rect.left) / rect.width) * 100;
-        const py = ((e.clientY - rect.top) / rect.height) * 100;
-        
+    document.getElementById('g-title').innerText = `Детектив: ${lvl.title} (${curLvl+1}/15)`;
+    canvas.innerHTML = `<div class="game-ui-stats"><span>Знайдено: <b id="fnd">0/3</b></span><span>Життя: ${lives}</span></div>
+    <div id="t-zone" style="width:100%; height:320px; background:url('${lvl.img}') center/cover; position:relative; border-radius:15px; cursor:crosshair">
+    ${lvl.targets.map((t,i)=>`<div id="t-${i}" class="trap-marker" style="left:${t.x}%; top:${t.y}%; width:${t.r*2}%; height:${t.r*2}%"></div>`).join('')}
+    </div>`;
+    document.getElementById('t-zone').onclick = (e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        const px = ((e.clientX - r.left)/r.width)*100, py = ((e.clientY - r.top)/r.height)*100;
         let hit = false;
-        lvl.targets.forEach((t, i) => {
-            const marker = document.getElementById(`target-${i}`);
-            if(marker.style.display === 'block') return;
-            const dist = Math.sqrt(Math.pow(px - t.x, 2) + Math.pow(py - t.y, 2));
-            if(dist < t.r) {
-                hit = true;
-                marker.style.display = 'block';
-                targetsFound++;
-                document.getElementById('found-val').innerText = `${targetsFound}/3`;
+        lvl.targets.forEach((t,i) => {
+            const m = document.getElementById(`t-${i}`);
+            if(m.style.display==='block') return;
+            if(Math.sqrt((px-t.x)**2+(py-t.y)**2) < t.r) {
+                hit=true; m.style.display='block'; targetsFound++;
+                document.getElementById('fnd').innerText = targetsFound+"/3";
                 playSnd('snd-win');
-                if(targetsFound === 3) {
-                    setTimeout(() => {
-                        currentTrapLvl++;
-                        if(currentTrapLvl >= trapLevels.length) { closeGame(); } 
-                        else { loadTrapLevel(); }
-                    }, 500);
-                }
+                if(targetsFound===3) { curLvl++; curLvl<15 ? setTimeout(loadTrapLevel, 500) : closeGame(); }
             }
         });
-        if(!hit) {
-            lives--;
-            document.getElementById('lives-val').innerText = lives;
-            showErrorAt(px, py);
-            playSnd('snd-err');
-            if(lives <= 0) { alert("Вас обманули забагато разів!"); closeGame(); }
-        }
+        if(!hit) { lives--; playSnd('snd-err'); if(lives<=0) closeGame(); else loadTrapLevel(); }
     };
 }
 
-function showErrorAt(x, y) {
-    const zone = document.getElementById('trap-zone');
-    const cross = document.createElement('div');
-    cross.className = 'error-cross';
-    cross.innerHTML = '<i class="fas fa-times"></i>';
-    cross.style.left = x + '%';
-    cross.style.top = y + '%';
-    zone.appendChild(cross);
-    setTimeout(() => cross.remove(), 1000);
-}
-
-function closeGame() {
-    if(window.infInt) clearInterval(window.infInt);
-    document.getElementById('game-modal').style.display = 'none';
-}
+function closeGame() { if(window.infInt) clearInterval(window.infInt); document.getElementById('game-modal').style.display='none'; }
 
 function loadQuestion() {
-    if(currentQ >= quizData.length) { 
-        testStarted = false; 
-        showIntermediateResults(); 
-        return; 
-    }
+    if(currentQ >= quizData.length) return showResults();
     canClick = true;
     const d = quizData[currentQ];
-    let att = parseInt(localStorage.getItem('att_'+userName) || 0);
-    document.getElementById('q-attempts-display').innerText = `Спроба: ${att + 1}`;
     document.getElementById('q-num').innerText = `Питання ${currentQ+1}/18`;
     document.getElementById('q-txt').innerText = d.q;
-    const box = document.getElementById('q-opts');
-    box.innerHTML = '';
-    
-    d.a.forEach((t,i)=>{
-        const dv = document.createElement('div');
-        dv.className = 'opt';
-        dv.innerHTML = `<span>${t}</span>`;
+    const box = document.getElementById('q-opts'); box.innerHTML = '';
+    d.a.forEach((t,i) => {
+        const dv = document.createElement('div'); dv.className = 'opt'; dv.innerText = t;
         dv.onclick = () => {
-            if(!canClick) return;
-            canClick = false;
+            if(!canClick) return; canClick = false;
             if(i === d.c) { dv.classList.add('correct'); score++; playSnd('snd-win'); }
             else { dv.classList.add('wrong'); playSnd('snd-err'); }
-            setTimeout(() => { currentQ++; loadQuestion(); }, 800);
+            setTimeout(() => { currentQ++; loadQuestion(); }, 600);
         };
         box.appendChild(dv);
     });
 }
 
-function showIntermediateResults() {
+function showResults() {
+    testStarted = false;
     document.getElementById('q-box').style.display = 'none';
-    document.getElementById('q-header-block').style.display = 'none';
     document.getElementById('q-res').style.display = 'block';
-    
-    let attemptsCount = parseInt(localStorage.getItem('att_'+userName) || 0);
+    let att = parseInt(localStorage.getItem('att_'+userName) || 0);
     finalGradeInternal = Math.round((score/18)*12);
-    
-    if(attemptsCount >= 1) {
+    if(att >= 1) { 
         finalGradeInternal = Math.max(0, finalGradeInternal - 1);
-        document.getElementById('final-msg').innerText = "Штраф -1 бал за повторну спробу враховано.";
+        document.getElementById('final-msg').innerText = "Штраф -1 бал за 2-гу спробу.";
     } else {
-        document.getElementById('final-msg').innerText = "Це ваш фінальний результат за першу спробу.";
-    }
-    
-    document.getElementById('score-val').innerText = finalGradeInternal;
-    if(attemptsCount < 1) {
         document.getElementById('retry-btn').style.display = 'block';
-    } else {
-        document.getElementById('retry-btn').style.display = 'none';
     }
+    document.getElementById('score-val').innerText = finalGradeInternal;
 }
 
-function retryQuiz() {
-    let att = parseInt(localStorage.getItem('att_'+userName) || 0);
-    localStorage.setItem('att_'+userName, att + 1);
-    location.reload();
-}
+function retryQuiz() { localStorage.setItem('att_'+userName, 1); location.reload(); }
 
 async function finishAndSave() {
-    const btn = document.getElementById('save-db-btn');
-    btn.disabled = true;
-    btn.innerText = "ЗБЕРЕЖЕННЯ В DATABASE...";
-
-    const resultData = {
-        name: userName,
-        grade: finalGradeInternal,
-        date: new Date().toLocaleString('uk-UA')
-    };
-
-    try {
-        const response = await fetch(DB_URL, {
-            method: 'POST',
-            body: JSON.stringify(resultData),
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        if(response.ok) {
-            alert("Дані відправлено на сервер! Тепер ви в Залі Слави.");
-            let att = parseInt(localStorage.getItem('att_'+userName) || 0);
-            localStorage.setItem('att_'+userName, att + 1);
-            updateLeaderboard();
-            nt(document.querySelector('.nav-tab:last-child'), 's-lead');
-        } else {
-            throw new Error("Сервер недоступний.");
-        }
-    } catch (e) {
-        alert("Помилка підключення до Firebase!");
-        btn.disabled = false;
-        btn.innerText = "Спробувати ще раз";
-    }
+    await fetch(DB_URL, { method:'POST', body: JSON.stringify({name:userName, grade:finalGradeInternal, date: new Date().toLocaleString()}) });
+    localStorage.setItem('att_'+userName, 2);
+    alert("Збережено!"); updateLeaderboard();
 }
 
 async function updateLeaderboard() {
-    let b = document.getElementById('leader-body');
-    b.innerHTML = '<tr><td colspan="3" style="text-align:center">Синхронізація з сервером...</td></tr>';
-    
-    try {
-        const response = await fetch(DB_URL);
-        const data = await response.json();
-        
-        if(!data) {
-            b.innerHTML = '<tr><td colspan="3">Рейтинг поки що порожній.</td></tr>';
-            return;
-        }
-
-        let list = Object.keys(data).map(key => data[key]);
-        list.sort((a,b) => b.grade - a.grade);
-        
-        b.innerHTML = '<tr><th>М</th><th>Ім’я Гравця</th><th>Бал (max 12)</th></tr>' + 
-            list.map((u,i)=>`<tr><td>${i+1}</td><td>${u.name}</td><td style="font-weight:bold; color:var(--p)">${u.grade}</td></tr>`).join('');
-            
-    } catch (e) {
-        b.innerHTML = '<tr><td colspan="3">Помилка завантаження даних.</td></tr>';
+    const r = await fetch(DB_URL); const d = await r.json();
+    if(d) {
+        let l = Object.values(d).sort((a,b)=>b.grade-a.grade);
+        document.getElementById('leader-body').innerHTML = '<tr><th>Ім’я</th><th>Бал</th></tr>' + 
+        l.map(u=>`<tr><td>${u.name}</td><td>${u.grade}</td></tr>`).join('');
     }
 }
 
-function checkCase() {
-    let val = document.getElementById('ans').value;
-    if(val == 111000) { alert("Правильний розрахунок!"); playSnd('snd-win'); }
-    else { alert("Невірно. Рахуйте: 18500 * 6 місяців."); playSnd('snd-err'); }
-}
+function playSnd(id) { try{let s=document.getElementById(id); s.currentTime=0; s.play();}catch(e){} }
+function checkCase() { if(document.getElementById('ans').value == 111000) alert("Вірно!"); else alert("Ні!"); }
 </script>
 </body>
 </html>
